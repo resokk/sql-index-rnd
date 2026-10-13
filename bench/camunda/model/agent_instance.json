@@ -1,0 +1,164 @@
+{
+  "table": "AGENT_INSTANCE",
+  "entity": "Экземпляр ИИ-агента",
+  "description": "Запуск ИИ-агента в процессе: модель, токены, вызовы",
+  "columns": [
+    {
+      "name": "AGENT_INSTANCE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "AGENT_DEFINITION_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "ELEMENT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор элемента BPMN"
+    },
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_VERSION",
+      "type": "SMALLINT",
+      "description": "версия определения процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_VERSION_TAG",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "INTEGER",
+      "description": "номер партиции"
+    },
+    {
+      "name": "STATUS",
+      "type": "VARCHAR(20)",
+      "description": "статус",
+      "values": [
+        "RUNNING",
+        "COMPLETED",
+        "FAILED"
+      ]
+    },
+    {
+      "name": "MODEL",
+      "type": "VARCHAR(256)",
+      "description": "модель LLM"
+    },
+    {
+      "name": "PROVIDER",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "SYSTEM_PROMPT",
+      "type": "TEXT"
+    },
+    {
+      "name": "MAX_TOKENS",
+      "type": "BIGINT"
+    },
+    {
+      "name": "MAX_MODEL_CALLS",
+      "type": "INTEGER"
+    },
+    {
+      "name": "MAX_TOOL_CALLS",
+      "type": "INTEGER"
+    },
+    {
+      "name": "INPUT_TOKENS",
+      "type": "BIGINT",
+      "description": "входные токены"
+    },
+    {
+      "name": "OUTPUT_TOKENS",
+      "type": "BIGINT",
+      "description": "выходные токены"
+    },
+    {
+      "name": "REASONING_TOKEN_COUNT",
+      "type": "BIGINT"
+    },
+    {
+      "name": "CACHE_CREATION_TOKEN_COUNT",
+      "type": "BIGINT"
+    },
+    {
+      "name": "CACHE_READ_TOKEN_COUNT",
+      "type": "BIGINT"
+    },
+    {
+      "name": "MODEL_CALLS",
+      "type": "INTEGER"
+    },
+    {
+      "name": "TOOL_CALLS",
+      "type": "INTEGER"
+    },
+    {
+      "name": "TOOLS",
+      "type": "TEXT"
+    },
+    {
+      "name": "CREATION_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата создания"
+    },
+    {
+      "name": "LAST_UPDATED_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE"
+    },
+    {
+      "name": "COMPLETION_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата завершения"
+    }
+  ],
+  "relations": [
+    {
+      "table": "AGENT_DEFINITION",
+      "on": "AGENT_INSTANCE.AGENT_DEFINITION_KEY = AGENT_DEFINITION.AGENT_DEFINITION_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "AGENT_INSTANCE.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "AGENT_INSTANCE.ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "AGENT_INSTANCE.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "AGENT_INSTANCE.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

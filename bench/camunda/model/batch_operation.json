@@ -1,0 +1,77 @@
+{
+  "table": "BATCH_OPERATION",
+  "entity": "Пакетная операция",
+  "description": "Массовая операция над экземплярами (отмена, миграция и т.п.)",
+  "columns": [
+    {
+      "name": "BATCH_OPERATION_KEY",
+      "type": "VARCHAR(255)",
+      "description": "ключ пакетной операции"
+    },
+    {
+      "name": "STATE",
+      "type": "VARCHAR(255)",
+      "description": "состояние",
+      "values": [
+        "CREATED",
+        "ACTIVE",
+        "COMPLETED",
+        "PARTIALLY_COMPLETED",
+        "CANCELED",
+        "FAILED"
+      ]
+    },
+    {
+      "name": "OPERATION_TYPE",
+      "type": "VARCHAR(255)",
+      "description": "тип операции",
+      "values": [
+        "CANCEL_PROCESS_INSTANCE",
+        "MIGRATE_PROCESS_INSTANCE",
+        "MODIFY_PROCESS_INSTANCE",
+        "RESOLVE_INCIDENT",
+        "DELETE_PROCESS_INSTANCE"
+      ]
+    },
+    {
+      "name": "START_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата начала"
+    },
+    {
+      "name": "END_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата окончания"
+    },
+    {
+      "name": "OPERATIONS_TOTAL_COUNT",
+      "type": "INT",
+      "description": "всего элементов"
+    },
+    {
+      "name": "OPERATIONS_FAILED_COUNT",
+      "type": "INT",
+      "description": "упавших элементов"
+    },
+    {
+      "name": "OPERATIONS_COMPLETED_COUNT",
+      "type": "INT",
+      "description": "завершённых элементов"
+    },
+    {
+      "name": "HISTORY_CLEANUP_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE"
+    },
+    {
+      "name": "ACTOR_TYPE",
+      "type": "VARCHAR(50)",
+      "description": "тип исполнителя"
+    },
+    {
+      "name": "ACTOR_ID",
+      "type": "VARCHAR(256)",
+      "description": "кто выполнил"
+    }
+  ],
+  "relations": []
+}

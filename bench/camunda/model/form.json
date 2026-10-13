@@ -1,0 +1,40 @@
+{
+  "table": "FORM",
+  "entity": "Форма",
+  "description": "Форма пользовательской задачи: схема, версия",
+  "columns": [
+    {
+      "name": "FORM_KEY",
+      "type": "BIGINT",
+      "description": "ключ формы"
+    },
+    {
+      "name": "FORM_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "SCHEMA_XML",
+      "type": "TEXT"
+    },
+    {
+      "name": "VERSION",
+      "type": "BIGINT",
+      "description": "номер версии"
+    },
+    {
+      "name": "IS_DELETED",
+      "type": "BOOLEAN"
+    }
+  ],
+  "relations": [
+    {
+      "table": "TENANT",
+      "on": "FORM.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

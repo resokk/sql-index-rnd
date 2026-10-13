@@ -1,0 +1,101 @@
+{
+  "table": "VARIABLE",
+  "entity": "Переменная процесса",
+  "description": "Переменные экземпляров процессов: имя, тип, значение",
+  "columns": [
+    {
+      "name": "VAR_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "SCOPE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "TYPE",
+      "type": "VARCHAR(255)",
+      "description": "тип",
+      "values": [
+        "STRING",
+        "LONG",
+        "DOUBLE",
+        "BOOLEAN",
+        "JSON"
+      ]
+    },
+    {
+      "name": "VAR_NAME",
+      "type": "VARCHAR(256)",
+      "description": "имя переменной"
+    },
+    {
+      "name": "DOUBLE_VALUE",
+      "type": "DOUBLE PRECISION"
+    },
+    {
+      "name": "LONG_VALUE",
+      "type": "BIGINT"
+    },
+    {
+      "name": "VAR_VALUE",
+      "type": "VARCHAR(8192)",
+      "description": "значение переменной (превью)"
+    },
+    {
+      "name": "VAR_FULL_VALUE",
+      "type": "TEXT"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "IS_PREVIEW",
+      "type": "BOOLEAN"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    },
+    {
+      "name": "ELEMENT_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра элемента"
+    }
+  ],
+  "relations": [
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "VARIABLE.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "VARIABLE.ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "VARIABLE.TENANT_ID = TENANT.TENANT_ID"
+    },
+    {
+      "table": "FLOW_NODE_INSTANCE",
+      "on": "VARIABLE.ELEMENT_INSTANCE_KEY = FLOW_NODE_INSTANCE.FLOW_NODE_INSTANCE_KEY"
+    }
+  ]
+}

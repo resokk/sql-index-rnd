@@ -1,0 +1,26 @@
+{
+  "table": "AGENT_INSTANCE_ELEMENT_INSTANCE",
+  "entity": "Шаг ИИ-агента",
+  "description": "Связь агента с экземплярами элементов процесса",
+  "columns": [
+    {
+      "name": "AGENT_INSTANCE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "ELEMENT_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра элемента"
+    }
+  ],
+  "relations": [
+    {
+      "table": "AGENT_INSTANCE",
+      "on": "AGENT_INSTANCE_ELEMENT_INSTANCE.AGENT_INSTANCE_KEY = AGENT_INSTANCE.AGENT_INSTANCE_KEY"
+    },
+    {
+      "table": "FLOW_NODE_INSTANCE",
+      "on": "AGENT_INSTANCE_ELEMENT_INSTANCE.ELEMENT_INSTANCE_KEY = FLOW_NODE_INSTANCE.FLOW_NODE_INSTANCE_KEY"
+    }
+  ]
+}

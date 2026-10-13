@@ -1,0 +1,660 @@
+{
+ "qwen2.5-coder:1.5b": {
+  "embedder": "intfloat/multilingual-e5-small",
+  "accuracy": 0.45,
+  "executes": 0.875,
+  "tables_ok": 0.65,
+  "avg_sec": 1.76,
+  "items": [
+   {
+    "q": "Сколько сейчас активных экземпляров процессов?",
+    "sql": "SELECT COUNT(*) AS ACTIVE_INSTANCES FROM PROCESS_INSTANCE WHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 0.31
+   },
+   {
+    "q": "Покажи все версии процесса order-process",
+    "sql": "SELECT VERSION FROM PROCESS_DEFINITION WHERE NAME = 'order-process'",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 0.25
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом состоянии?",
+    "sql": "SELECT PROCESS_INSTANCE.STATE, COUNT(*) AS COUNT FROM PROCESS_INSTANCE GROUP BY PROCESS_INSTANCE.STATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 0.33
+   },
+   {
+    "q": "Список активных инцидентов с текстом ошибки",
+    "sql": "SELECT i.INCIDENT_KEY, i.ERROR_MESSAGE FROM INCIDENT i WHERE i.STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 0.37
+   },
+   {
+    "q": "Сколько инцидентов каждого типа ошибки?",
+    "sql": "SELECT i.ERROR_TYPE, COUNT(i.INCIDENT_KEY) AS INCIDENT_COUNT\nFROM INCIDENT i\nGROUP BY i.ERROR_TYPE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 0.44
+   },
+   {
+    "q": "Какие пользовательские задачи не назначены ни на кого и ещё не выполнены?",
+    "sql": "SELECT ut.*\nFROM USER_TASK ut\nWHERE ut.ASSIGNEE IS NULL AND ut.STATE NOT IN ('COMPLETED', 'FAILED')",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 0.47
+   },
+   {
+    "q": "Сколько открытых задач у каждого исполнителя?",
+    "sql": "SELECT U.ASSIGNEE, COUNT(DISTINCT UT.USER_TASK_KEY) AS OPEN_TASKS\nFROM USER_TASK UT\nJOIN USAGE_METRIC_TU UM ON UT.USER_TASK_KEY = UM.ASSIGNEE_HASH\nGROUP BY U.ASSIGNEE",
+    "ok": false,
+    "error": "ERROR:  missing FROM-clause entry for table \"u\"",
+    "tables_ok": false,
+    "sec": 0.83
+   },
+   {
+    "q": "Найди просроченные пользовательские задачи, которые ещё не завершены",
+    "sql": "SELECT T2.*\nFROM USER_TASK AS T1\nJOIN USER_TASK_TAG AS T2 ON T1.USER_TASK_KEY = T2.USER_TASK_KEY\nWHERE T1.STATE = 'CREATED' AND T1.DUE_DATE < NOW()",
+    "ok": false,
+    "error": null,
+    "tables_ok": false,
+    "sec": 0.72
+   },
+   {
+    "q": "Сколько заданий упало без оставшихся повторов?",
+    "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'FAILED' AND RETRIES = 0",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 0.34
+   },
+   {
+    "q": "Сколько заданий обработал каждый воркер?",
+    "sql": "SELECT T2.WORKER, COUNT(T1.JOB_KEY) AS COUNT\nFROM JOB_METRICS_BATCH AS T1\nJOIN JOB AS T2 ON T1.WORKER = T2.WORKER\nGROUP BY T2.WORKER",
+    "ok": false,
+    "error": "ERROR:  column t1.job_key does not exist",
+    "tables_ok": false,
+    "sec": 0.78
+   },
+   {
+    "q": "Какие экземпляры процессов были запущены за последние 7 дней?",
+    "sql": "SELECT PROCESS_INSTANCE_KEY FROM PROCESS_INSTANCE WHERE START_DATE >= NOW() - INTERVAL '7 days' ORDER BY START_DATE DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 0.47
+   },
+   {
+    "q": "Средняя длительность завершённых экземпляров процессов в часах",
+    "sql": "SELECT AVG(T2.DURATION_MS) / 3600 AS AVG_DURATION_HOURS\nFROM PROCESS_INSTANCE AS T1\nJOIN AGENT_HISTORY AS T2 ON T1.PROCESS_INSTANCE_KEY = T2.PROCESS_INSTANCE_KEY\nWHERE T2.STATE = 'COMPLETED'",
+    "ok": false,
+    "error": "ERROR:  column t2.state does not exist",
+    "tables_ok": false,
+    "sec": 2.82
+   },
+   {
+    "q": "Сколько экземпляров запущено по каждому процессу (по идентификатору процесса)?",
+    "sql": "SELECT pi.PROCESS_DEFINITION_ID, COUNT(pi.PROCESS_INSTANCE_KEY) AS INSTANCE_COUNT\nFROM PROCESS_INSTANCE pi\nGROUP BY pi.PROCESS_DEFINITION_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.29
+   },
+   {
+    "q": "Выведи имена процессов и число активных экземпляров по каждому определению процесса",
+    "sql": "SELECT pd.NAME, COUNT(pi.PROCESS_INSTANCE_KEY) AS ACTIVE_INSTANCES\nFROM PROCESS_DEFINITION pd\nJOIN PROCESS_INSTANCE pi ON pd.PROCESS_DEFINITION_KEY = pi.PROCESS_DEFINITION_KEY\nWHERE pi.STATE = 'ACTIVE'\nGROUP BY pd.NAME",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.38
+   },
+   {
+    "q": "Какие экземпляры процессов имеют активные инциденты?",
+    "sql": "SELECT DISTINCT pi.PROCESS_INSTANCE_KEY FROM PROCESS_INSTANCE pi\nJOIN INCIDENT i ON pi.PROCESS_INSTANCE_KEY = i.PROCESS_INSTANCE_KEY\nWHERE i.STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": false,
+    "sec": 2.17
+   },
+   {
+    "q": "Покажи переменные экземпляра процесса 21299",
+    "sql": "SELECT * FROM VARIABLE WHERE PROCESS_INSTANCE_KEY = 21299",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.88
+   },
+   {
+    "q": "Сколько переменных каждого типа?",
+    "sql": "SELECT TYPE, COUNT(*) FROM VARIABLE GROUP BY TYPE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 1.16
+   },
+   {
+    "q": "Какие шаги процесса сейчас выполняются (активные элементы)?",
+    "sql": "SELECT DISTINCT fni.FLOW_NODE_ID, fni.STATE FROM FLOW_NODE_INSTANCE fni WHERE fni.STATE = 'ACTIVE'",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.34
+   },
+   {
+    "q": "Сколько раз выполнялся каждый тип элемента BPMN?",
+    "sql": "SELECT TYPE, COUNT(*) AS COUNT FROM FLOW_NODE_INSTANCE GROUP BY TYPE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.82
+   },
+   {
+    "q": "Сколько вычислений решений завершились ошибкой?",
+    "sql": "SELECT COUNT(*) FROM DECISION_INSTANCE WHERE STATE = 'FAILED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 1.8
+   },
+   {
+    "q": "Сколько раз вычислялось каждое DMN-решение? Выведи имя решения",
+    "sql": "SELECT dd.NAME, COUNT(di.DECISION_INSTANCE_ID) AS COUNT\nFROM DECISION_DEFINITION dd\nJOIN DECISION_INSTANCE di ON dd.DECISION_DEFINITION_KEY = di.DECISION_DEFINITION_KEY\nGROUP BY dd.NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.55
+   },
+   {
+    "q": "Список пользователей с email",
+    "sql": "SELECT EMAIL FROM USER_",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 0.71
+   },
+   {
+    "q": "Сколько участников в каждой группе? Выведи название группы",
+    "sql": "SELECT g.NAME, COUNT(*) AS member_count\nFROM GROUP_ g\nJOIN GROUP_MEMBER gm ON g.GROUP_ID = gm.GROUP_ID\nGROUP BY g.NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 1.78
+   },
+   {
+    "q": "Какие тенанты есть в системе?",
+    "sql": "SELECT DISTINCT TENANT_ID FROM TENANT",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 1.11
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом тенанте?",
+    "sql": "SELECT COUNT(*) AS PROCESS_INSTANCES, T2.TENANT_ID FROM PROCESS_INSTANCE AS T1 INNER JOIN TENANT AS T2 ON T1.TENANT_ID = T2.TENANT_ID GROUP BY T2.TENANT_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": false,
+    "sec": 2.66
+   },
+   {
+    "q": "Покажи незавершённые пакетные операции",
+    "sql": "SELECT * FROM BATCH_OPERATION WHERE STATE = 'ACTIVE' AND END_DATE IS NULL",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 1.84
+   },
+   {
+    "q": "Какие пакетные операции имели упавшие элементы? Выведи тип операции и число ошибок",
+    "sql": "SELECT bof.OPERATION_TYPE, bof.OPERATIONS_FAILED_COUNT FROM BATCH_OPERATION_ERROR boe JOIN BATCH_OPERATION bof ON (boe.BATCH_OPERATION_KEY = bof.BATCH_OPERATION_KEY)",
+    "ok": false,
+    "error": null,
+    "tables_ok": false,
+    "sec": 1.96
+   },
+   {
+    "q": "Кто выполнял операции по журналу аудита и сколько раз?",
+    "sql": "SELECT actor_id, COUNT(*) AS operation_count\nFROM audit_log\nGROUP BY actor_id",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.68
+   },
+   {
+    "q": "Сколько неуспешных операций в журнале аудита?",
+    "sql": "SELECT COUNT(*) FROM BATCH_OPERATION_ERROR WHERE TYPE = 'FAIL'",
+    "ok": false,
+    "error": null,
+    "tables_ok": false,
+    "sec": 1.56
+   },
+   {
+    "q": "Какие подписки на сообщения ещё ожидают сообщения?",
+    "sql": "SELECT T2.*\nFROM MESSAGE_SUBSCRIPTION AS T1\nJOIN MESSAGE_SUBSCRIPTION_SUBSCRIPTION AS T2 ON T1.MESSAGE_SUBSCRIPTION_KEY = T2.MESSAGE_SUBSCRIPTION_KEY\nWHERE T2.MESSAGE_SUBSCRIPTION_STATE = 'CREATED'",
+    "ok": false,
+    "error": "ERROR:  relation \"message_subscription_subscription\" does not exist",
+    "tables_ok": false,
+    "sec": 2.45
+   },
+   {
+    "q": "Сколько задач может взять каждая группа-кандидат?",
+    "sql": "SELECT cg.CANDIDATE_GROUP, COUNT(*) AS task_count\nFROM CANDIDATE_GROUP cg\nJOIN CANDIDATE_USER cu ON cg.USER_TASK_KEY = cu.USER_TASK_KEY\nGROUP BY cg.CANDIDATE_GROUP",
+    "ok": false,
+    "error": null,
+    "tables_ok": false,
+    "sec": 1.85
+   },
+   {
+    "q": "Топ-5 процессов (по имени) по числу инцидентов",
+    "sql": "SELECT p.PROCESS_DEFINITION_KEY, p.NAME, COUNT(i.INCIDENT_KEY) AS NUM_INCIDENTS\nFROM PROCESS_INSTANCE pi\nJOIN PROCESS_DEFINITION p ON pi.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY\nJOIN INCIDENT i ON pi.PROCESS_INSTANCE_KEY = i.PROCESS_INSTANCE_KEY\nGROUP BY p.PROCESS_DEFINITION_KEY, p.NAME\nORDER BY NUM_INCIDENTS DESC\nLIMIT 5",
+    "ok": false,
+    "error": null,
+    "tables_ok": false,
+    "sec": 3.44
+   },
+   {
+    "q": "Сколько пользовательских задач завершил каждый исполнитель за последние 30 дней?",
+    "sql": "SELECT ut.ASSIGNEE, COUNT(*) AS COMPLETED_TASKS\nFROM USER_TASK ut\nWHERE ut.STATE = 'COMPLETED'\nAND ut.COMPLETION_DATE >= CURRENT_DATE - INTERVAL '30 days'\nGROUP BY ut.ASSIGNEE",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.66
+   },
+   {
+    "q": "Какие формы используются в пользовательских задачах? Выведи идентификатор формы и число задач",
+    "sql": "SELECT FORM.FORM_KEY, COUNT(*) AS TASK_COUNT\nFROM FORM\nJOIN USER_TASK ON FORM.FORM_KEY = USER_TASK.FORM_KEY\nGROUP BY FORM.FORM_KEY",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 1.68
+   },
+   {
+    "q": "Сколько токенов (входных и выходных) потратил ИИ-агент в сумме по каждой модели?",
+    "sql": "SELECT \n  T1.MODEL, \n  SUM(T1.INPUT_TOKENS) AS INPUT_TOKENS_SUM, \n  SUM(T1.OUTPUT_TOKENS) AS OUTPUT_TOKENS_SUM\nFROM \n  AGENT_INSTANCE_ELEMENT_INSTANCE AS T1\nJOIN \n  AGENT_INSTANCE AS T2 ON T1.AGENT_INSTANCE_KEY = T2.AGENT_INSTANCE_KEY\nGROUP BY \n  T1.MODEL",
+    "ok": false,
+    "error": "ERROR:  column t1.model does not exist",
+    "tables_ok": false,
+    "sec": 3.94
+   },
+   {
+    "q": "Сколько упавших заданий по каждому типу задания по метрикам?",
+    "sql": "SELECT job_type, failed_count FROM JOB_METRICS_BATCH WHERE incomplete_batch = TRUE",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 1.52
+   },
+   {
+    "q": "Для активных инцидентов выведи ключ экземпляра процесса и дату его старта",
+    "sql": "SELECT pi.PROCESS_INSTANCE_KEY, pi.START_DATE FROM PROCESS_INSTANCE pi WHERE pi.STATE = 'ACTIVE'",
+    "ok": false,
+    "error": null,
+    "tables_ok": false,
+    "sec": 2.85
+   },
+   {
+    "q": "Сколько инцидентов создано по каждому дню за последнюю неделю?",
+    "sql": "SELECT DATE(creation_date) AS DATE, COUNT(*) AS INCIDENT_COUNT\nFROM INCIDENT\nWHERE creation_date >= NOW() - INTERVAL '7 days'\nGROUP BY DATE(creation_date)\nORDER BY DATE(creation_date)",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.73
+   },
+   {
+    "q": "Какие права есть у пользователя demo?",
+    "sql": "SELECT T1.PERMISSION_TYPE FROM AUTHORIZATIONS AS T1 INNER JOIN USER_ AS T2 ON T1.OWNER_ID = T2.USERNAME WHERE T2.USERNAME = 'demo'",
+    "ok": false,
+    "error": null,
+    "tables_ok": false,
+    "sec": 1.93
+   },
+   {
+    "q": "Выведи развёрнутые ресурсы: имя файла и версию",
+    "sql": "SELECT RESOURCE_NAME, VERSION FROM DEPLOYED_RESOURCE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 1.5
+   }
+  ]
+ },
+ "qwen2.5-coder:3b": {
+  "embedder": "intfloat/multilingual-e5-small",
+  "accuracy": 0.55,
+  "executes": 0.85,
+  "tables_ok": 0.725,
+  "avg_sec": 6.21,
+  "items": [
+   {
+    "q": "Сколько сейчас активных экземпляров процессов?",
+    "sql": "SELECT COUNT(DISTINCT pi.PROCESS_INSTANCE_KEY) AS ACTIVE_INSTANCES_COUNT\nFROM PROCESS_INSTANCE pi\nWHERE pi.STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.52
+   },
+   {
+    "q": "Покажи все версии процесса order-process",
+    "sql": "SELECT DISTINCT VERSION FROM PROCESS_DEFINITION WHERE PROCESS_DEFINITION_ID = 'order-process'",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.7
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом состоянии?",
+    "sql": "SELECT STATE, COUNT(*) AS COUNT\nFROM PROCESS_INSTANCE\nGROUP BY STATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.45
+   },
+   {
+    "q": "Список активных инцидентов с текстом ошибки",
+    "sql": "SELECT i.INCIDENT_KEY, i.FLOW_NODE_INSTANCE_KEY, i.FLOW_NODE_ID, i.PROCESS_INSTANCE_KEY, i.PROCESS_DEFINITION_ID, i.PROCESS_DEFINITION_KEY, i.ERROR_MESSAGE, i.ERROR_MESSAGE_HASH, i.ERROR_TYPE, i.STATE, i.CREATION_DATE, i.JOB_KEY, i.TENANT_ID\nFROM INCIDENT i\nWHERE i.STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.62
+   },
+   {
+    "q": "Сколько инцидентов каждого типа ошибки?",
+    "sql": "SELECT ERROR_TYPE, COUNT(*) AS ERROR_COUNT\nFROM INCIDENT\nGROUP BY ERROR_TYPE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.88
+   },
+   {
+    "q": "Какие пользовательские задачи не назначены ни на кого и ещё не выполнены?",
+    "sql": "SELECT ut.USER_TASK_KEY, ut.ELEMENT_ID, ut.NAME, ut.PROCESS_DEFINITION_ID, ut.CREATION_DATE, ut.COMPLETION_DATE, ut.ASSIGNEE, ut.STATE, ut.FORM_KEY, ut.PROCESS_DEFINITION_KEY, ut.PROCESS_INSTANCE_KEY, ut.ROOT_PROCESS_INSTANCE_KEY, ut.BUSINESS_ID, ut.ELEMENT_INSTANCE_KEY, ut.TENANT_ID, ut.DUE_DATE, ut.FOLLOW_UP_DATE, ut.EXTERNAL_FORM_REFERENCE, ut.PROCESS_DEFINITION_VERSION, ut.CUSTOM_HEADERS, ut.PRIORITY, ut.IS_SUSPENDED\nFROM USER_TASK ut\nLEFT JOIN CANDIDATE_USER cu ON (cu.USER_TASK_KEY = ut.USER_TASK_KEY)\nLEFT JOIN CANDIDATE_GROUP cg ON (cg.USER_TASK_KEY = ut.USER_TASK_KEY)\nLEFT JOIN USER_TASK_TAG t ON (t.USER_TASK_KEY = ut.USER_TASK_KEY)\nWHERE ut.ASSIGNEE IS NULL AND ut.STATE = 'CREATED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": false,
+    "sec": 8.73
+   },
+   {
+    "q": "Сколько открытых задач у каждого исполнителя?",
+    "sql": "SELECT u.ASSIGNEE, COUNT(DISTINCT ut.USER_TASK_KEY) AS OPEN_TASK_COUNT\nFROM USER_TASK ut\nJOIN USAGE_METRIC_TU umt ON ut.USER_TASK_KEY = umt.ASSIGNEE_HASH\nWHERE ut.STATE = 'CREATED'\nGROUP BY u.ASSIGNEE",
+    "ok": false,
+    "error": "ERROR:  missing FROM-clause entry for table \"u\"",
+    "tables_ok": false,
+    "sec": 5.43
+   },
+   {
+    "q": "Найди просроченные пользовательские задачи, которые ещё не завершены",
+    "sql": "SELECT \n  ut.USER_TASK_KEY,\n  ut.NAME,\n  ut.DUE_DATE,\n  ut.STATE\nFROM \n  USER_TASK ut\nWHERE \n  ut.STATE = 'CREATED' OR ut.STATE = 'FAILED' OR ut.STATE = 'CANCELED'\n  AND ut.DUE_DATE < CURRENT_DATE",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.72
+   },
+   {
+    "q": "Сколько заданий упало без оставшихся повторов?",
+    "sql": "SELECT COUNT(*) AS FAILED_COUNT\nFROM JOB\nWHERE STATE = 'FAILED' AND HAS_FAILED_WITH_RETRIES_LEFT = FALSE",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.52
+   },
+   {
+    "q": "Сколько заданий обработал каждый воркер?",
+    "sql": "SELECT \n  j.WORKER,\n  COUNT(j.JOB_KEY) AS JOB_COUNT\nFROM \n  JOB j\nGROUP BY \n  j.WORKER",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.87
+   },
+   {
+    "q": "Какие экземпляры процессов были запущены за последние 7 дней?",
+    "sql": "SELECT pi.PROCESS_INSTANCE_KEY\nFROM PROCESS_INSTANCE pi\nWHERE pi.START_DATE >= NOW() - INTERVAL '7 days'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.55
+   },
+   {
+    "q": "Средняя длительность завершённых экземпляров процессов в часах",
+    "sql": "SELECT AVG(TO_NUMBER(TO_CHAR(TIME_PART('hour', T2.END_TIME) || ':' || TIME_PART('minute', T2.END_TIME) || ':' || TIME_PART('second', T2.END_TIME), 'HH24:MI:SS')) / 3600) AS average_duration_hours\nFROM PROCESS_INSTANCE T1\nJOIN JOB T2 ON T1.PROCESS_INSTANCE_KEY = T2.PROCESS_INSTANCE_KEY\nWHERE T2.STATE = 'COMPLETED'",
+    "ok": false,
+    "error": "ERROR:  function time_part(unknown, timestamp with time zone) does not exist",
+    "tables_ok": false,
+    "sec": 7.42
+   },
+   {
+    "q": "Сколько экземпляров запущено по каждому процессу (по идентификатору процесса)?",
+    "sql": "SELECT pi.PROCESS_DEFINITION_ID, COUNT(pi.PROCESS_INSTANCE_KEY) AS COUNT\nFROM PROCESS_INSTANCE pi\nGROUP BY pi.PROCESS_DEFINITION_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.14
+   },
+   {
+    "q": "Выведи имена процессов и число активных экземпляров по каждому определению процесса",
+    "sql": "SELECT pd.NAME, COUNT(pi.PROCESS_INSTANCE_KEY) AS active_instance_count\nFROM PROCESS_DEFINITION pd\nJOIN PROCESS_INSTANCE pi ON pd.PROCESS_DEFINITION_KEY = pi.PROCESS_DEFINITION_KEY\nWHERE pi.STATE = 'ACTIVE'\nGROUP BY pd.NAME",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.22
+   },
+   {
+    "q": "Какие экземпляры процессов имеют активные инциденты?",
+    "sql": "SELECT pi.PROCESS_INSTANCE_KEY, pi.START_DATE, pi.END_DATE, pi.NUM_INCIDENTS\nFROM PROCESS_INSTANCE pi\nJOIN INCIDENT i ON pi.PROCESS_INSTANCE_KEY = i.PROCESS_INSTANCE_KEY\nWHERE i.STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": false,
+    "sec": 5.09
+   },
+   {
+    "q": "Покажи переменные экземпляра процесса 21299",
+    "sql": "SELECT VAR_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, SCOPE_KEY, VAR_NAME, VAR_VALUE, VAR_FULL_VALUE, TENANT_ID, IS_PREVIEW, PROCESS_DEFINITION_ID\nFROM VARIABLE\nWHERE PROCESS_INSTANCE_KEY = 21299",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.69
+   },
+   {
+    "q": "Сколько переменных каждого типа?",
+    "sql": "SELECT TYPE, COUNT(*) AS COUNT\nFROM VARIABLE\nGROUP BY TYPE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.63
+   },
+   {
+    "q": "Какие шаги процесса сейчас выполняются (активные элементы)?",
+    "sql": "SELECT fni.FLOW_NODE_ID, fni.FLOW_NODE_NAME, fni.START_DATE, fni.END_DATE\nFROM FLOW_NODE_INSTANCE fni\nJOIN AGENT_INSTANCE_ELEMENT_INSTANCE aiei ON fni.FLOW_NODE_INSTANCE_KEY = aiei.FLOW_NODE_INSTANCE_KEY\nWHERE fni.STATE = 'ACTIVE'",
+    "ok": false,
+    "error": "ERROR:  column aiei.flow_node_instance_key does not exist",
+    "tables_ok": false,
+    "sec": 8.31
+   },
+   {
+    "q": "Сколько раз выполнялся каждый тип элемента BPMN?",
+    "sql": "SELECT TYPE, COUNT(*) AS COUNT\nFROM FLOW_NODE_INSTANCE\nGROUP BY TYPE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.61
+   },
+   {
+    "q": "Сколько вычислений решений завершились ошибкой?",
+    "sql": "SELECT COUNT(*) FROM DECISION_INSTANCE WHERE STATE = 'FAILED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.47
+   },
+   {
+    "q": "Сколько раз вычислялось каждое DMN-решение? Выведи имя решения",
+    "sql": "SELECT dd.NAME, COUNT(di.DECISION_INSTANCE_ID) AS COUNT\nFROM DECISION_DEFINITION dd\nJOIN DECISION_INSTANCE di ON dd.DECISION_DEFINITION_KEY = di.DECISION_DEFINITION_KEY\nGROUP BY dd.NAME\nORDER BY COUNT DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.07
+   },
+   {
+    "q": "Список пользователей с email",
+    "sql": "SELECT USERNAME, EMAIL FROM USER_",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 1.74
+   },
+   {
+    "q": "Сколько участников в каждой группе? Выведи название группы",
+    "sql": "SELECT g.NAME, COUNT(gm.ENTITY_ID) AS member_count\nFROM GROUP_ g\nJOIN GROUP_MEMBER gm ON g.GROUP_ID = gm.GROUP_ID\nGROUP BY g.NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.8
+   },
+   {
+    "q": "Какие тенанты есть в системе?",
+    "sql": "SELECT DISTINCT TENANT_ID FROM TENANT",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 2.94
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом тенанте?",
+    "sql": "SELECT COUNT(DISTINCT PROCESS_INSTANCE_KEY) AS COUNT, TENANT_ID FROM PROCESS_INSTANCE GROUP BY TENANT_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 9.39
+   },
+   {
+    "q": "Покажи незавершённые пакетные операции",
+    "sql": "SELECT bof.BATCH_OPERATION_KEY, bof.STATE, bof.OPERATION_TYPE, bof.START_DATE, bof.END_DATE, bof.ACTOR_TYPE, bof.ACTOR_ID, bof.OPERATIONS_TOTAL_COUNT, bof.OPERATIONS_FAILED_COUNT, bof.OPERATIONS_COMPLETED_COUNT\nFROM BATCH_OPERATION bof\nWHERE bof.STATE = 'ACTIVE'",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.22
+   },
+   {
+    "q": "Какие пакетные операции имели упавшие элементы? Выведи тип операции и число ошибок",
+    "sql": "SELECT bo.OPERATION_TYPE, COUNT(bi.ITEM_KEY) AS OPERATIONS_FAILED_COUNT\nFROM BATCH_OPERATION bo\nJOIN BATCH_OPERATION_ITEM bi ON bo.BATCH_OPERATION_KEY = bi.BATCH_OPERATION_KEY\nWHERE bi.STATE = 'FAILED'\nGROUP BY bo.OPERATION_TYPE",
+    "ok": false,
+    "error": null,
+    "tables_ok": false,
+    "sec": 6.29
+   },
+   {
+    "q": "Кто выполнял операции по журналу аудита и сколько раз?",
+    "sql": "SELECT ACTOR_ID, COUNT(*) AS OPERATION_COUNT\nFROM AUDIT_LOG\nGROUP BY ACTOR_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 8.55
+   },
+   {
+    "q": "Сколько неуспешных операций в журнале аудита?",
+    "sql": "SELECT COUNT(*) AS failed_operations_count\nFROM AUDIT_LOG\nWHERE RESULT = 'FAIL'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.91
+   },
+   {
+    "q": "Какие подписки на сообщения ещё ожидают сообщения?",
+    "sql": "SELECT ms.MESSAGE_SUBSCRIPTION_KEY, ms.PROCESS_DEFINITION_ID, ms.PROCESS_DEFINITION_KEY, ms.PROCESS_INSTANCE_KEY, ms.ROOT_PROCESS_INSTANCE_KEY, ms.FLOW_NODE_ID, ms.FLOW_NODE_INSTANCE_KEY, ms.MESSAGE_SUBSCRIPTION_STATE, ms.DATE_TIME, ms.MESSAGE_NAME, ms.CORRELATION_KEY, ms.TENANT_ID, ms.PARTITION_ID, ms.MESSAGE_SUBSCRIPTION_TYPE, ms.PROCESS_DEFINITION_NAME, ms.PROCESS_DEFINITION_VERSION, ms.TOOL_PROPERTIES, ms.TOOL_NAME, ms.INBOUND_CONNECTOR_TYPE, ms.BUSINESS_ID\nFROM MESSAGE_SUBSCRIPTION ms\nWHERE ms.MESSAGE_SUBSCRIPTION_STATE = 'CREATED' OR ms.MESSAGE_SUBSCRIPTION_STATE = 'CORRELATED'",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 9.91
+   },
+   {
+    "q": "Сколько задач может взять каждая группа-кандидат?",
+    "sql": "SELECT cg.CANDIDATE_GROUP, COUNT(ut.USER_TASK_KEY) AS task_count\nFROM CANDIDATE_GROUP cg\nLEFT JOIN USER_TASK ut ON cg.USER_TASK_KEY = ut.USER_TASK_KEY\nGROUP BY cg.CANDIDATE_GROUP",
+    "ok": true,
+    "error": null,
+    "tables_ok": false,
+    "sec": 5.56
+   },
+   {
+    "q": "Топ-5 процессов (по имени) по числу инцидентов",
+    "sql": "SELECT p.PROCESS_DEFINITION_ID, p.NAME, COUNT(i.INCIDENT_KEY) AS NUM_INCIDENTS\nFROM PROCESS_DEFINITION p\nJOIN PROCESS_INSTANCE pi ON p.PROCESS_DEFINITION_KEY = pi.PROCESS_DEFINITION_KEY\nLEFT JOIN INCIDENT i ON pi.PROCESS_INSTANCE_KEY = i.PROCESS_INSTANCE_KEY\nGROUP BY p.PROCESS_DEFINITION_ID, p.NAME\nORDER BY NUM_INCIDENTS DESC\nLIMIT 5",
+    "ok": false,
+    "error": null,
+    "tables_ok": false,
+    "sec": 10.68
+   },
+   {
+    "q": "Сколько пользовательских задач завершил каждый исполнитель за последние 30 дней?",
+    "sql": "SELECT ut.ASSIGNEE, COUNT(*) AS task_count\nFROM USER_TASK ut\nJOIN USAGE_METRIC_TU umt ON ut.USER_TASK_KEY = umt.USER_TASK_KEY\nWHERE ut.STATE = 'COMPLETED'\n  AND umt.START_TIME >= NOW() - INTERVAL '30 days'\nGROUP BY ut.ASSIGNEE",
+    "ok": false,
+    "error": "ERROR:  column umt.user_task_key does not exist",
+    "tables_ok": false,
+    "sec": 9.47
+   },
+   {
+    "q": "Какие формы используются в пользовательских задачах? Выведи идентификатор формы и число задач",
+    "sql": "SELECT f.FORM_KEY, COUNT(ut.USER_TASK_KEY) AS task_count\nFROM FORM f\nJOIN USER_TASK ut ON f.FORM_KEY = ut.FORM_KEY\nGROUP BY f.FORM_KEY",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.22
+   },
+   {
+    "q": "Сколько токенов (входных и выходных) потратил ИИ-агент в сумме по каждой модели?",
+    "sql": "SELECT \n    a.MODEL,\n    SUM(ai.INPUT_TOKENS) AS total_input_tokens,\n    SUM(ai.OUTPUT_TOKENS) AS total_output_tokens\nFROM \n    AGENT_INSTANCE ai\nJOIN \n    AGENT_DEFINITION a ON ai.AGENT_DEFINITION_KEY = a.AGENT_DEFINITION_KEY\nGROUP BY \n    a.MODEL",
+    "ok": false,
+    "error": "ERROR:  column a.model does not exist",
+    "tables_ok": false,
+    "sec": 10.91
+   },
+   {
+    "q": "Сколько упавших заданий по каждому типу задания по метрикам?",
+    "sql": "SELECT job_type, COUNT(*) AS failed_count\nFROM JOB_METRICS_BATCH\nWHERE FAILED_COUNT > 0\nGROUP BY job_type",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.15
+   },
+   {
+    "q": "Для активных инцидентов выведи ключ экземпляра процесса и дату его старта",
+    "sql": "SELECT pi.PROCESS_INSTANCE_KEY, pi.START_DATE\nFROM PROCESS_INSTANCE pi\nJOIN INCIDENT i ON pi.PROCESS_INSTANCE_KEY = i.PROCESS_INSTANCE_KEY\nWHERE i.STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 8.09
+   },
+   {
+    "q": "Сколько инцидентов создано по каждому дню за последнюю неделю?",
+    "sql": "SELECT \n  DATE_TRUNC('day', i.CREATION_DATE) AS creation_date,\n  COUNT(i.INCIDENT_KEY) AS incident_count\nFROM \n  INCIDENT i\nWHERE \n  i.CREATION_DATE >= NOW() - INTERVAL '7 days'\nGROUP BY \n  DATE_TRUNC('day', i.CREATION_DATE)\nORDER BY \n  creation_date",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 8.21
+   },
+   {
+    "q": "Какие права есть у пользователя demo?",
+    "sql": "SELECT DISTINCT a.PERMISSION_TYPE\nFROM AUTHORIZATIONS a\nJOIN USER_ u ON a.OWNER_ID = u.USER_KEY\nWHERE u.USERNAME = 'demo'",
+    "ok": false,
+    "error": "ERROR:  operator does not exist: character varying = bigint",
+    "tables_ok": false,
+    "sec": 5.28
+   },
+   {
+    "q": "Выведи развёрнутые ресурсы: имя файла и версию",
+    "sql": "SELECT RESOURCE_NAME, VERSION FROM DEPLOYED_RESOURCE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.46
+   }
+  ]
+ }
+}

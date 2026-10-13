@@ -1,0 +1,27 @@
+{
+  "table": "GROUP_",
+  "entity": "Группа",
+  "description": "Группа пользователей",
+  "columns": [
+    {
+      "name": "GROUP_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор группы"
+    },
+    {
+      "name": "GROUP_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "NAME",
+      "type": "VARCHAR(256)",
+      "description": "наименование"
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "description": "описание"
+    }
+  ],
+  "relations": []
+}

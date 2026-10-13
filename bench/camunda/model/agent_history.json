@@ -1,0 +1,173 @@
+{
+  "table": "AGENT_HISTORY",
+  "entity": "История ИИ-агента",
+  "description": "Сообщения и вызовы ИИ-агента",
+  "columns": [
+    {
+      "name": "AGENT_HISTORY_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "AGENT_INSTANCE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "ELEMENT_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра элемента"
+    },
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "INTEGER",
+      "description": "номер партиции"
+    },
+    {
+      "name": "JOB_KEY",
+      "type": "BIGINT",
+      "description": "ключ задания"
+    },
+    {
+      "name": "JOB_LEASE_TOKEN",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "LOOP_ITERATION",
+      "type": "INTEGER"
+    },
+    {
+      "name": "ROLE",
+      "type": "VARCHAR(20)"
+    },
+    {
+      "name": "COMMIT_STATUS",
+      "type": "VARCHAR(20)"
+    },
+    {
+      "name": "PRODUCED_AT",
+      "type": "TIMESTAMP(3) WITH TIME ZONE"
+    },
+    {
+      "name": "INPUT_TOKENS",
+      "type": "BIGINT",
+      "description": "входные токены"
+    },
+    {
+      "name": "OUTPUT_TOKENS",
+      "type": "BIGINT",
+      "description": "выходные токены"
+    },
+    {
+      "name": "REASONING_TOKEN_COUNT",
+      "type": "BIGINT"
+    },
+    {
+      "name": "CACHE_CREATION_TOKEN_COUNT",
+      "type": "BIGINT"
+    },
+    {
+      "name": "CACHE_READ_TOKEN_COUNT",
+      "type": "BIGINT"
+    },
+    {
+      "name": "DURATION_MS",
+      "type": "BIGINT",
+      "description": "длительность, мс"
+    },
+    {
+      "name": "CONTENT",
+      "type": "TEXT"
+    },
+    {
+      "name": "TOOL_CALLS",
+      "type": "TEXT"
+    },
+    {
+      "name": "HISTORY_ITEM_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "TOOLS",
+      "type": "TEXT"
+    },
+    {
+      "name": "MODEL",
+      "type": "VARCHAR(256)",
+      "description": "модель LLM"
+    },
+    {
+      "name": "PROVIDER",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "MAX_TOKENS",
+      "type": "BIGINT"
+    },
+    {
+      "name": "MAX_MODEL_CALLS",
+      "type": "INTEGER"
+    },
+    {
+      "name": "MAX_TOOL_CALLS",
+      "type": "INTEGER"
+    },
+    {
+      "name": "SYSTEM_PROMPT",
+      "type": "TEXT"
+    }
+  ],
+  "relations": [
+    {
+      "table": "AGENT_INSTANCE",
+      "on": "AGENT_HISTORY.AGENT_INSTANCE_KEY = AGENT_INSTANCE.AGENT_INSTANCE_KEY"
+    },
+    {
+      "table": "FLOW_NODE_INSTANCE",
+      "on": "AGENT_HISTORY.ELEMENT_INSTANCE_KEY = FLOW_NODE_INSTANCE.FLOW_NODE_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "AGENT_HISTORY.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "AGENT_HISTORY.ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "AGENT_HISTORY.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "AGENT_HISTORY.TENANT_ID = TENANT.TENANT_ID"
+    },
+    {
+      "table": "JOB",
+      "on": "AGENT_HISTORY.JOB_KEY = JOB.JOB_KEY"
+    }
+  ]
+}

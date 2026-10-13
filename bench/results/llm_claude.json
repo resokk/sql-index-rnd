@@ -1,0 +1,1654 @@
+{
+ "default | intfloat/multilingual-e5-small dense": {
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "accuracy": 0.95,
+  "executes": 1.0,
+  "tables_ok": 0.975,
+  "avg_sec": 5.63,
+  "avg_turns": 3.2,
+  "total_cost_usd": 1.499,
+  "items": [
+   {
+    "q": "Сколько сейчас активных экземпляров процессов?",
+    "sql": "SELECT COUNT(*) FROM PROCESS_INSTANCE WHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.144,
+    "cost": 0.0324082,
+    "turns": 3
+   },
+   {
+    "q": "Покажи все версии процесса order-process",
+    "sql": "SELECT PROCESS_DEFINITION_KEY, VERSION, VERSION_TAG, NAME, TENANT_ID, STATE\nFROM PROCESS_DEFINITION\nWHERE PROCESS_DEFINITION_ID = 'order-process'\nORDER BY VERSION",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 11.831,
+    "cost": 0.05747580000000001,
+    "turns": 4
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом состоянии?",
+    "sql": "SELECT STATE, COUNT(*) AS cnt FROM PROCESS_INSTANCE GROUP BY STATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.475,
+    "cost": 0.032473,
+    "turns": 3
+   },
+   {
+    "q": "Список активных инцидентов с текстом ошибки",
+    "sql": "SELECT INCIDENT_KEY, ERROR_MESSAGE FROM INCIDENT WHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.93,
+    "cost": 0.061259999999999995,
+    "turns": 3
+   },
+   {
+    "q": "Сколько инцидентов каждого типа ошибки?",
+    "sql": "SELECT ERROR_TYPE, COUNT(*) AS incident_count\nFROM INCIDENT\nGROUP BY ERROR_TYPE\nORDER BY incident_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.192,
+    "cost": 0.0209532,
+    "turns": 3
+   },
+   {
+    "q": "Какие пользовательские задачи не назначены ни на кого и ещё не выполнены?",
+    "sql": "SELECT USER_TASK_KEY, NAME FROM USER_TASK WHERE ASSIGNEE IS NULL AND STATE = 'CREATED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.289,
+    "cost": 0.0293212,
+    "turns": 3
+   },
+   {
+    "q": "Сколько открытых задач у каждого исполнителя?",
+    "sql": "SELECT ASSIGNEE, COUNT(*) AS open_tasks\nFROM USER_TASK\nWHERE STATE = 'CREATED' AND ASSIGNEE IS NOT NULL\nGROUP BY ASSIGNEE\nORDER BY open_tasks DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.843,
+    "cost": 0.0300014,
+    "turns": 3
+   },
+   {
+    "q": "Найди просроченные пользовательские задачи, которые ещё не завершены",
+    "sql": "SELECT USER_TASK_KEY, NAME, ASSIGNEE, DUE_DATE, STATE\nFROM USER_TASK\nWHERE DUE_DATE < NOW()\n  AND STATE = 'CREATED'\nORDER BY DUE_DATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.92,
+    "cost": 0.0435202,
+    "turns": 3
+   },
+   {
+    "q": "Сколько заданий упало без оставшихся повторов?",
+    "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'FAILED' AND RETRIES = 0",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.069,
+    "cost": 0.0364172,
+    "turns": 3
+   },
+   {
+    "q": "Сколько заданий обработал каждый воркер?",
+    "sql": "SELECT worker, COUNT(*) AS job_count\nFROM job\nWHERE worker IS NOT NULL\nGROUP BY worker\nORDER BY job_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.821,
+    "cost": 0.0458078,
+    "turns": 3
+   },
+   {
+    "q": "Какие экземпляры процессов были запущены за последние 7 дней?",
+    "sql": "SELECT PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, STATE, START_DATE\nFROM PROCESS_INSTANCE\nWHERE START_DATE >= NOW() - INTERVAL '7 days'\nORDER BY START_DATE DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.655,
+    "cost": 0.0227998,
+    "turns": 3
+   },
+   {
+    "q": "Средняя длительность завершённых экземпляров процессов в часах",
+    "sql": "SELECT AVG(EXTRACT(EPOCH FROM (END_DATE - START_DATE)) / 3600) AS avg_duration_hours\nFROM PROCESS_INSTANCE\nWHERE STATE = 'COMPLETED' AND END_DATE IS NOT NULL",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.696,
+    "cost": 0.022619,
+    "turns": 3
+   },
+   {
+    "q": "Сколько экземпляров запущено по каждому процессу (по идентификатору процесса)?",
+    "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS instance_count\nFROM PROCESS_INSTANCE\nGROUP BY PROCESS_DEFINITION_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.442,
+    "cost": 0.0212546,
+    "turns": 3
+   },
+   {
+    "q": "Выведи имена процессов и число активных экземпляров по каждому определению процесса",
+    "sql": "SELECT pd.NAME, COUNT(pi.PROCESS_INSTANCE_KEY) AS active_instances\nFROM PROCESS_DEFINITION pd\nJOIN PROCESS_INSTANCE pi ON pi.PROCESS_DEFINITION_KEY = pd.PROCESS_DEFINITION_KEY\nWHERE pi.STATE = 'ACTIVE'\nGROUP BY pd.PROCESS_DEFINITION_KEY, pd.NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.73,
+    "cost": 0.0449212,
+    "turns": 4
+   },
+   {
+    "q": "Какие экземпляры процессов имеют активные инциденты?",
+    "sql": "SELECT DISTINCT pi.PROCESS_INSTANCE_KEY, pi.PROCESS_DEFINITION_ID\nFROM PROCESS_INSTANCE pi\nJOIN INCIDENT i ON i.PROCESS_INSTANCE_KEY = pi.PROCESS_INSTANCE_KEY\nWHERE i.STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": false,
+    "sec": 5.064,
+    "cost": 0.0495408,
+    "turns": 3
+   },
+   {
+    "q": "Покажи переменные экземпляра процесса 21299",
+    "sql": "SELECT VAR_NAME, TYPE, VAR_VALUE\nFROM VARIABLE\nWHERE PROCESS_INSTANCE_KEY = 21299\nORDER BY VAR_NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.79,
+    "cost": 0.041666600000000005,
+    "turns": 4
+   },
+   {
+    "q": "Сколько переменных каждого типа?",
+    "sql": "SELECT TYPE, COUNT(*) AS variable_count\nFROM VARIABLE\nGROUP BY TYPE\nORDER BY variable_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.173,
+    "cost": 0.025175200000000002,
+    "turns": 3
+   },
+   {
+    "q": "Какие шаги процесса сейчас выполняются (активные элементы)?",
+    "sql": "SELECT FLOW_NODE_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_NAME, TYPE, PROCESS_INSTANCE_KEY, START_DATE\nFROM FLOW_NODE_INSTANCE\nWHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.891,
+    "cost": 0.046832200000000004,
+    "turns": 3
+   },
+   {
+    "q": "Сколько раз выполнялся каждый тип элемента BPMN?",
+    "sql": "SELECT TYPE, COUNT(*) AS execution_count\nFROM FLOW_NODE_INSTANCE\nGROUP BY TYPE\nORDER BY execution_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.135,
+    "cost": 0.051073,
+    "turns": 3
+   },
+   {
+    "q": "Сколько вычислений решений завершились ошибкой?",
+    "sql": "SELECT COUNT(*) FROM DECISION_INSTANCE WHERE STATE = 'FAILED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.693,
+    "cost": 0.0397822,
+    "turns": 3
+   },
+   {
+    "q": "Сколько раз вычислялось каждое DMN-решение? Выведи имя решения",
+    "sql": "SELECT dd.NAME, COUNT(di.DECISION_INSTANCE_KEY) AS evaluation_count\nFROM DECISION_DEFINITION dd\nLEFT JOIN DECISION_INSTANCE di ON di.DECISION_DEFINITION_KEY = dd.DECISION_DEFINITION_KEY\nGROUP BY dd.DECISION_DEFINITION_KEY, dd.NAME\nORDER BY evaluation_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.731,
+    "cost": 0.0451888,
+    "turns": 3
+   },
+   {
+    "q": "Список пользователей с email",
+    "sql": "SELECT USERNAME, NAME, EMAIL FROM USER_ ORDER BY USERNAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.74,
+    "cost": 0.0220334,
+    "turns": 3
+   },
+   {
+    "q": "Сколько участников в каждой группе? Выведи название группы",
+    "sql": "SELECT g.NAME, COUNT(gm.ENTITY_ID) AS member_count\nFROM GROUP_ g\nLEFT JOIN GROUP_MEMBER gm ON gm.GROUP_ID = g.GROUP_ID\nGROUP BY g.GROUP_ID, g.NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.639,
+    "cost": 0.027829800000000002,
+    "turns": 4
+   },
+   {
+    "q": "Какие тенанты есть в системе?",
+    "sql": "SELECT TENANT_ID, NAME, DESCRIPTION FROM TENANT ORDER BY TENANT_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.006,
+    "cost": 0.0237788,
+    "turns": 3
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом тенанте?",
+    "sql": "SELECT TENANT_ID, COUNT(*) AS process_instance_count\nFROM PROCESS_INSTANCE\nGROUP BY TENANT_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.793,
+    "cost": 0.020498600000000002,
+    "turns": 3
+   },
+   {
+    "q": "Покажи незавершённые пакетные операции",
+    "sql": "SELECT BATCH_OPERATION_KEY, OPERATION_TYPE, STATE, START_DATE,\n       OPERATIONS_TOTAL_COUNT, OPERATIONS_COMPLETED_COUNT, OPERATIONS_FAILED_COUNT\nFROM BATCH_OPERATION\nWHERE STATE IN ('CREATED', 'ACTIVE')\nORDER BY START_DATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.038,
+    "cost": 0.0473882,
+    "turns": 4
+   },
+   {
+    "q": "Какие пакетные операции имели упавшие элементы? Выведи тип операции и число ошибок",
+    "sql": "SELECT OPERATION_TYPE, OPERATIONS_FAILED_COUNT\nFROM BATCH_OPERATION\nWHERE OPERATIONS_FAILED_COUNT > 0",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.192,
+    "cost": 0.0366874,
+    "turns": 3
+   },
+   {
+    "q": "Кто выполнял операции по журналу аудита и сколько раз?",
+    "sql": "SELECT ACTOR_ID, COUNT(*) AS operation_count\nFROM AUDIT_LOG\nGROUP BY ACTOR_ID\nORDER BY operation_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.147,
+    "cost": 0.0324216,
+    "turns": 3
+   },
+   {
+    "q": "Сколько неуспешных операций в журнале аудита?",
+    "sql": "SELECT COUNT(*) FROM AUDIT_LOG WHERE RESULT = 'FAIL'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.415,
+    "cost": 0.0381602,
+    "turns": 3
+   },
+   {
+    "q": "Какие подписки на сообщения ещё ожидают сообщения?",
+    "sql": "SELECT MESSAGE_SUBSCRIPTION_KEY, MESSAGE_NAME, CORRELATION_KEY, PROCESS_INSTANCE_KEY, FLOW_NODE_ID\nFROM MESSAGE_SUBSCRIPTION\nWHERE MESSAGE_SUBSCRIPTION_STATE = 'CREATED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.749,
+    "cost": 0.0358324,
+    "turns": 3
+   },
+   {
+    "q": "Сколько задач может взять каждая группа-кандидат?",
+    "sql": "SELECT CANDIDATE_GROUP, COUNT(DISTINCT USER_TASK_KEY) AS task_count\nFROM CANDIDATE_GROUP\nGROUP BY CANDIDATE_GROUP\nORDER BY task_count DESC",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.738,
+    "cost": 0.029375599999999998,
+    "turns": 3
+   },
+   {
+    "q": "Топ-5 процессов (по имени) по числу инцидентов",
+    "sql": "SELECT pd.NAME, COUNT(*) AS incident_count\nFROM INCIDENT i\nJOIN PROCESS_DEFINITION pd ON pd.PROCESS_DEFINITION_KEY = i.PROCESS_DEFINITION_KEY\nGROUP BY pd.NAME\nORDER BY incident_count DESC\nLIMIT 5",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.262,
+    "cost": 0.0651322,
+    "turns": 4
+   },
+   {
+    "q": "Сколько пользовательских задач завершил каждый исполнитель за последние 30 дней?",
+    "sql": "SELECT ASSIGNEE, COUNT(*) AS completed_tasks\nFROM USER_TASK\nWHERE STATE = 'COMPLETED'\n  AND COMPLETION_DATE >= NOW() - INTERVAL '30 days'\nGROUP BY ASSIGNEE\nORDER BY completed_tasks DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.285,
+    "cost": 0.030885600000000003,
+    "turns": 3
+   },
+   {
+    "q": "Какие формы используются в пользовательских задачах? Выведи идентификатор формы и число задач",
+    "sql": "SELECT f.FORM_ID, COUNT(*) AS task_count\nFROM USER_TASK ut\nJOIN FORM f ON f.FORM_KEY = ut.FORM_KEY\nGROUP BY f.FORM_ID\nORDER BY task_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.509,
+    "cost": 0.02952,
+    "turns": 3
+   },
+   {
+    "q": "Сколько токенов (входных и выходных) потратил ИИ-агент в сумме по каждой модели?",
+    "sql": "SELECT MODEL, SUM(INPUT_TOKENS) AS total_input_tokens, SUM(OUTPUT_TOKENS) AS total_output_tokens FROM AGENT_INSTANCE GROUP BY MODEL",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.274,
+    "cost": 0.0383664,
+    "turns": 3
+   },
+   {
+    "q": "Сколько упавших заданий по каждому типу задания по метрикам?",
+    "sql": "SELECT JOB_TYPE, SUM(FAILED_COUNT) AS FAILED_COUNT\nFROM JOB_METRICS_BATCH\nGROUP BY JOB_TYPE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.765,
+    "cost": 0.034718599999999995,
+    "turns": 4
+   },
+   {
+    "q": "Для активных инцидентов выведи ключ экземпляра процесса и дату его старта",
+    "sql": "SELECT i.process_instance_key, pi.start_date\nFROM incident i\nJOIN process_instance pi ON pi.process_instance_key = i.process_instance_key\nWHERE i.state = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.22,
+    "cost": 0.049666800000000004,
+    "turns": 3
+   },
+   {
+    "q": "Сколько инцидентов создано по каждому дню за последнюю неделю?",
+    "sql": "SELECT date_trunc('day', CREATION_DATE)::date AS day, COUNT(*) AS incident_count\nFROM INCIDENT\nWHERE CREATION_DATE >= now() - interval '7 days'\nGROUP BY 1\nORDER BY 1",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.512,
+    "cost": 0.0542718,
+    "turns": 3
+   },
+   {
+    "q": "Какие права есть у пользователя demo?",
+    "sql": "SELECT RESOURCE_TYPE, RESOURCE_ID, PERMISSION_TYPE\nFROM AUTHORIZATIONS\nWHERE OWNER_TYPE = 'USER' AND OWNER_ID = 'demo'",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.196,
+    "cost": 0.056635,
+    "turns": 5
+   },
+   {
+    "q": "Выведи развёрнутые ресурсы: имя файла и версию",
+    "sql": "SELECT RESOURCE_NAME, VERSION FROM DEPLOYED_RESOURCE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.046,
+    "cost": 0.0255674,
+    "turns": 3
+   }
+  ]
+ },
+ "default | intfloat/multilingual-e5-small hybrid": {
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "accuracy": 0.9,
+  "executes": 1.0,
+  "tables_ok": 0.975,
+  "avg_sec": 5.66,
+  "avg_turns": 3.2,
+  "total_cost_usd": 1.446,
+  "items": [
+   {
+    "q": "Сколько сейчас активных экземпляров процессов?",
+    "sql": "SELECT COUNT(*) FROM PROCESS_INSTANCE WHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.68,
+    "cost": 0.0323914,
+    "turns": 3
+   },
+   {
+    "q": "Покажи все версии процесса order-process",
+    "sql": "SELECT PROCESS_DEFINITION_KEY, VERSION, VERSION_TAG\nFROM PROCESS_DEFINITION\nWHERE PROCESS_DEFINITION_ID = 'order-process'\nORDER BY VERSION",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.845,
+    "cost": 0.0581278,
+    "turns": 3
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом состоянии?",
+    "sql": "SELECT STATE, COUNT(*) AS cnt FROM PROCESS_INSTANCE GROUP BY STATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.713,
+    "cost": 0.0324562,
+    "turns": 3
+   },
+   {
+    "q": "Список активных инцидентов с текстом ошибки",
+    "sql": "SELECT INCIDENT_KEY, ERROR_MESSAGE FROM INCIDENT WHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.063,
+    "cost": 0.0455598,
+    "turns": 3
+   },
+   {
+    "q": "Сколько инцидентов каждого типа ошибки?",
+    "sql": "SELECT ERROR_TYPE, COUNT(*) AS incident_count\nFROM INCIDENT\nGROUP BY ERROR_TYPE\nORDER BY incident_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.077,
+    "cost": 0.0389658,
+    "turns": 3
+   },
+   {
+    "q": "Какие пользовательские задачи не назначены ни на кого и ещё не выполнены?",
+    "sql": "SELECT USER_TASK_KEY, NAME FROM USER_TASK WHERE ASSIGNEE IS NULL AND STATE = 'CREATED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.906,
+    "cost": 0.0288714,
+    "turns": 3
+   },
+   {
+    "q": "Сколько открытых задач у каждого исполнителя?",
+    "sql": "SELECT ASSIGNEE, COUNT(*) AS open_tasks\nFROM USER_TASK\nWHERE STATE = 'CREATED' AND ASSIGNEE IS NOT NULL\nGROUP BY ASSIGNEE\nORDER BY open_tasks DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.911,
+    "cost": 0.029992400000000002,
+    "turns": 3
+   },
+   {
+    "q": "Найди просроченные пользовательские задачи, которые ещё не завершены",
+    "sql": "SELECT USER_TASK_KEY, NAME, ASSIGNEE, DUE_DATE, STATE\nFROM USER_TASK\nWHERE STATE = 'CREATED'\n  AND DUE_DATE < NOW()\nORDER BY DUE_DATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.6,
+    "cost": 0.0343388,
+    "turns": 3
+   },
+   {
+    "q": "Сколько заданий упало без оставшихся повторов?",
+    "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'FAILED' AND RETRIES = 0",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.795,
+    "cost": 0.049776799999999996,
+    "turns": 3
+   },
+   {
+    "q": "Сколько заданий обработал каждый воркер?",
+    "sql": "SELECT WORKER, COUNT(*) AS job_count\nFROM JOB\nWHERE WORKER IS NOT NULL\nGROUP BY WORKER\nORDER BY job_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.405,
+    "cost": 0.0320942,
+    "turns": 3
+   },
+   {
+    "q": "Какие экземпляры процессов были запущены за последние 7 дней?",
+    "sql": "SELECT PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, START_DATE\nFROM PROCESS_INSTANCE\nWHERE START_DATE >= NOW() - INTERVAL '7 days'\nORDER BY START_DATE DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.733,
+    "cost": 0.022598800000000002,
+    "turns": 3
+   },
+   {
+    "q": "Средняя длительность завершённых экземпляров процессов в часах",
+    "sql": "SELECT AVG(EXTRACT(EPOCH FROM (END_DATE - START_DATE)) / 3600) AS avg_duration_hours\nFROM PROCESS_INSTANCE\nWHERE STATE = 'COMPLETED' AND END_DATE IS NOT NULL",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.328,
+    "cost": 0.022609999999999998,
+    "turns": 3
+   },
+   {
+    "q": "Сколько экземпляров запущено по каждому процессу (по идентификатору процесса)?",
+    "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS instance_count\nFROM PROCESS_INSTANCE\nGROUP BY PROCESS_DEFINITION_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.194,
+    "cost": 0.0212456,
+    "turns": 3
+   },
+   {
+    "q": "Выведи имена процессов и число активных экземпляров по каждому определению процесса",
+    "sql": "SELECT pd.NAME, COUNT(pi.PROCESS_INSTANCE_KEY) AS active_instances\nFROM PROCESS_DEFINITION pd\nLEFT JOIN PROCESS_INSTANCE pi ON pi.PROCESS_DEFINITION_KEY = pd.PROCESS_DEFINITION_KEY AND pi.STATE = 'ACTIVE'\nGROUP BY pd.PROCESS_DEFINITION_KEY, pd.NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.698,
+    "cost": 0.06513379999999999,
+    "turns": 5
+   },
+   {
+    "q": "Какие экземпляры процессов имеют активные инциденты?",
+    "sql": "SELECT pi.PROCESS_INSTANCE_KEY, pi.PROCESS_DEFINITION_ID\nFROM PROCESS_INSTANCE pi\nWHERE EXISTS (\n  SELECT 1 FROM INCIDENT i\n  WHERE i.PROCESS_INSTANCE_KEY = pi.PROCESS_INSTANCE_KEY\n    AND i.STATE = 'ACTIVE'\n)",
+    "ok": true,
+    "error": null,
+    "tables_ok": false,
+    "sec": 29.184,
+    "cost": 0.057811400000000006,
+    "turns": 4
+   },
+   {
+    "q": "Покажи переменные экземпляра процесса 21299",
+    "sql": "SELECT VAR_NAME, TYPE, VAR_VALUE\nFROM VARIABLE\nWHERE PROCESS_INSTANCE_KEY = 21299\nORDER BY VAR_NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 8.091,
+    "cost": 0.0327568,
+    "turns": 3
+   },
+   {
+    "q": "Сколько переменных каждого типа?",
+    "sql": "SELECT TYPE, COUNT(*) AS cnt FROM VARIABLE GROUP BY TYPE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.815,
+    "cost": 0.0247812,
+    "turns": 3
+   },
+   {
+    "q": "Какие шаги процесса сейчас выполняются (активные элементы)?",
+    "sql": "SELECT FLOW_NODE_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_NAME, TYPE, PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, START_DATE\nFROM FLOW_NODE_INSTANCE\nWHERE STATE = 'ACTIVE'\nORDER BY START_DATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.603,
+    "cost": 0.0481064,
+    "turns": 3
+   },
+   {
+    "q": "Сколько раз выполнялся каждый тип элемента BPMN?",
+    "sql": "SELECT TYPE, COUNT(*) AS execution_count\nFROM FLOW_NODE_INSTANCE\nGROUP BY TYPE\nORDER BY execution_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.385,
+    "cost": 0.0438204,
+    "turns": 3
+   },
+   {
+    "q": "Сколько вычислений решений завершились ошибкой?",
+    "sql": "SELECT COUNT(*) FROM DECISION_INSTANCE WHERE STATE = 'FAILED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.608,
+    "cost": 0.030175,
+    "turns": 3
+   },
+   {
+    "q": "Сколько раз вычислялось каждое DMN-решение? Выведи имя решения",
+    "sql": "SELECT dd.NAME, COUNT(di.DECISION_INSTANCE_KEY) AS evaluation_count\nFROM DECISION_DEFINITION dd\nLEFT JOIN DECISION_INSTANCE di ON di.DECISION_DEFINITION_KEY = dd.DECISION_DEFINITION_KEY\nGROUP BY dd.DECISION_DEFINITION_KEY, dd.NAME\nORDER BY evaluation_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.605,
+    "cost": 0.04537580000000001,
+    "turns": 3
+   },
+   {
+    "q": "Список пользователей с email",
+    "sql": "SELECT USERNAME, NAME, EMAIL FROM USER_",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.065,
+    "cost": 0.027871800000000002,
+    "turns": 4
+   },
+   {
+    "q": "Сколько участников в каждой группе? Выведи название группы",
+    "sql": "SELECT g.NAME, COUNT(gm.ENTITY_ID) AS member_count\nFROM GROUP_ g\nLEFT JOIN GROUP_MEMBER gm ON gm.GROUP_ID = g.GROUP_ID\nGROUP BY g.GROUP_ID, g.NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.444,
+    "cost": 0.023621200000000002,
+    "turns": 3
+   },
+   {
+    "q": "Какие тенанты есть в системе?",
+    "sql": "SELECT TENANT_ID, NAME, DESCRIPTION FROM TENANT ORDER BY TENANT_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.909,
+    "cost": 0.0237698,
+    "turns": 3
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом тенанте?",
+    "sql": "SELECT TENANT_ID, COUNT(*) AS process_instance_count\nFROM PROCESS_INSTANCE\nGROUP BY TENANT_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.996,
+    "cost": 0.020489599999999997,
+    "turns": 3
+   },
+   {
+    "q": "Покажи незавершённые пакетные операции",
+    "sql": "SELECT BATCH_OPERATION_KEY, OPERATION_TYPE, STATE, START_DATE\nFROM BATCH_OPERATION\nWHERE STATE IN ('CREATED', 'ACTIVE')",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.438,
+    "cost": 0.04022100000000001,
+    "turns": 3
+   },
+   {
+    "q": "Какие пакетные операции имели упавшие элементы? Выведи тип операции и число ошибок",
+    "sql": "SELECT operation_type, operations_failed_count\nFROM batch_operation\nWHERE operations_failed_count > 0\nORDER BY operations_failed_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.489,
+    "cost": 0.0350268,
+    "turns": 3
+   },
+   {
+    "q": "Кто выполнял операции по журналу аудита и сколько раз?",
+    "sql": "SELECT ACTOR_ID, COUNT(*) AS operation_count\nFROM AUDIT_LOG\nGROUP BY ACTOR_ID\nORDER BY operation_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.943,
+    "cost": 0.0368826,
+    "turns": 3
+   },
+   {
+    "q": "Сколько неуспешных операций в журнале аудита?",
+    "sql": "SELECT COUNT(*) FROM AUDIT_LOG WHERE RESULT = 'FAIL'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.669,
+    "cost": 0.0355764,
+    "turns": 3
+   },
+   {
+    "q": "Какие подписки на сообщения ещё ожидают сообщения?",
+    "sql": "SELECT MESSAGE_SUBSCRIPTION_KEY, MESSAGE_NAME, CORRELATION_KEY, PROCESS_INSTANCE_KEY, FLOW_NODE_ID\nFROM MESSAGE_SUBSCRIPTION\nWHERE MESSAGE_SUBSCRIPTION_STATE = 'CREATED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.883,
+    "cost": 0.0493424,
+    "turns": 4
+   },
+   {
+    "q": "Сколько задач может взять каждая группа-кандидат?",
+    "sql": "SELECT CANDIDATE_GROUP, COUNT(DISTINCT USER_TASK_KEY) AS task_count\nFROM CANDIDATE_GROUP\nGROUP BY CANDIDATE_GROUP\nORDER BY task_count DESC",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.531,
+    "cost": 0.0287112,
+    "turns": 3
+   },
+   {
+    "q": "Топ-5 процессов (по имени) по числу инцидентов",
+    "sql": "SELECT pd.NAME, COUNT(*) AS incident_count\nFROM INCIDENT i\nJOIN PROCESS_DEFINITION pd ON pd.PROCESS_DEFINITION_KEY = i.PROCESS_DEFINITION_KEY\nGROUP BY pd.NAME\nORDER BY incident_count DESC\nLIMIT 5",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.666,
+    "cost": 0.048173200000000006,
+    "turns": 4
+   },
+   {
+    "q": "Сколько пользовательских задач завершил каждый исполнитель за последние 30 дней?",
+    "sql": "SELECT ASSIGNEE, COUNT(*) AS completed_tasks\nFROM USER_TASK\nWHERE STATE = 'COMPLETED'\n  AND COMPLETION_DATE >= NOW() - INTERVAL '30 days'\n  AND ASSIGNEE IS NOT NULL\nGROUP BY ASSIGNEE\nORDER BY completed_tasks DESC",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.922,
+    "cost": 0.0318216,
+    "turns": 3
+   },
+   {
+    "q": "Какие формы используются в пользовательских задачах? Выведи идентификатор формы и число задач",
+    "sql": "SELECT f.FORM_ID, COUNT(*) AS task_count\nFROM USER_TASK ut\nJOIN FORM f ON ut.FORM_KEY = f.FORM_KEY\nGROUP BY f.FORM_ID\nORDER BY task_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.742,
+    "cost": 0.0308148,
+    "turns": 3
+   },
+   {
+    "q": "Сколько токенов (входных и выходных) потратил ИИ-агент в сумме по каждой модели?",
+    "sql": "SELECT MODEL, SUM(INPUT_TOKENS) AS input_tokens, SUM(OUTPUT_TOKENS) AS output_tokens\nFROM AGENT_INSTANCE\nGROUP BY MODEL",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.173,
+    "cost": 0.0382254,
+    "turns": 3
+   },
+   {
+    "q": "Сколько упавших заданий по каждому типу задания по метрикам?",
+    "sql": "SELECT JOB_TYPE, SUM(FAILED_COUNT) AS failed_count\nFROM JOB_METRICS_BATCH\nGROUP BY JOB_TYPE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.019,
+    "cost": 0.0322882,
+    "turns": 3
+   },
+   {
+    "q": "Для активных инцидентов выведи ключ экземпляра процесса и дату его старта",
+    "sql": "SELECT i.PROCESS_INSTANCE_KEY, p.START_DATE\nFROM INCIDENT i\nJOIN PROCESS_INSTANCE p ON p.PROCESS_INSTANCE_KEY = i.PROCESS_INSTANCE_KEY\nWHERE i.STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.55,
+    "cost": 0.0555594,
+    "turns": 3
+   },
+   {
+    "q": "Сколько инцидентов создано по каждому дню за последнюю неделю?",
+    "sql": "SELECT DATE_TRUNC('day', CREATION_DATE) AS day, COUNT(*) AS incident_count\nFROM INCIDENT\nWHERE CREATION_DATE >= NOW() - INTERVAL '7 days'\nGROUP BY 1\nORDER BY 1",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.352,
+    "cost": 0.022635,
+    "turns": 3
+   },
+   {
+    "q": "Какие права есть у пользователя demo?",
+    "sql": "SELECT RESOURCE_TYPE, RESOURCE_ID, PERMISSION_TYPE\nFROM AUTHORIZATIONS\nWHERE OWNER_ID = 'demo' AND OWNER_TYPE = 'USER'",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.574,
+    "cost": 0.0420694,
+    "turns": 4
+   },
+   {
+    "q": "Выведи развёрнутые ресурсы: имя файла и версию",
+    "sql": "SELECT RESOURCE_NAME, VERSION FROM DEPLOYED_RESOURCE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.835,
+    "cost": 0.0255584,
+    "turns": 3
+   }
+  ]
+ },
+ "default | BAAI/bge-m3 dense": {
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "accuracy": 0.925,
+  "executes": 1.0,
+  "tables_ok": 0.975,
+  "avg_sec": 5.58,
+  "avg_turns": 3.1,
+  "total_cost_usd": 1.51,
+  "items": [
+   {
+    "q": "Сколько сейчас активных экземпляров процессов?",
+    "sql": "SELECT COUNT(*) FROM PROCESS_INSTANCE WHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.509,
+    "cost": 0.0323914,
+    "turns": 3
+   },
+   {
+    "q": "Покажи все версии процесса order-process",
+    "sql": "SELECT PROCESS_DEFINITION_KEY, VERSION, VERSION_TAG, NAME, TENANT_ID\nFROM PROCESS_DEFINITION\nWHERE PROCESS_DEFINITION_ID = 'order-process'\nORDER BY VERSION",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.592,
+    "cost": 0.0323444,
+    "turns": 3
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом состоянии?",
+    "sql": "SELECT STATE, COUNT(*) AS cnt FROM PROCESS_INSTANCE GROUP BY STATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.475,
+    "cost": 0.0324562,
+    "turns": 3
+   },
+   {
+    "q": "Список активных инцидентов с текстом ошибки",
+    "sql": "SELECT INCIDENT_KEY, ERROR_MESSAGE FROM INCIDENT WHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.665,
+    "cost": 0.0485128,
+    "turns": 3
+   },
+   {
+    "q": "Сколько инцидентов каждого типа ошибки?",
+    "sql": "SELECT ERROR_TYPE, COUNT(*) AS incident_count\nFROM INCIDENT\nGROUP BY ERROR_TYPE\nORDER BY incident_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.674,
+    "cost": 0.0320012,
+    "turns": 3
+   },
+   {
+    "q": "Какие пользовательские задачи не назначены ни на кого и ещё не выполнены?",
+    "sql": "SELECT USER_TASK_KEY, NAME FROM USER_TASK WHERE ASSIGNEE IS NULL AND STATE = 'CREATED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.608,
+    "cost": 0.0349428,
+    "turns": 3
+   },
+   {
+    "q": "Сколько открытых задач у каждого исполнителя?",
+    "sql": "SELECT ASSIGNEE, COUNT(*) AS open_tasks\nFROM USER_TASK\nWHERE STATE = 'CREATED' AND ASSIGNEE IS NOT NULL\nGROUP BY ASSIGNEE\nORDER BY open_tasks DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.591,
+    "cost": 0.03601120000000001,
+    "turns": 3
+   },
+   {
+    "q": "Найди просроченные пользовательские задачи, которые ещё не завершены",
+    "sql": "SELECT USER_TASK_KEY, NAME, ASSIGNEE, DUE_DATE, STATE\nFROM USER_TASK\nWHERE STATE = 'CREATED'\n  AND DUE_DATE < NOW()\nORDER BY DUE_DATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.787,
+    "cost": 0.0407238,
+    "turns": 3
+   },
+   {
+    "q": "Сколько заданий упало без оставшихся повторов?",
+    "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'FAILED' AND RETRIES = 0",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.939,
+    "cost": 0.04793479999999999,
+    "turns": 3
+   },
+   {
+    "q": "Сколько заданий обработал каждый воркер?",
+    "sql": "SELECT WORKER, COUNT(*) AS job_count\nFROM JOB\nWHERE WORKER IS NOT NULL\nGROUP BY WORKER\nORDER BY job_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.631,
+    "cost": 0.039236400000000005,
+    "turns": 3
+   },
+   {
+    "q": "Какие экземпляры процессов были запущены за последние 7 дней?",
+    "sql": "SELECT PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, START_DATE\nFROM PROCESS_INSTANCE\nWHERE START_DATE >= NOW() - INTERVAL '7 days'\nORDER BY START_DATE DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.7,
+    "cost": 0.022598800000000002,
+    "turns": 3
+   },
+   {
+    "q": "Средняя длительность завершённых экземпляров процессов в часах",
+    "sql": "SELECT AVG(EXTRACT(EPOCH FROM (END_DATE - START_DATE)) / 3600) AS avg_duration_hours\nFROM PROCESS_INSTANCE\nWHERE STATE = 'COMPLETED' AND END_DATE IS NOT NULL",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.4,
+    "cost": 0.022609999999999998,
+    "turns": 3
+   },
+   {
+    "q": "Сколько экземпляров запущено по каждому процессу (по идентификатору процесса)?",
+    "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS instance_count\nFROM PROCESS_INSTANCE\nGROUP BY PROCESS_DEFINITION_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.242,
+    "cost": 0.0212456,
+    "turns": 3
+   },
+   {
+    "q": "Выведи имена процессов и число активных экземпляров по каждому определению процесса",
+    "sql": "SELECT pd.NAME, COUNT(pi.PROCESS_INSTANCE_KEY) AS active_instances\nFROM PROCESS_DEFINITION pd\nJOIN PROCESS_INSTANCE pi ON pi.PROCESS_DEFINITION_KEY = pd.PROCESS_DEFINITION_KEY\nWHERE pi.STATE = 'ACTIVE'\nGROUP BY pd.PROCESS_DEFINITION_KEY, pd.NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.672,
+    "cost": 0.0601024,
+    "turns": 4
+   },
+   {
+    "q": "Какие экземпляры процессов имеют активные инциденты?",
+    "sql": "SELECT pi.PROCESS_INSTANCE_KEY, pi.PROCESS_DEFINITION_ID, pi.STATE\nFROM PROCESS_INSTANCE pi\nWHERE EXISTS (\n  SELECT 1 FROM INCIDENT i\n  WHERE i.PROCESS_INSTANCE_KEY = pi.PROCESS_INSTANCE_KEY\n    AND i.STATE = 'ACTIVE'\n)",
+    "ok": true,
+    "error": null,
+    "tables_ok": false,
+    "sec": 6.43,
+    "cost": 0.06063199999999999,
+    "turns": 4
+   },
+   {
+    "q": "Покажи переменные экземпляра процесса 21299",
+    "sql": "SELECT VAR_NAME, TYPE, VAR_VALUE\nFROM VARIABLE\nWHERE PROCESS_INSTANCE_KEY = 21299\nORDER BY VAR_NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.458,
+    "cost": 0.044204,
+    "turns": 3
+   },
+   {
+    "q": "Сколько переменных каждого типа?",
+    "sql": "SELECT TYPE, COUNT(*) AS variable_count\nFROM VARIABLE\nGROUP BY TYPE\nORDER BY variable_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.682,
+    "cost": 0.028014199999999996,
+    "turns": 3
+   },
+   {
+    "q": "Какие шаги процесса сейчас выполняются (активные элементы)?",
+    "sql": "SELECT FLOW_NODE_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_NAME, TYPE, PROCESS_INSTANCE_KEY, START_DATE\nFROM FLOW_NODE_INSTANCE\nWHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.891,
+    "cost": 0.051612000000000005,
+    "turns": 3
+   },
+   {
+    "q": "Сколько раз выполнялся каждый тип элемента BPMN?",
+    "sql": "SELECT TYPE, COUNT(*) AS executions\nFROM FLOW_NODE_INSTANCE\nGROUP BY TYPE\nORDER BY executions DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.923,
+    "cost": 0.052508599999999996,
+    "turns": 3
+   },
+   {
+    "q": "Сколько вычислений решений завершились ошибкой?",
+    "sql": "SELECT COUNT(*) FROM DECISION_INSTANCE WHERE STATE = 'FAILED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.989,
+    "cost": 0.035603,
+    "turns": 3
+   },
+   {
+    "q": "Сколько раз вычислялось каждое DMN-решение? Выведи имя решения",
+    "sql": "SELECT dd.NAME, COUNT(di.DECISION_INSTANCE_KEY) AS evaluation_count\nFROM DECISION_DEFINITION dd\nLEFT JOIN DECISION_INSTANCE di ON di.DECISION_DEFINITION_KEY = dd.DECISION_DEFINITION_KEY\nGROUP BY dd.DECISION_DEFINITION_KEY, dd.NAME\nORDER BY evaluation_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.202,
+    "cost": 0.0486062,
+    "turns": 3
+   },
+   {
+    "q": "Список пользователей с email",
+    "sql": "SELECT USERNAME, NAME, EMAIL FROM USER_ ORDER BY USERNAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.561,
+    "cost": 0.030806,
+    "turns": 3
+   },
+   {
+    "q": "Сколько участников в каждой группе? Выведи название группы",
+    "sql": "SELECT g.NAME, COUNT(gm.ENTITY_ID) AS member_count\nFROM GROUP_ g\nLEFT JOIN GROUP_MEMBER gm ON gm.GROUP_ID = g.GROUP_ID\nGROUP BY g.GROUP_ID, g.NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.576,
+    "cost": 0.0255846,
+    "turns": 3
+   },
+   {
+    "q": "Какие тенанты есть в системе?",
+    "sql": "SELECT TENANT_ID, NAME FROM TENANT ORDER BY NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.495,
+    "cost": 0.023104799999999998,
+    "turns": 3
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом тенанте?",
+    "sql": "SELECT TENANT_ID, COUNT(*) AS process_instance_count\nFROM PROCESS_INSTANCE\nGROUP BY TENANT_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.697,
+    "cost": 0.020489599999999997,
+    "turns": 3
+   },
+   {
+    "q": "Покажи незавершённые пакетные операции",
+    "sql": "SELECT BATCH_OPERATION_KEY, OPERATION_TYPE, STATE, START_DATE,\n       OPERATIONS_TOTAL_COUNT, OPERATIONS_COMPLETED_COUNT, OPERATIONS_FAILED_COUNT\nFROM BATCH_OPERATION\nWHERE STATE IN ('CREATED', 'ACTIVE')\nORDER BY START_DATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.67,
+    "cost": 0.0507248,
+    "turns": 4
+   },
+   {
+    "q": "Какие пакетные операции имели упавшие элементы? Выведи тип операции и число ошибок",
+    "sql": "SELECT OPERATION_TYPE, OPERATIONS_FAILED_COUNT\nFROM BATCH_OPERATION\nWHERE OPERATIONS_FAILED_COUNT > 0\nORDER BY OPERATIONS_FAILED_COUNT DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 9.267,
+    "cost": 0.0384264,
+    "turns": 3
+   },
+   {
+    "q": "Кто выполнял операции по журналу аудита и сколько раз?",
+    "sql": "SELECT ACTOR_ID, COUNT(*) AS operation_count\nFROM AUDIT_LOG\nGROUP BY ACTOR_ID\nORDER BY operation_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.711,
+    "cost": 0.045353199999999996,
+    "turns": 3
+   },
+   {
+    "q": "Сколько неуспешных операций в журнале аудита?",
+    "sql": "SELECT COUNT(*) FROM AUDIT_LOG WHERE RESULT = 'FAIL'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.639,
+    "cost": 0.0407178,
+    "turns": 3
+   },
+   {
+    "q": "Какие подписки на сообщения ещё ожидают сообщения?",
+    "sql": "SELECT * FROM MESSAGE_SUBSCRIPTION WHERE MESSAGE_SUBSCRIPTION_STATE = 'CREATED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 9.725,
+    "cost": 0.033139,
+    "turns": 3
+   },
+   {
+    "q": "Сколько задач может взять каждая группа-кандидат?",
+    "sql": "SELECT CANDIDATE_GROUP, COUNT(DISTINCT USER_TASK_KEY) AS task_count\nFROM CANDIDATE_GROUP\nGROUP BY CANDIDATE_GROUP\nORDER BY task_count DESC",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.846,
+    "cost": 0.028683,
+    "turns": 3
+   },
+   {
+    "q": "Топ-5 процессов (по имени) по числу инцидентов",
+    "sql": "SELECT pd.NAME, COUNT(*) AS incident_count\nFROM INCIDENT i\nJOIN PROCESS_DEFINITION pd ON pd.PROCESS_DEFINITION_KEY = i.PROCESS_DEFINITION_KEY\nGROUP BY pd.NAME\nORDER BY incident_count DESC\nLIMIT 5",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.965,
+    "cost": 0.044837999999999996,
+    "turns": 3
+   },
+   {
+    "q": "Сколько пользовательских задач завершил каждый исполнитель за последние 30 дней?",
+    "sql": "SELECT ASSIGNEE, COUNT(*) AS completed_tasks\nFROM USER_TASK\nWHERE STATE = 'COMPLETED'\n  AND COMPLETION_DATE >= NOW() - INTERVAL '30 days'\nGROUP BY ASSIGNEE\nORDER BY completed_tasks DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.663,
+    "cost": 0.0333576,
+    "turns": 3
+   },
+   {
+    "q": "Какие формы используются в пользовательских задачах? Выведи идентификатор формы и число задач",
+    "sql": "SELECT f.FORM_ID, COUNT(*) AS task_count\nFROM USER_TASK ut\nJOIN FORM f ON ut.FORM_KEY = f.FORM_KEY\nGROUP BY f.FORM_ID\nORDER BY task_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.932,
+    "cost": 0.0306078,
+    "turns": 3
+   },
+   {
+    "q": "Сколько токенов (входных и выходных) потратил ИИ-агент в сумме по каждой модели?",
+    "sql": "SELECT MODEL, SUM(INPUT_TOKENS) AS input_tokens, SUM(OUTPUT_TOKENS) AS output_tokens\nFROM AGENT_INSTANCE\nGROUP BY MODEL",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.476,
+    "cost": 0.040259,
+    "turns": 3
+   },
+   {
+    "q": "Сколько упавших заданий по каждому типу задания по метрикам?",
+    "sql": "SELECT JOB_TYPE, SUM(FAILED_COUNT) AS failed_count\nFROM JOB_METRICS_BATCH\nGROUP BY JOB_TYPE\nORDER BY failed_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.893,
+    "cost": 0.0380044,
+    "turns": 3
+   },
+   {
+    "q": "Для активных инцидентов выведи ключ экземпляра процесса и дату его старта",
+    "sql": "SELECT i.process_instance_key, p.start_date\nFROM incident i\nJOIN process_instance p ON p.process_instance_key = i.process_instance_key\nWHERE i.state = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.716,
+    "cost": 0.0560554,
+    "turns": 3
+   },
+   {
+    "q": "Сколько инцидентов создано по каждому дню за последнюю неделю?",
+    "sql": "SELECT date_trunc('day', creation_date) AS day, COUNT(*) AS incident_count\nFROM incident\nWHERE creation_date >= now() - interval '7 days'\nGROUP BY 1\nORDER BY 1",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.182,
+    "cost": 0.035436,
+    "turns": 3
+   },
+   {
+    "q": "Какие права есть у пользователя demo?",
+    "sql": "SELECT RESOURCE_TYPE, RESOURCE_ID, PERMISSION_TYPE\nFROM AUTHORIZATIONS\nWHERE OWNER_TYPE = 'USER'\n  AND OWNER_ID = 'demo'",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 7.384,
+    "cost": 0.04536339999999999,
+    "turns": 5
+   },
+   {
+    "q": "Выведи развёрнутые ресурсы: имя файла и версию",
+    "sql": "SELECT RESOURCE_NAME, VERSION FROM DEPLOYED_RESOURCE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.914,
+    "cost": 0.024484200000000005,
+    "turns": 3
+   }
+  ]
+ },
+ "default | BAAI/bge-m3 hybrid": {
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "accuracy": 0.925,
+  "executes": 1.0,
+  "tables_ok": 0.975,
+  "avg_sec": 5.76,
+  "avg_turns": 3.1,
+  "total_cost_usd": 1.377,
+  "items": [
+   {
+    "q": "Сколько сейчас активных экземпляров процессов?",
+    "sql": "SELECT COUNT(*) FROM PROCESS_INSTANCE WHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.094,
+    "cost": 0.0324082,
+    "turns": 3
+   },
+   {
+    "q": "Покажи все версии процесса order-process",
+    "sql": "SELECT PROCESS_DEFINITION_KEY, VERSION, VERSION_TAG, NAME\nFROM PROCESS_DEFINITION\nWHERE PROCESS_DEFINITION_ID = 'order-process'\nORDER BY VERSION",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 11.782,
+    "cost": 0.0400214,
+    "turns": 3
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом состоянии?",
+    "sql": "SELECT STATE, COUNT(*) AS cnt\nFROM PROCESS_INSTANCE\nGROUP BY STATE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.688,
+    "cost": 0.032513,
+    "turns": 3
+   },
+   {
+    "q": "Список активных инцидентов с текстом ошибки",
+    "sql": "SELECT INCIDENT_KEY, ERROR_MESSAGE FROM INCIDENT WHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.194,
+    "cost": 0.04024799999999999,
+    "turns": 3
+   },
+   {
+    "q": "Сколько инцидентов каждого типа ошибки?",
+    "sql": "SELECT ERROR_TYPE, COUNT(*) AS incident_count\nFROM INCIDENT\nGROUP BY ERROR_TYPE\nORDER BY incident_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.302,
+    "cost": 0.041914,
+    "turns": 3
+   },
+   {
+    "q": "Какие пользовательские задачи не назначены ни на кого и ещё не выполнены?",
+    "sql": "SELECT USER_TASK_KEY, NAME FROM USER_TASK WHERE ASSIGNEE IS NULL AND STATE = 'CREATED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 8.861,
+    "cost": 0.032153,
+    "turns": 3
+   },
+   {
+    "q": "Сколько открытых задач у каждого исполнителя?",
+    "sql": "SELECT ASSIGNEE, COUNT(*) AS open_tasks\nFROM USER_TASK\nWHERE STATE = 'CREATED' AND ASSIGNEE IS NOT NULL\nGROUP BY ASSIGNEE\nORDER BY open_tasks DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.414,
+    "cost": 0.030009600000000004,
+    "turns": 3
+   },
+   {
+    "q": "Найди просроченные пользовательские задачи, которые ещё не завершены",
+    "sql": "SELECT USER_TASK_KEY, NAME, ASSIGNEE, DUE_DATE\nFROM USER_TASK\nWHERE STATE = 'CREATED'\n  AND DUE_DATE < NOW()",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.77,
+    "cost": 0.0309452,
+    "turns": 3
+   },
+   {
+    "q": "Сколько заданий упало без оставшихся повторов?",
+    "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'FAILED' AND RETRIES = 0",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.698,
+    "cost": 0.0360016,
+    "turns": 3
+   },
+   {
+    "q": "Сколько заданий обработал каждый воркер?",
+    "sql": "SELECT worker, COUNT(*) AS job_count FROM job GROUP BY worker ORDER BY job_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.761,
+    "cost": 0.0364438,
+    "turns": 3
+   },
+   {
+    "q": "Какие экземпляры процессов были запущены за последние 7 дней?",
+    "sql": "SELECT PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, STATE, START_DATE\nFROM PROCESS_INSTANCE\nWHERE START_DATE >= NOW() - INTERVAL '7 days'\nORDER BY START_DATE DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.128,
+    "cost": 0.0227998,
+    "turns": 3
+   },
+   {
+    "q": "Средняя длительность завершённых экземпляров процессов в часах",
+    "sql": "SELECT AVG(EXTRACT(EPOCH FROM (END_DATE - START_DATE)) / 3600) AS avg_duration_hours\nFROM PROCESS_INSTANCE\nWHERE STATE = 'COMPLETED'\n  AND END_DATE IS NOT NULL",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.166,
+    "cost": 0.022659000000000002,
+    "turns": 3
+   },
+   {
+    "q": "Сколько экземпляров запущено по каждому процессу (по идентификатору процесса)?",
+    "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS instance_count\nFROM PROCESS_INSTANCE\nGROUP BY PROCESS_DEFINITION_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 8.396,
+    "cost": 0.0212546,
+    "turns": 3
+   },
+   {
+    "q": "Выведи имена процессов и число активных экземпляров по каждому определению процесса",
+    "sql": "SELECT pd.NAME, COUNT(pi.PROCESS_INSTANCE_KEY) AS active_instances\nFROM PROCESS_DEFINITION pd\nLEFT JOIN PROCESS_INSTANCE pi\n  ON pi.PROCESS_DEFINITION_KEY = pd.PROCESS_DEFINITION_KEY\n AND pi.STATE = 'ACTIVE'\nGROUP BY pd.PROCESS_DEFINITION_KEY, pd.NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.862,
+    "cost": 0.05396840000000001,
+    "turns": 4
+   },
+   {
+    "q": "Какие экземпляры процессов имеют активные инциденты?",
+    "sql": "SELECT DISTINCT pi.PROCESS_INSTANCE_KEY, pi.PROCESS_DEFINITION_ID\nFROM PROCESS_INSTANCE pi\nJOIN INCIDENT i ON i.PROCESS_INSTANCE_KEY = pi.PROCESS_INSTANCE_KEY\nWHERE i.STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": false,
+    "sec": 5.474,
+    "cost": 0.0445942,
+    "turns": 3
+   },
+   {
+    "q": "Покажи переменные экземпляра процесса 21299",
+    "sql": "SELECT VAR_NAME, TYPE, VAR_VALUE\nFROM VARIABLE\nWHERE PROCESS_INSTANCE_KEY = 21299\nORDER BY VAR_NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 16.963,
+    "cost": 0.034312,
+    "turns": 4
+   },
+   {
+    "q": "Сколько переменных каждого типа?",
+    "sql": "SELECT TYPE, COUNT(*) AS variable_count\nFROM VARIABLE\nGROUP BY TYPE\nORDER BY variable_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.988,
+    "cost": 0.0279622,
+    "turns": 3
+   },
+   {
+    "q": "Какие шаги процесса сейчас выполняются (активные элементы)?",
+    "sql": "SELECT FLOW_NODE_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_NAME, TYPE, PROCESS_INSTANCE_KEY, START_DATE\nFROM FLOW_NODE_INSTANCE\nWHERE STATE = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.743,
+    "cost": 0.046865000000000004,
+    "turns": 3
+   },
+   {
+    "q": "Сколько раз выполнялся каждый тип элемента BPMN?",
+    "sql": "SELECT TYPE, COUNT(*) AS execution_count\nFROM FLOW_NODE_INSTANCE\nGROUP BY TYPE\nORDER BY execution_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.97,
+    "cost": 0.0440422,
+    "turns": 3
+   },
+   {
+    "q": "Сколько вычислений решений завершились ошибкой?",
+    "sql": "SELECT COUNT(*) FROM DECISION_INSTANCE WHERE STATE = 'FAILED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.732,
+    "cost": 0.0321188,
+    "turns": 3
+   },
+   {
+    "q": "Сколько раз вычислялось каждое DMN-решение? Выведи имя решения",
+    "sql": "SELECT dd.NAME, COUNT(di.DECISION_INSTANCE_KEY) AS evaluation_count\nFROM DECISION_DEFINITION dd\nLEFT JOIN DECISION_INSTANCE di ON di.DECISION_DEFINITION_KEY = dd.DECISION_DEFINITION_KEY\nGROUP BY dd.DECISION_DEFINITION_KEY, dd.NAME\nORDER BY evaluation_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.254,
+    "cost": 0.040601,
+    "turns": 3
+   },
+   {
+    "q": "Список пользователей с email",
+    "sql": "SELECT USERNAME, EMAIL FROM USER_ ORDER BY USERNAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.682,
+    "cost": 0.028170399999999998,
+    "turns": 3
+   },
+   {
+    "q": "Сколько участников в каждой группе? Выведи название группы",
+    "sql": "SELECT g.NAME, COUNT(gm.ENTITY_ID) AS member_count\nFROM GROUP_ g\nLEFT JOIN GROUP_MEMBER gm ON gm.GROUP_ID = g.GROUP_ID\nGROUP BY g.GROUP_ID, g.NAME",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.437,
+    "cost": 0.023646600000000004,
+    "turns": 3
+   },
+   {
+    "q": "Какие тенанты есть в системе?",
+    "sql": "SELECT TENANT_ID, NAME, DESCRIPTION FROM TENANT ORDER BY TENANT_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.794,
+    "cost": 0.0237378,
+    "turns": 3
+   },
+   {
+    "q": "Сколько экземпляров процессов в каждом тенанте?",
+    "sql": "SELECT TENANT_ID, COUNT(*) AS process_instance_count\nFROM PROCESS_INSTANCE\nGROUP BY TENANT_ID",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.589,
+    "cost": 0.020498600000000002,
+    "turns": 3
+   },
+   {
+    "q": "Покажи незавершённые пакетные операции",
+    "sql": "SELECT * FROM BATCH_OPERATION WHERE STATE IN ('CREATED', 'ACTIVE')",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.465,
+    "cost": 0.0373548,
+    "turns": 3
+   },
+   {
+    "q": "Какие пакетные операции имели упавшие элементы? Выведи тип операции и число ошибок",
+    "sql": "SELECT OPERATION_TYPE, OPERATIONS_FAILED_COUNT\nFROM BATCH_OPERATION\nWHERE OPERATIONS_FAILED_COUNT > 0",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.811,
+    "cost": 0.0331078,
+    "turns": 3
+   },
+   {
+    "q": "Кто выполнял операции по журналу аудита и сколько раз?",
+    "sql": "SELECT ACTOR_ID, COUNT(*) AS operation_count\nFROM AUDIT_LOG\nGROUP BY ACTOR_ID\nORDER BY operation_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.691,
+    "cost": 0.04287200000000001,
+    "turns": 3
+   },
+   {
+    "q": "Сколько неуспешных операций в журнале аудита?",
+    "sql": "SELECT COUNT(*) FROM AUDIT_LOG WHERE RESULT = 'FAIL'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 3.85,
+    "cost": 0.036019999999999996,
+    "turns": 3
+   },
+   {
+    "q": "Какие подписки на сообщения ещё ожидают сообщения?",
+    "sql": "SELECT MESSAGE_SUBSCRIPTION_KEY, MESSAGE_NAME, CORRELATION_KEY, PROCESS_INSTANCE_KEY, FLOW_NODE_ID\nFROM MESSAGE_SUBSCRIPTION\nWHERE MESSAGE_SUBSCRIPTION_STATE = 'CREATED'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.115,
+    "cost": 0.040604799999999996,
+    "turns": 3
+   },
+   {
+    "q": "Сколько задач может взять каждая группа-кандидат?",
+    "sql": "SELECT CANDIDATE_GROUP, COUNT(DISTINCT USER_TASK_KEY) AS task_count\nFROM CANDIDATE_GROUP\nGROUP BY CANDIDATE_GROUP",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.737,
+    "cost": 0.028056,
+    "turns": 3
+   },
+   {
+    "q": "Топ-5 процессов (по имени) по числу инцидентов",
+    "sql": "SELECT pd.NAME, COUNT(*) AS incident_count\nFROM INCIDENT i\nJOIN PROCESS_DEFINITION pd ON pd.PROCESS_DEFINITION_KEY = i.PROCESS_DEFINITION_KEY\nGROUP BY pd.NAME\nORDER BY incident_count DESC\nLIMIT 5",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 10.704,
+    "cost": 0.0509328,
+    "turns": 4
+   },
+   {
+    "q": "Сколько пользовательских задач завершил каждый исполнитель за последние 30 дней?",
+    "sql": "SELECT ASSIGNEE, COUNT(*) AS completed_tasks\nFROM USER_TASK\nWHERE STATE = 'COMPLETED'\n  AND COMPLETION_DATE >= NOW() - INTERVAL '30 days'\nGROUP BY ASSIGNEE\nORDER BY completed_tasks DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.823,
+    "cost": 0.0333748,
+    "turns": 3
+   },
+   {
+    "q": "Какие формы используются в пользовательских задачах? Выведи идентификатор формы и число задач",
+    "sql": "SELECT f.FORM_ID, COUNT(*) AS task_count\nFROM USER_TASK ut\nJOIN FORM f ON f.FORM_KEY = ut.FORM_KEY\nGROUP BY f.FORM_ID\nORDER BY task_count DESC",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.386,
+    "cost": 0.029470800000000002,
+    "turns": 3
+   },
+   {
+    "q": "Сколько токенов (входных и выходных) потратил ИИ-агент в сумме по каждой модели?",
+    "sql": "SELECT MODEL, SUM(INPUT_TOKENS) AS input_tokens, SUM(OUTPUT_TOKENS) AS output_tokens\nFROM AGENT_INSTANCE\nGROUP BY MODEL",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.556,
+    "cost": 0.0378326,
+    "turns": 3
+   },
+   {
+    "q": "Сколько упавших заданий по каждому типу задания по метрикам?",
+    "sql": "SELECT JOB_TYPE, SUM(FAILED_COUNT) AS failed_count FROM JOB_METRICS_BATCH GROUP BY JOB_TYPE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 5.421,
+    "cost": 0.031146600000000003,
+    "turns": 3
+   },
+   {
+    "q": "Для активных инцидентов выведи ключ экземпляра процесса и дату его старта",
+    "sql": "SELECT i.process_instance_key, pi.start_date\nFROM incident i\nJOIN process_instance pi ON pi.process_instance_key = i.process_instance_key\nWHERE i.state = 'ACTIVE'",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.196,
+    "cost": 0.0486828,
+    "turns": 3
+   },
+   {
+    "q": "Сколько инцидентов создано по каждому дню за последнюю неделю?",
+    "sql": "SELECT DATE_TRUNC('day', CREATION_DATE) AS day, COUNT(*) AS incident_count\nFROM INCIDENT\nWHERE CREATION_DATE >= NOW() - INTERVAL '7 days'\nGROUP BY DATE_TRUNC('day', CREATION_DATE)\nORDER BY day",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 4.871,
+    "cost": 0.02348,
+    "turns": 3
+   },
+   {
+    "q": "Какие права есть у пользователя demo?",
+    "sql": "SELECT RESOURCE_TYPE, RESOURCE_ID, PERMISSION_TYPE\nFROM AUTHORIZATIONS\nWHERE OWNER_ID = 'demo' AND OWNER_TYPE = 'USER'",
+    "ok": false,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.013,
+    "cost": 0.0401066,
+    "turns": 4
+   },
+   {
+    "q": "Выведи развёрнутые ресурсы: имя файла и версию",
+    "sql": "SELECT RESOURCE_NAME, VERSION FROM DEPLOYED_RESOURCE",
+    "ok": true,
+    "error": null,
+    "tables_ok": true,
+    "sec": 6.11,
+    "cost": 0.0244932,
+    "turns": 3
+   }
+  ]
+ }
+}

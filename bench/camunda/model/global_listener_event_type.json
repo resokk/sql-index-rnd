@@ -1,0 +1,22 @@
+{
+  "table": "GLOBAL_LISTENER_EVENT_TYPE",
+  "entity": "Событие глобального слушателя",
+  "description": "Типы событий глобального слушателя",
+  "columns": [
+    {
+      "name": "GLOBAL_LISTENER_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "EVENT_TYPE",
+      "type": "VARCHAR(50)",
+      "description": "тип события"
+    }
+  ],
+  "relations": [
+    {
+      "table": "GLOBAL_LISTENER",
+      "on": "GLOBAL_LISTENER_EVENT_TYPE.GLOBAL_LISTENER_ID = GLOBAL_LISTENER.ID"
+    }
+  ]
+}

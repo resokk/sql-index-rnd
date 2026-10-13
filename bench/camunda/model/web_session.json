@@ -1,0 +1,29 @@
+{
+  "table": "WEB_SESSION",
+  "entity": "Веб-сессия",
+  "description": "Сессии пользователей веб-приложения",
+  "columns": [
+    {
+      "name": "SESSION_ID",
+      "type": "VARCHAR(255)"
+    },
+    {
+      "name": "CREATION_TIME",
+      "type": "BIGINT",
+      "description": "время создания"
+    },
+    {
+      "name": "LAST_ACCESSED_TIME",
+      "type": "BIGINT"
+    },
+    {
+      "name": "MAX_INACTIVE_INTERVAL_IN_SECONDS",
+      "type": "BIGINT"
+    },
+    {
+      "name": "ATTRIBUTES",
+      "type": "BYTEA"
+    }
+  ],
+  "relations": []
+}

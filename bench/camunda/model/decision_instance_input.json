@@ -1,0 +1,34 @@
+{
+  "table": "DECISION_INSTANCE_INPUT",
+  "entity": "Вход вычисления решения",
+  "description": "Входные значения вычисления решения",
+  "columns": [
+    {
+      "name": "DECISION_INSTANCE_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор вычисления решения"
+    },
+    {
+      "name": "INPUT_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "INPUT_NAME",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "INPUT_VALUE",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "FULL_INPUT_VALUE",
+      "type": "TEXT"
+    }
+  ],
+  "relations": [
+    {
+      "table": "DECISION_INSTANCE",
+      "on": "DECISION_INSTANCE_INPUT.DECISION_INSTANCE_ID = DECISION_INSTANCE.DECISION_INSTANCE_ID"
+    }
+  ]
+}

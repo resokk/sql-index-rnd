@@ -1,0 +1,34 @@
+{
+  "table": "ROLE_MEMBER",
+  "entity": "Участник роли",
+  "description": "Кому назначена роль",
+  "columns": [
+    {
+      "name": "ROLE_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор роли"
+    },
+    {
+      "name": "ENTITY_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор участника"
+    },
+    {
+      "name": "ENTITY_TYPE",
+      "type": "VARCHAR(255)",
+      "description": "тип сущности",
+      "values": [
+        "USER",
+        "GROUP",
+        "CLIENT",
+        "MAPPING_RULE"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "table": "ROLES",
+      "on": "ROLE_MEMBER.ROLE_ID = ROLES.ROLE_ID"
+    }
+  ]
+}

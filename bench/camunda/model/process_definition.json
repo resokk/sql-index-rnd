@@ -1,0 +1,65 @@
+{
+  "table": "PROCESS_DEFINITION",
+  "entity": "Определение процесса",
+  "description": "Развёрнутая BPMN-модель процесса: версия, имя, XML",
+  "columns": [
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "NAME",
+      "type": "VARCHAR(256)",
+      "description": "наименование"
+    },
+    {
+      "name": "RESOURCE_NAME",
+      "type": "VARCHAR(256)",
+      "description": "имя файла ресурса"
+    },
+    {
+      "name": "BPMN_XML",
+      "type": "TEXT"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "VERSION",
+      "type": "SMALLINT",
+      "description": "номер версии"
+    },
+    {
+      "name": "VERSION_TAG",
+      "type": "VARCHAR(256)",
+      "description": "метка версии"
+    },
+    {
+      "name": "FORM_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "STATE",
+      "type": "VARCHAR(20)",
+      "description": "состояние",
+      "values": [
+        "ACTIVE",
+        "DELETED"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "table": "TENANT",
+      "on": "PROCESS_DEFINITION.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

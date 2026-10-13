@@ -1,0 +1,14 @@
+[project]
+name = "text-to-sql"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp>=2.3.0",
+    "sentence-transformers>=6.1.0",
+    "sqlglot>=27",
+]
+
+[dependency-groups]
+dev = [
+    "peft>=0.21.2",
+]

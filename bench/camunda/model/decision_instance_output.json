@@ -1,0 +1,42 @@
+{
+  "table": "DECISION_INSTANCE_OUTPUT",
+  "entity": "Выход вычисления решения",
+  "description": "Выходные значения и сработавшие правила решения",
+  "columns": [
+    {
+      "name": "DECISION_INSTANCE_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор вычисления решения"
+    },
+    {
+      "name": "OUTPUT_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "RULE_INDEX",
+      "type": "SMALLINT"
+    },
+    {
+      "name": "OUTPUT_NAME",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "OUTPUT_VALUE",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "RULE_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "FULL_OUTPUT_VALUE",
+      "type": "TEXT"
+    }
+  ],
+  "relations": [
+    {
+      "table": "DECISION_INSTANCE",
+      "on": "DECISION_INSTANCE_OUTPUT.DECISION_INSTANCE_ID = DECISION_INSTANCE.DECISION_INSTANCE_ID"
+    }
+  ]
+}

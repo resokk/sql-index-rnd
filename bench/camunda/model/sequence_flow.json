@@ -1,0 +1,60 @@
+{
+  "table": "SEQUENCE_FLOW",
+  "entity": "Пройденный переход",
+  "description": "Пройденные стрелки (sequence flow) в экземпляре процесса",
+  "columns": [
+    {
+      "name": "FLOW_NODE_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор элемента BPMN"
+    },
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    }
+  ],
+  "relations": [
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "SEQUENCE_FLOW.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "SEQUENCE_FLOW.ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "SEQUENCE_FLOW.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "SEQUENCE_FLOW.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

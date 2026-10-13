@@ -1,0 +1,23 @@
+{
+  "table": "PROCESS_INSTANCE_TAG",
+  "entity": "Тег экземпляра процесса",
+  "description": "Метки, присвоенные экземплярам процессов",
+  "columns": [
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "TAG_VALUE",
+      "type": "VARCHAR(256)",
+      "description": "значение тега"
+    }
+  ],
+  "relations": [
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "PROCESS_INSTANCE_TAG.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    }
+  ]
+}

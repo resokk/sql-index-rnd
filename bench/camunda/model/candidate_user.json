@@ -1,0 +1,23 @@
+{
+  "table": "CANDIDATE_USER",
+  "entity": "Кандидат-пользователь задачи",
+  "description": "Пользователи, которые могут взять задачу",
+  "columns": [
+    {
+      "name": "USER_TASK_KEY",
+      "type": "BIGINT",
+      "description": "ключ пользовательской задачи"
+    },
+    {
+      "name": "CANDIDATE_USER",
+      "type": "VARCHAR(256)",
+      "description": "пользователь-кандидат"
+    }
+  ],
+  "relations": [
+    {
+      "table": "USER_TASK",
+      "on": "CANDIDATE_USER.USER_TASK_KEY = USER_TASK.USER_TASK_KEY"
+    }
+  ]
+}

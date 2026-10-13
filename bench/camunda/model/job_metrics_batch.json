@@ -1,0 +1,78 @@
+{
+  "table": "JOB_METRICS_BATCH",
+  "entity": "Метрики заданий",
+  "description": "Счётчики созданных, завершённых и упавших заданий по типу и воркеру",
+  "columns": [
+    {
+      "name": "JOB_METRICS_BATCH_KEY",
+      "type": "VARCHAR(255)"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    },
+    {
+      "name": "START_TIME",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "начало периода"
+    },
+    {
+      "name": "END_TIME",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "время окончания"
+    },
+    {
+      "name": "INCOMPLETE_BATCH",
+      "type": "BOOLEAN"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "FAILED_COUNT",
+      "type": "INT",
+      "description": "число упавших"
+    },
+    {
+      "name": "LAST_FAILED_AT",
+      "type": "TIMESTAMP(3) WITH TIME ZONE"
+    },
+    {
+      "name": "COMPLETED_COUNT",
+      "type": "INT",
+      "description": "число завершённых"
+    },
+    {
+      "name": "LAST_COMPLETED_AT",
+      "type": "TIMESTAMP(3) WITH TIME ZONE"
+    },
+    {
+      "name": "CREATED_COUNT",
+      "type": "INT",
+      "description": "число созданных"
+    },
+    {
+      "name": "LAST_CREATED_AT",
+      "type": "TIMESTAMP(3) WITH TIME ZONE"
+    },
+    {
+      "name": "JOB_TYPE",
+      "type": "VARCHAR(256)",
+      "description": "тип задания"
+    },
+    {
+      "name": "WORKER",
+      "type": "VARCHAR(256)",
+      "description": "имя воркера"
+    }
+  ],
+  "relations": [
+    {
+      "table": "TENANT",
+      "on": "JOB_METRICS_BATCH.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

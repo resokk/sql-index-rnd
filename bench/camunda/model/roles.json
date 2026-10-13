@@ -1,0 +1,27 @@
+{
+  "table": "ROLES",
+  "entity": "Роль",
+  "description": "Роль доступа",
+  "columns": [
+    {
+      "name": "ROLE_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор роли"
+    },
+    {
+      "name": "ROLE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "NAME",
+      "type": "VARCHAR(256)",
+      "description": "наименование"
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "description": "описание"
+    }
+  ],
+  "relations": []
+}

@@ -1,0 +1,29 @@
+{
+  "table": "EXPORTER_POSITION",
+  "entity": "Позиция экспортёра",
+  "description": "Последняя выгруженная позиция журнала по каждой партиции",
+  "columns": [
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    },
+    {
+      "name": "EXPORTER",
+      "type": "VARCHAR(200)"
+    },
+    {
+      "name": "LAST_EXPORTED_POSITION",
+      "type": "BIGINT"
+    },
+    {
+      "name": "CREATED",
+      "type": "TIMESTAMP"
+    },
+    {
+      "name": "LAST_UPDATED",
+      "type": "TIMESTAMP"
+    }
+  ],
+  "relations": []
+}

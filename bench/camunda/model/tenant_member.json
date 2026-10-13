@@ -1,0 +1,35 @@
+{
+  "table": "TENANT_MEMBER",
+  "entity": "Участник тенанта",
+  "description": "Пользователи, группы и др., входящие в тенант",
+  "columns": [
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "ENTITY_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор участника"
+    },
+    {
+      "name": "ENTITY_TYPE",
+      "type": "VARCHAR(255)",
+      "description": "тип сущности",
+      "values": [
+        "USER",
+        "GROUP",
+        "ROLE",
+        "CLIENT",
+        "MAPPING_RULE"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "table": "TENANT",
+      "on": "TENANT_MEMBER.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

@@ -1,0 +1,1942 @@
+[
+ {
+  "id": "AgentDefinitionMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO AGENT_DEFINITION ( AGENT_DEFINITION_KEY, AGENT_TYPE, NAME, ELEMENT_ID, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_VERSION, PROCESS_DEFINITION_VERSION_TAG, TENANT_ID ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+ },
+ {
+  "id": "AgentDefinitionMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT AGENT_DEFINITION_KEY, AGENT_TYPE, NAME, ELEMENT_ID, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_VERSION, PROCESS_DEFINITION_VERSION_TAG, TENANT_ID FROM AGENT_DEFINITION ) t"
+ },
+ {
+  "id": "AgentDefinitionMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM AGENT_DEFINITION ) t"
+ },
+ {
+  "id": "AgentDefinitionMapper.deleteByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM AGENT_DEFINITION WHERE PROCESS_DEFINITION_KEY IN LIMIT ?"
+ },
+ {
+  "id": "AgentDefinitionMapper.deleteByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE TOP (?) FROM AGENT_DEFINITION WHERE PROCESS_DEFINITION_KEY IN"
+ },
+ {
+  "id": "AgentDefinitionMapper.deleteByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM AGENT_DEFINITION WHERE rowid IN (SELECT rowid FROM AGENT_DEFINITION WHERE PROCESS_DEFINITION_KEY IN AND ROWNUM <= ?)"
+ },
+ {
+  "id": "AgentDefinitionMapper.deleteByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM AGENT_DEFINITION WHERE ctid IN (SELECT ctid FROM AGENT_DEFINITION WHERE PROCESS_DEFINITION_KEY IN LIMIT ?)"
+ },
+ {
+  "id": "AgentHistoryMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO AGENT_HISTORY ( AGENT_HISTORY_KEY, AGENT_INSTANCE_KEY, ELEMENT_INSTANCE_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, TENANT_ID, PARTITION_ID, JOB_KEY, JOB_LEASE_TOKEN, LOOP_ITERATION, ROLE, COMMIT_STATUS, PRODUCED_AT, INPUT_TOKENS, OUTPUT_TOKENS, REASONING_TOKEN_COUNT, CACHE_CREATION_TOKEN_COUNT, CACHE_READ_TOKEN_COUNT, DURATION_MS, CONTENT, TOOL_CALLS, HISTORY_ITEM_ID, TOOLS, MODEL, PROVIDER, MAX_TOKENS, MAX_MODEL_CALLS, MAX_TOOL_CALLS, SYSTEM_PROMPT ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+ },
+ {
+  "id": "AgentHistoryMapper.updateCommitStatus",
+  "kind": "update",
+  "sql": "UPDATE AGENT_HISTORY SET COMMIT_STATUS = ? WHERE AGENT_HISTORY_KEY = ?"
+ },
+ {
+  "id": "AgentHistoryMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "AgentHistoryMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "AgentHistoryMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT * FROM ( SELECT ah.AGENT_HISTORY_KEY, ah.AGENT_INSTANCE_KEY, ah.ELEMENT_INSTANCE_KEY, ah.PROCESS_INSTANCE_KEY, ah.ROOT_PROCESS_INSTANCE_KEY, ah.PROCESS_DEFINITION_ID, ah.PROCESS_DEFINITION_KEY, ah.TENANT_ID, ah.PARTITION_ID, ah.JOB_KEY, ah.JOB_LEASE_TOKEN, ah.LOOP_ITERATION, ah.ROLE, ah.COMMIT_STATUS, ah.PRODUCED_AT, ah.INPUT_TOKENS, ah.OUTPUT_TOKENS, ah.REASONING_TOKEN_COUNT, ah.CACHE_CREATION_TOKEN_COUNT, ah.CACHE_READ_TOKEN_COUNT, ah.DURATION_MS, ah.CONTENT, ah.TOOL_CALLS, ah.HISTORY_ITEM_ID, ah.TOOLS, ah.MODEL, ah.PROVIDER, ah.MAX_TOKENS, ah.MAX_MODEL_CALLS, ah.MAX_TOOL_CALLS, ah.SYSTEM_PROMPT FROM AGENT_HISTORY ah ) filtered ) sorted"
+ },
+ {
+  "id": "AgentHistoryMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM AGENT_HISTORY ah ) t"
+ },
+ {
+  "id": "AgentInstanceMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO AGENT_INSTANCE ( AGENT_INSTANCE_KEY, AGENT_DEFINITION_KEY, ELEMENT_ID, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_VERSION, PROCESS_DEFINITION_VERSION_TAG, TENANT_ID, PARTITION_ID, STATUS, MODEL, PROVIDER, SYSTEM_PROMPT, MAX_TOKENS, MAX_MODEL_CALLS, MAX_TOOL_CALLS, INPUT_TOKENS, OUTPUT_TOKENS, REASONING_TOKEN_COUNT, CACHE_CREATION_TOKEN_COUNT, CACHE_READ_TOKEN_COUNT, MODEL_CALLS, TOOL_CALLS, TOOLS, CREATION_DATE, LAST_UPDATED_DATE, COMPLETION_DATE ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+ },
+ {
+  "id": "AgentInstanceMapper.update",
+  "kind": "update",
+  "sql": "UPDATE AGENT_INSTANCE SET AGENT_DEFINITION_KEY = ?, PROCESS_DEFINITION_ID = ?, PROCESS_DEFINITION_KEY = ?, PROCESS_DEFINITION_VERSION = ?, PROCESS_DEFINITION_VERSION_TAG = ?, ELEMENT_ID = ?, STATUS = ?, MODEL = ?, PROVIDER = ?, MAX_TOKENS = ?, MAX_MODEL_CALLS = ?, MAX_TOOL_CALLS = ?, INPUT_TOKENS = ?, OUTPUT_TOKENS = ?, REASONING_TOKEN_COUNT = ?, CACHE_CREATION_TOKEN_COUNT = ?, CACHE_READ_TOKEN_COUNT = ?, MODEL_CALLS = ?, TOOL_CALLS = ?, LAST_UPDATED_DATE = ? WHERE AGENT_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "AgentInstanceMapper.deleteElementInstanceKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM AGENT_INSTANCE_ELEMENT_INSTANCE WHERE AGENT_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "AgentInstanceMapper.insertElementInstanceKeys",
+  "kind": "insert",
+  "sql": "INSERT INTO AGENT_INSTANCE_ELEMENT_INSTANCE (AGENT_INSTANCE_KEY, ELEMENT_INSTANCE_KEY) VALUES"
+ },
+ {
+  "id": "AgentInstanceMapper.insertElementInstanceKeys",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "AgentInstanceMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "AgentInstanceMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "AgentInstanceMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT ai.*, eik.ELEMENT_INSTANCE_KEY FROM ( SELECT * FROM ( SELECT ai.AGENT_INSTANCE_KEY, ai.AGENT_DEFINITION_KEY, ai.ELEMENT_ID, ai.PROCESS_INSTANCE_KEY, ai.ROOT_PROCESS_INSTANCE_KEY, ai.PROCESS_DEFINITION_ID, ai.PROCESS_DEFINITION_KEY, ai.PROCESS_DEFINITION_VERSION, ai.PROCESS_DEFINITION_VERSION_TAG, ai.TENANT_ID, ai.PARTITION_ID, ai.STATUS, ai.MODEL, ai.PROVIDER, ai.SYSTEM_PROMPT, ai.MAX_TOKENS, ai.MAX_MODEL_CALLS, ai.MAX_TOOL_CALLS, ai.INPUT_TOKENS, ai.OUTPUT_TOKENS, ai.REASONING_TOKEN_COUNT, ai.CACHE_CREATION_TOKEN_COUNT, ai.CACHE_READ_TOKEN_COUNT, ai.MODEL_CALLS, ai.TOOL_CALLS, ai.TOOLS, ai.CREATION_DATE, ai.LAST_UPDATED_DATE, ai.COMPLETION_DATE FROM AGENT_INSTANCE ai ) filtered ) ai LEFT JOIN AGENT_INSTANCE_ELEMENT_INSTANCE eik ON eik.AGENT_INSTANCE_KEY = ai.AGENT_INSTANCE_KEY ) sorted"
+ },
+ {
+  "id": "AgentInstanceMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM AGENT_INSTANCE ai ) t"
+ },
+ {
+  "id": "AuditLogMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM AUDIT_LOG ) t"
+ },
+ {
+  "id": "AuditLogMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT AUDIT_LOG_KEY, ENTITY_KEY, ENTITY_TYPE, OPERATION_TYPE, ENTITY_VERSION, ENTITY_VALUE_TYPE, ENTITY_OPERATION_INTENT, BATCH_OPERATION_KEY, BATCH_OPERATION_TYPE, TIMESTAMP, ACTOR_TYPE, ACTOR_ID, AGENT_ELEMENT_ID, TENANT_ID, TENANT_SCOPE, RESULT, CATEGORY, PROCESS_DEFINITION_ID, DECISION_REQUIREMENTS_ID, DECISION_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, ELEMENT_INSTANCE_KEY, JOB_KEY, USER_TASK_KEY, DECISION_REQUIREMENTS_KEY, DECISION_DEFINITION_KEY, DECISION_EVALUATION_KEY, DEPLOYMENT_KEY, FORM_KEY, RESOURCE_KEY, RELATED_ENTITY_TYPE, RELATED_ENTITY_KEY, ENTITY_DESCRIPTION, PARTITION_ID, HISTORY_CLEANUP_DATE, INBOUND_CHANNEL_TYPE, INBOUND_CHANNEL_TOOL_NAME FROM AUDIT_LOG ) t"
+ },
+ {
+  "id": "AuditLogMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO AUDIT_LOG ( AUDIT_LOG_KEY, ENTITY_KEY, ENTITY_TYPE, OPERATION_TYPE, ENTITY_VERSION, ENTITY_VALUE_TYPE, ENTITY_OPERATION_INTENT, BATCH_OPERATION_KEY, BATCH_OPERATION_TYPE, TIMESTAMP, ACTOR_TYPE, ACTOR_ID, AGENT_ELEMENT_ID, TENANT_ID, TENANT_SCOPE, RESULT, CATEGORY, PROCESS_DEFINITION_ID, DECISION_REQUIREMENTS_ID, DECISION_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, ELEMENT_INSTANCE_KEY, JOB_KEY, USER_TASK_KEY, DECISION_REQUIREMENTS_KEY, DECISION_DEFINITION_KEY, DECISION_EVALUATION_KEY, DEPLOYMENT_KEY, FORM_KEY, RESOURCE_KEY, RELATED_ENTITY_TYPE, RELATED_ENTITY_KEY, ENTITY_DESCRIPTION, PARTITION_ID, HISTORY_CLEANUP_DATE, INBOUND_CHANNEL_TYPE, INBOUND_CHANNEL_TOOL_NAME ) VALUES"
+ },
+ {
+  "id": "AuditLogMapper.updateAuditLogEntityHistoryCleanupDate",
+  "kind": "update",
+  "sql": "UPDATE AUDIT_LOG SET HISTORY_CLEANUP_DATE = ? WHERE ENTITY_KEY IN AND ENTITY_TYPE = ?"
+ },
+ {
+  "id": "AuditLogMapper.updateUnsetAuditLogEntityHistoryCleanupDates",
+  "kind": "update",
+  "sql": "UPDATE AUDIT_LOG SET HISTORY_CLEANUP_DATE = ? WHERE AND HISTORY_CLEANUP_DATE IS NULL LIMIT ?"
+ },
+ {
+  "id": "AuditLogMapper.updateUnsetAuditLogEntityHistoryCleanupDates",
+  "kind": "update",
+  "sql": "UPDATE TOP (?) AUDIT_LOG SET HISTORY_CLEANUP_DATE = ? WHERE AND HISTORY_CLEANUP_DATE IS NULL"
+ },
+ {
+  "id": "AuditLogMapper.updateUnsetAuditLogEntityHistoryCleanupDates",
+  "kind": "update",
+  "sql": "UPDATE AUDIT_LOG t SET t.HISTORY_CLEANUP_DATE = ? WHERE t.HISTORY_CLEANUP_DATE IS NULL AND IN (SELECT COLUMN_VALUE FROM XMLTABLE('/d/r' PASSING XMLTYPE(?) COLUMNS COLUMN_VALUE NUMBER PATH 'text()')) AND ROWNUM <= ?"
+ },
+ {
+  "id": "AuditLogMapper.updateUnsetAuditLogEntityHistoryCleanupDates",
+  "kind": "update",
+  "sql": "UPDATE AUDIT_LOG t SET HISTORY_CLEANUP_DATE = ? FROM ( SELECT AUDIT_LOG_KEY FROM AUDIT_LOG WHERE HISTORY_CLEANUP_DATE IS NULL AND = ANY(?) LIMIT ? ) sub WHERE t.AUDIT_LOG_KEY = sub.AUDIT_LOG_KEY"
+ },
+ {
+  "id": "AuditLogMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "AuditLogMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "AuditLogMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "AuditLogMapper.deleteProcessDefinitionRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM AUDIT_LOG WHERE PROCESS_DEFINITION_KEY IN LIMIT ?"
+ },
+ {
+  "id": "AuditLogMapper.deleteProcessDefinitionRelatedData",
+  "kind": "delete",
+  "sql": "DELETE TOP (?) FROM AUDIT_LOG WHERE PROCESS_DEFINITION_KEY IN"
+ },
+ {
+  "id": "AuditLogMapper.deleteProcessDefinitionRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM AUDIT_LOG WHERE rowid IN (SELECT rowid FROM AUDIT_LOG WHERE PROCESS_DEFINITION_KEY IN AND ROWNUM <= ?)"
+ },
+ {
+  "id": "AuditLogMapper.deleteProcessDefinitionRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM AUDIT_LOG WHERE ctid IN (SELECT ctid FROM AUDIT_LOG WHERE PROCESS_DEFINITION_KEY IN LIMIT ?)"
+ },
+ {
+  "id": "AuditLogMapper.cleanupHistory",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE PARTITION_ID = ? AND HISTORY_CLEANUP_DATE < ? LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "AuthorizationMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT DISTINCT AUTHORIZATION_KEY, OWNER_ID, OWNER_TYPE, RESOURCE_TYPE, RESOURCE_MATCHER, RESOURCE_ID, RESOURCE_PROPERTY_NAME, 1 as col FROM AUTHORIZATIONS a ) t"
+ },
+ {
+  "id": "AuthorizationMapper.search",
+  "kind": "select",
+  "sql": "SELECT t.AUTHORIZATION_KEY, t.OWNER_ID, t.OWNER_TYPE, t.RESOURCE_TYPE, a.PERMISSION_TYPE, a.RESOURCE_MATCHER, a.RESOURCE_ID, a.RESOURCE_PROPERTY_NAME FROM ( SELECT * FROM ( SELECT DISTINCT AUTHORIZATION_KEY, OWNER_ID, OWNER_TYPE, RESOURCE_TYPE, RESOURCE_MATCHER, RESOURCE_ID, RESOURCE_PROPERTY_NAME FROM AUTHORIZATIONS ) t ) t JOIN AUTHORIZATIONS a ON t.AUTHORIZATION_KEY = a.AUTHORIZATION_KEY AND (t.OWNER_ID = a.OWNER_ID OR (t.OWNER_ID IS NULL AND a.OWNER_ID IS NULL)) AND (t.OWNER_TYPE = a.OWNER_TYPE OR (t.OWNER_TYPE IS NULL AND a.OWNER_TYPE IS NULL)) AND (t.RESOURCE_TYPE = a.RESOURCE_TYPE OR (t.RESOURCE_TYPE IS NULL AND a.RESOURCE_TYPE IS NULL)) AND (t.RESOURCE_ID = a.RESOURCE_ID OR (t.RESOURCE_ID IS NULL AND a.RESOURCE_ID IS NULL)) AND (t.RESOURCE_PROPERTY_NAME = a.RESOURCE_PROPERTY_NAME OR (t.RESOURCE_PROPERTY_NAME IS NULL AND a.RESOURCE_PROPERTY_NAME IS NULL))"
+ },
+ {
+  "id": "AuthorizationMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO AUTHORIZATIONS (AUTHORIZATION_KEY, OWNER_ID, OWNER_TYPE, RESOURCE_TYPE, RESOURCE_MATCHER, RESOURCE_ID, RESOURCE_PROPERTY_NAME, PERMISSION_TYPE) VALUES"
+ },
+ {
+  "id": "AuthorizationMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "AuthorizationMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM AUTHORIZATIONS WHERE AUTHORIZATION_KEY = ?"
+ },
+ {
+  "id": "BatchOperationMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO BATCH_OPERATION (BATCH_OPERATION_KEY, STATE, OPERATION_TYPE, START_DATE, END_DATE, ACTOR_TYPE, ACTOR_ID, OPERATIONS_TOTAL_COUNT, OPERATIONS_FAILED_COUNT, OPERATIONS_COMPLETED_COUNT) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (BATCH_OPERATION_KEY) DO NOTHING"
+ },
+ {
+  "id": "BatchOperationMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO BATCH_OPERATION (BATCH_OPERATION_KEY, STATE, OPERATION_TYPE, START_DATE, END_DATE, ACTOR_TYPE, ACTOR_ID, OPERATIONS_TOTAL_COUNT, OPERATIONS_FAILED_COUNT, OPERATIONS_COMPLETED_COUNT) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE BATCH_OPERATION_KEY = BATCH_OPERATION_KEY"
+ },
+ {
+  "id": "BatchOperationMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO BATCH_OPERATION (BATCH_OPERATION_KEY, STATE, OPERATION_TYPE, START_DATE, END_DATE, ACTOR_TYPE, ACTOR_ID, OPERATIONS_TOTAL_COUNT, OPERATIONS_FAILED_COUNT, OPERATIONS_COMPLETED_COUNT) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE BATCH_OPERATION_KEY = BATCH_OPERATION_KEY"
+ },
+ {
+  "id": "BatchOperationMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "BEGIN TRY INSERT INTO BATCH_OPERATION (BATCH_OPERATION_KEY, STATE, OPERATION_TYPE, START_DATE, END_DATE, ACTOR_TYPE, ACTOR_ID, OPERATIONS_TOTAL_COUNT, OPERATIONS_FAILED_COUNT, OPERATIONS_COMPLETED_COUNT) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?); END TRY BEGIN CATCH IF ERROR_NUMBER() != 2627 -- Violation of primary key (duplicate key) THROW; END CATCH"
+ },
+ {
+  "id": "BatchOperationMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT /*+ IGNORE_ROW_ON_DUPKEY_INDEX(BATCH_OPERATION (BATCH_OPERATION_KEY)) */ INTO BATCH_OPERATION (BATCH_OPERATION_KEY, STATE, OPERATION_TYPE, START_DATE, END_DATE, ACTOR_TYPE, ACTOR_ID, OPERATIONS_TOTAL_COUNT, OPERATIONS_FAILED_COUNT, OPERATIONS_COMPLETED_COUNT) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "BatchOperationMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE INTO BATCH_OPERATION target USING (SELECT CAST(? AS VARCHAR) AS BATCH_OPERATION_KEY, CAST(? AS VARCHAR) AS STATE, CAST(? AS VARCHAR) AS OPERATION_TYPE, CAST(? AS TIMESTAMP) AS START_DATE, CAST(? AS TIMESTAMP) AS END_DATE, CAST(? AS VARCHAR) AS ACTOR_TYPE, CAST(? AS VARCHAR) AS ACTOR_ID, CAST(? AS INTEGER) AS OPERATIONS_TOTAL_COUNT, CAST(? AS INTEGER) AS OPERATIONS_FAILED_COUNT, CAST(? AS INTEGER) AS OPERATIONS_COMPLETED_COUNT) source ON (target.BATCH_OPERATION_KEY = source.BATCH_OPERATION_KEY) WHEN NOT MATCHED THEN INSERT (BATCH_OPERATION_KEY, STATE, OPERATION_TYPE, START_DATE, END_DATE, ACTOR_TYPE, ACTOR_ID, OPERATIONS_TOTAL_COUNT, OPERATIONS_FAILED_COUNT, OPERATIONS_COMPLETED_COUNT) VALUES (source.BATCH_OPERATION_KEY, source.STATE, source.OPERATION_TYPE, source.START_DATE, source.END_DATE, source.ACTOR_TYPE, source.ACTOR_ID, source.OPERATIONS_TOTAL_COUNT, source.OPERATIONS_FAILED_COUNT, source.OPERATIONS_COMPLETED_COUNT)"
+ },
+ {
+  "id": "BatchOperationMapper.insertItems",
+  "kind": "insert",
+  "sql": "INSERT INTO BATCH_OPERATION_ITEM (BATCH_OPERATION_KEY, ITEM_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, STATE) VALUES"
+ },
+ {
+  "id": "BatchOperationMapper.insertItems",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "BatchOperationMapper.insertErrors",
+  "kind": "insert",
+  "sql": "INSERT INTO BATCH_OPERATION_ERROR (BATCH_OPERATION_KEY, PARTITION_ID, TYPE, MESSAGE) VALUES"
+ },
+ {
+  "id": "BatchOperationMapper.insertErrors",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "BatchOperationMapper.activate",
+  "kind": "update",
+  "sql": "UPDATE BATCH_OPERATION SET STATE = 'ACTIVE', START_DATE = ? WHERE BATCH_OPERATION_KEY = ? AND STATE != 'COMPLETED'"
+ },
+ {
+  "id": "BatchOperationMapper.updateCompleted",
+  "kind": "update",
+  "sql": "UPDATE BATCH_OPERATION SET STATE = ?, END_DATE = ? WHERE BATCH_OPERATION_KEY = ?"
+ },
+ {
+  "id": "BatchOperationMapper.upsertItem",
+  "kind": "insert",
+  "sql": "INSERT INTO BATCH_OPERATION_ITEM (BATCH_OPERATION_KEY, ITEM_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESSED_DATE, STATE) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT (BATCH_OPERATION_KEY, ITEM_KEY) DO UPDATE SET STATE = ?, PROCESSED_DATE = ?, ERROR_MESSAGE = ?"
+ },
+ {
+  "id": "BatchOperationMapper.upsertItem",
+  "kind": "insert",
+  "sql": "MERGE BATCH_OPERATION_ITEM AS target USING (SELECT ? AS BATCH_OPERATION_KEY, ? AS ITEM_KEY, ? AS PROCESS_INSTANCE_KEY, ? AS ROOT_PROCESS_INSTANCE_KEY, ? AS PROCESSED_DATE, ? AS STATE, ? AS ERROR_MESSAGE) AS source ON (target.BATCH_OPERATION_KEY = source.BATCH_OPERATION_KEY AND target.ITEM_KEY = source.ITEM_KEY) WHEN MATCHED THEN UPDATE SET STATE = source.STATE, PROCESSED_DATE = source.PROCESSED_DATE, ERROR_MESSAGE = source.ERROR_MESSAGE WHEN NOT MATCHED THEN INSERT (BATCH_OPERATION_KEY, ITEM_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESSED_DATE, STATE, ERROR_MESSAGE) VALUES (source.BATCH_OPERATION_KEY, source.ITEM_KEY, source.PROCESS_INSTANCE_KEY, source.ROOT_PROCESS_INSTANCE_KEY, source.PROCESSED_DATE, source.STATE, source.ERROR_MESSAGE);"
+ },
+ {
+  "id": "BatchOperationMapper.upsertItem",
+  "kind": "insert",
+  "sql": "INSERT INTO BATCH_OPERATION_ITEM (BATCH_OPERATION_KEY, ITEM_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESSED_DATE, STATE) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE STATE = ?, PROCESSED_DATE = ?, ERROR_MESSAGE = ?"
+ },
+ {
+  "id": "BatchOperationMapper.upsertItem",
+  "kind": "insert",
+  "sql": "INSERT INTO BATCH_OPERATION_ITEM (BATCH_OPERATION_KEY, ITEM_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESSED_DATE, STATE) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE STATE = ?, PROCESSED_DATE = ?, ERROR_MESSAGE = ?"
+ },
+ {
+  "id": "BatchOperationMapper.upsertItem",
+  "kind": "insert",
+  "sql": "MERGE INTO BATCH_OPERATION_ITEM target USING (SELECT ? AS BATCH_OPERATION_KEY, ? AS ITEM_KEY, ? AS PROCESS_INSTANCE_KEY, ? AS ROOT_PROCESS_INSTANCE_KEY, ? AS PROCESSED_DATE, ? AS STATE, ? AS ERROR_MESSAGE FROM dual) source ON (target.BATCH_OPERATION_KEY = source.BATCH_OPERATION_KEY AND target.ITEM_KEY = source.ITEM_KEY) WHEN MATCHED THEN UPDATE SET STATE = source.STATE, PROCESSED_DATE = source.PROCESSED_DATE, ERROR_MESSAGE = source.ERROR_MESSAGE WHEN NOT MATCHED THEN INSERT (BATCH_OPERATION_KEY, ITEM_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESSED_DATE, STATE, ERROR_MESSAGE) VALUES (source.BATCH_OPERATION_KEY, source.ITEM_KEY, source.PROCESS_INSTANCE_KEY, source.ROOT_PROCESS_INSTANCE_KEY, source.PROCESSED_DATE, source.STATE, source.ERROR_MESSAGE)"
+ },
+ {
+  "id": "BatchOperationMapper.upsertItem",
+  "kind": "insert",
+  "sql": "MERGE INTO BATCH_OPERATION_ITEM target USING (SELECT CAST(? AS VARCHAR) AS BATCH_OPERATION_KEY, CAST(? AS BIGINT) AS ITEM_KEY, CAST(? AS BIGINT) AS PROCESS_INSTANCE_KEY, CAST(? AS BIGINT) AS ROOT_PROCESS_INSTANCE_KEY, CAST(? AS TIMESTAMP) AS PROCESSED_DATE, CAST(? AS VARCHAR) AS STATE, CAST(? AS VARCHAR) AS ERROR_MESSAGE) source ON (target.BATCH_OPERATION_KEY = source.BATCH_OPERATION_KEY AND target.ITEM_KEY = source.ITEM_KEY) WHEN MATCHED THEN UPDATE SET STATE = source.STATE, PROCESSED_DATE = source.PROCESSED_DATE, ERROR_MESSAGE = source.ERROR_MESSAGE WHEN NOT MATCHED THEN INSERT (BATCH_OPERATION_KEY, ITEM_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESSED_DATE, STATE, ERROR_MESSAGE) VALUES (source.BATCH_OPERATION_KEY, source.ITEM_KEY, source.PROCESS_INSTANCE_KEY, source.ROOT_PROCESS_INSTANCE_KEY, source.PROCESSED_DATE, source.STATE, source.ERROR_MESSAGE)"
+ },
+ {
+  "id": "BatchOperationMapper.completeBatchOperationItems",
+  "kind": "update",
+  "sql": "UPDATE BATCH_OPERATION_ITEM SET STATE = 'COMPLETED', PROCESSED_DATE = ? WHERE"
+ },
+ {
+  "id": "BatchOperationMapper.updateItemsWithState",
+  "kind": "update",
+  "sql": "UPDATE BATCH_OPERATION_ITEM SET STATE = ? WHERE BATCH_OPERATION_KEY = ? AND STATE = ?"
+ },
+ {
+  "id": "BatchOperationMapper.incrementOperationsTotalCount",
+  "kind": "update",
+  "sql": "UPDATE BATCH_OPERATION SET OPERATIONS_TOTAL_COUNT = OPERATIONS_TOTAL_COUNT + ? WHERE BATCH_OPERATION_KEY = ?"
+ },
+ {
+  "id": "BatchOperationMapper.incrementFailedOperationsCount",
+  "kind": "update",
+  "sql": "UPDATE BATCH_OPERATION SET OPERATIONS_FAILED_COUNT = OPERATIONS_FAILED_COUNT + 1 WHERE BATCH_OPERATION_KEY = ?"
+ },
+ {
+  "id": "BatchOperationMapper.incrementCompletedOperationsCount",
+  "kind": "update",
+  "sql": "UPDATE BATCH_OPERATION SET OPERATIONS_COMPLETED_COUNT = OPERATIONS_COMPLETED_COUNT + 1 WHERE BATCH_OPERATION_KEY = ?"
+ },
+ {
+  "id": "BatchOperationMapper.bulkIncrementCompletedOperationsCount",
+  "kind": "update",
+  "sql": "UPDATE BATCH_OPERATION SET OPERATIONS_COMPLETED_COUNT = OPERATIONS_COMPLETED_COUNT + ? WHERE BATCH_OPERATION_KEY = ?"
+ },
+ {
+  "id": "BatchOperationMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM BATCH_OPERATION WHERE 1 = 1 ) t"
+ },
+ {
+  "id": "BatchOperationMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT bof.BATCH_OPERATION_KEY, bof.STATE, bof.OPERATION_TYPE, bof.START_DATE, bof.END_DATE, bof.ACTOR_TYPE, bof.ACTOR_ID, bof.OPERATIONS_TOTAL_COUNT, bof.OPERATIONS_FAILED_COUNT, bof.OPERATIONS_COMPLETED_COUNT, boe.PARTITION_ID, boe.TYPE, boe.MESSAGE FROM ( SELECT * FROM ( SELECT bo.BATCH_OPERATION_KEY, bo.STATE, bo.OPERATION_TYPE, bo.START_DATE, bo.END_DATE, bo.ACTOR_TYPE, bo.ACTOR_ID, bo.OPERATIONS_TOTAL_COUNT, bo.OPERATIONS_FAILED_COUNT, bo.OPERATIONS_COMPLETED_COUNT FROM BATCH_OPERATION bo WHERE 1 = 1 ) filtered ) bof LEFT JOIN BATCH_OPERATION_ERROR boe ON (boe.BATCH_OPERATION_KEY = bof.BATCH_OPERATION_KEY) ) sorted"
+ },
+ {
+  "id": "BatchOperationMapper.countItems",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM BATCH_OPERATION_ITEM bi JOIN BATCH_OPERATION bo ON (bi.batch_operation_key = bo.batch_operation_key) WHERE 1 = 1 ) t"
+ },
+ {
+  "id": "BatchOperationMapper.searchItems",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT bi.BATCH_OPERATION_KEY, bo.OPERATION_TYPE, bi.ITEM_KEY, bi.PROCESS_INSTANCE_KEY, bi.ROOT_PROCESS_INSTANCE_KEY, bi.STATE, bi.PROCESSED_DATE, bi.ERROR_MESSAGE FROM BATCH_OPERATION_ITEM bi JOIN BATCH_OPERATION bo ON (bi.batch_operation_key = bo.batch_operation_key) WHERE 1 = 1 ) filtered"
+ },
+ {
+  "id": "BatchOperationMapper.updateHistoryCleanupDate",
+  "kind": "update",
+  "sql": "UPDATE BATCH_OPERATION SET HISTORY_CLEANUP_DATE = ? WHERE BATCH_OPERATION_KEY = ?"
+ },
+ {
+  "id": "BatchOperationMapper.cleanupHistory",
+  "kind": "delete",
+  "sql": "DELETE FROM WHERE ctid IN (SELECT ctid FROM WHERE HISTORY_CLEANUP_DATE < ? LIMIT ?)"
+ },
+ {
+  "id": "ClusterVariableMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM CLUSTER_VARIABLE cv ) t"
+ },
+ {
+  "id": "ClusterVariableMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT CLUSTER_VARIABLE_ID, VAR_NAME, VAR_VALUE, VAR_FULL_VALUE, TENANT_ID, SCOPE, IS_PREVIEW, KIND FROM CLUSTER_VARIABLE cv ) filtered"
+ },
+ {
+  "id": "ClusterVariableMapper.get",
+  "kind": "select",
+  "sql": "SELECT CLUSTER_VARIABLE_ID, VAR_NAME, VAR_VALUE, VAR_FULL_VALUE, TENANT_ID, SCOPE, IS_PREVIEW, KIND FROM CLUSTER_VARIABLE cv WHERE cv.CLUSTER_VARIABLE_ID = ?"
+ },
+ {
+  "id": "ClusterVariableMapper.findMetadataByClusterVariableIds",
+  "kind": "select",
+  "sql": "SELECT CLUSTER_VARIABLE_ID, METADATA_KEY, METADATA_VALUE, METADATA_VALUE_NUMBER FROM CLUSTER_VARIABLE_METADATA WHERE CLUSTER_VARIABLE_ID IN"
+ },
+ {
+  "id": "ClusterVariableMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO CLUSTER_VARIABLE (CLUSTER_VARIABLE_ID, VAR_NAME, TYPE, DOUBLE_VALUE, LONG_VALUE, VAR_VALUE, VAR_FULL_VALUE, IS_PREVIEW, TENANT_ID, SCOPE, KIND) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "ClusterVariableMapper.insertMetadata",
+  "kind": "insert",
+  "sql": "INSERT INTO CLUSTER_VARIABLE_METADATA (CLUSTER_VARIABLE_ID, METADATA_KEY, METADATA_VALUE, METADATA_VALUE_NUMBER) VALUES"
+ },
+ {
+  "id": "ClusterVariableMapper.insertMetadata",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "ClusterVariableMapper.deleteMetadata",
+  "kind": "delete",
+  "sql": "DELETE FROM CLUSTER_VARIABLE_METADATA WHERE CLUSTER_VARIABLE_ID = ?"
+ },
+ {
+  "id": "ClusterVariableMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM CLUSTER_VARIABLE WHERE CLUSTER_VARIABLE_ID = ?"
+ },
+ {
+  "id": "ClusterVariableMapper.update",
+  "kind": "update",
+  "sql": "UPDATE CLUSTER_VARIABLE SET TYPE = ?, DOUBLE_VALUE = ?, LONG_VALUE = ?, VAR_VALUE = ?, VAR_FULL_VALUE = ?, IS_PREVIEW = ? WHERE CLUSTER_VARIABLE_ID = ?"
+ },
+ {
+  "id": "CorrelatedMessageSubscriptionMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO CORRELATED_MESSAGE_SUBSCRIPTION ( CORRELATION_KEY, CORRELATION_TIME, FLOW_NODE_ID, FLOW_NODE_INSTANCE_KEY, MESSAGE_KEY, MESSAGE_NAME, PARTITION_ID, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, SUBSCRIPTION_KEY, SUBSCRIPTION_TYPE, TENANT_ID, BUSINESS_ID ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+ },
+ {
+  "id": "CorrelatedMessageSubscriptionMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM CORRELATED_MESSAGE_SUBSCRIPTION ) t"
+ },
+ {
+  "id": "CorrelatedMessageSubscriptionMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT CORRELATION_KEY, CORRELATION_TIME, FLOW_NODE_ID, FLOW_NODE_INSTANCE_KEY, MESSAGE_KEY, MESSAGE_NAME, PARTITION_ID, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, SUBSCRIPTION_KEY, SUBSCRIPTION_TYPE, TENANT_ID, BUSINESS_ID FROM CORRELATED_MESSAGE_SUBSCRIPTION ) t"
+ },
+ {
+  "id": "CorrelatedMessageSubscriptionMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "CorrelatedMessageSubscriptionMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "DecisionDefinitionMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM DECISION_DEFINITION t ) t"
+ },
+ {
+  "id": "DecisionDefinitionMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT DECISION_DEFINITION_KEY, DECISION_DEFINITION_ID, NAME, TENANT_ID, VERSION, DECISION_REQUIREMENTS_KEY, DECISION_REQUIREMENTS_ID, DECISION_REQUIREMENTS_NAME, DECISION_REQUIREMENTS_VERSION FROM DECISION_DEFINITION ) t"
+ },
+ {
+  "id": "DecisionDefinitionMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO DECISION_DEFINITION (DECISION_DEFINITION_KEY, DECISION_DEFINITION_ID, NAME, TENANT_ID, VERSION, DECISION_REQUIREMENTS_ID, DECISION_REQUIREMENTS_KEY, DECISION_REQUIREMENTS_NAME, DECISION_REQUIREMENTS_VERSION) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "DecisionDefinitionMapper.deleteByDecisionRequirementsKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM DECISION_DEFINITION WHERE DECISION_REQUIREMENTS_KEY IN LIMIT ?"
+ },
+ {
+  "id": "DecisionDefinitionMapper.deleteByDecisionRequirementsKeys",
+  "kind": "delete",
+  "sql": "DELETE TOP (?) FROM DECISION_DEFINITION WHERE DECISION_REQUIREMENTS_KEY IN"
+ },
+ {
+  "id": "DecisionDefinitionMapper.deleteByDecisionRequirementsKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM DECISION_DEFINITION WHERE rowid IN (SELECT rowid FROM DECISION_DEFINITION WHERE DECISION_REQUIREMENTS_KEY IN AND ROWNUM <= ?)"
+ },
+ {
+  "id": "DecisionDefinitionMapper.deleteByDecisionRequirementsKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM DECISION_DEFINITION WHERE ctid IN (SELECT ctid FROM DECISION_DEFINITION WHERE DECISION_REQUIREMENTS_KEY IN LIMIT ?)"
+ },
+ {
+  "id": "DecisionInstanceMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM DECISION_INSTANCE di LEFT JOIN DECISION_DEFINITION dd ON (di.DECISION_DEFINITION_KEY = dd.DECISION_DEFINITION_KEY) ) t"
+ },
+ {
+  "id": "DecisionInstanceMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT di.DECISION_INSTANCE_ID, di.DECISION_INSTANCE_KEY, di.PROCESS_INSTANCE_KEY, di.ROOT_PROCESS_INSTANCE_KEY, di.BUSINESS_ID, di.FLOW_NODE_INSTANCE_KEY, di.PROCESS_DEFINITION_ID, di.PROCESS_DEFINITION_KEY, di.DECISION_DEFINITION_KEY, di.DECISION_DEFINITION_ID, di.STATE, di.TYPE, /* TODO really save it there? */ di.EVALUATION_DATE, AS RESULT, di.EVALUATION_FAILURE, di.EVALUATION_FAILURE_MESSAGE, di.TENANT_ID, di.ROOT_DECISION_DEFINITION_KEY, NULL AS EVALUATED_INPUTS, NULL AS EVALUATED_OUTPUTS, dd.NAME AS DECISION_DEFINITION_NAME, dd.VERSION AS DECISION_DEFINITION_VERSION FROM DECISION_INSTANCE di LEFT JOIN DECISION_DEFINITION dd ON (di.DECISION_DEFINITION_KEY = dd.DECISION_DEFINITION_KEY) ) t"
+ },
+ {
+  "id": "DecisionInstanceMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO DECISION_INSTANCE (DECISION_INSTANCE_ID, DECISION_INSTANCE_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, BUSINESS_ID, PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_ID, DECISION_DEFINITION_KEY, DECISION_DEFINITION_ID, DECISION_REQUIREMENTS_KEY, DECISION_REQUIREMENTS_ID, FLOW_NODE_INSTANCE_KEY, FLOW_NODE_ID, ROOT_DECISION_DEFINITION_KEY, TYPE, STATE, EVALUATION_DATE, FULL_RESULT, EVALUATION_FAILURE, EVALUATION_FAILURE_MESSAGE, TENANT_ID, PARTITION_ID, HISTORY_CLEANUP_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "DecisionInstanceMapper.insertInput",
+  "kind": "insert",
+  "sql": "INSERT INTO DECISION_INSTANCE_INPUT (DECISION_INSTANCE_ID, INPUT_ID, INPUT_NAME, FULL_INPUT_VALUE) VALUES"
+ },
+ {
+  "id": "DecisionInstanceMapper.insertInput",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "DecisionInstanceMapper.loadInputs",
+  "kind": "select",
+  "sql": "SELECT DECISION_INSTANCE_ID, INPUT_ID, INPUT_NAME, AS INPUT_VALUE FROM DECISION_INSTANCE_INPUT WHERE DECISION_INSTANCE_ID IN ( )"
+ },
+ {
+  "id": "DecisionInstanceMapper.insertOutput",
+  "kind": "insert",
+  "sql": "INSERT INTO DECISION_INSTANCE_OUTPUT (DECISION_INSTANCE_ID, OUTPUT_ID, OUTPUT_NAME, FULL_OUTPUT_VALUE, RULE_ID, RULE_INDEX) VALUES"
+ },
+ {
+  "id": "DecisionInstanceMapper.insertOutput",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "DecisionInstanceMapper.loadOutputs",
+  "kind": "select",
+  "sql": "SELECT DECISION_INSTANCE_ID, OUTPUT_ID, OUTPUT_NAME, AS OUTPUT_VALUE, RULE_ID, RULE_INDEX FROM DECISION_INSTANCE_OUTPUT WHERE DECISION_INSTANCE_ID IN ( )"
+ },
+ {
+  "id": "DecisionInstanceMapper.cleanupHistory",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE PARTITION_ID = ? AND HISTORY_CLEANUP_DATE < ? LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "DecisionInstanceMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "DecisionInstanceMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "DecisionInstanceMapper.deleteByKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM DECISION_INSTANCE WHERE DECISION_INSTANCE_KEY IN"
+ },
+ {
+  "id": "DecisionRequirementsMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM DECISION_REQUIREMENTS ) t"
+ },
+ {
+  "id": "DecisionRequirementsMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT DECISION_REQUIREMENTS_KEY, DECISION_REQUIREMENTS_ID, NAME, TENANT_ID, VERSION, RESOURCE_NAME FROM DECISION_REQUIREMENTS ) t"
+ },
+ {
+  "id": "DecisionRequirementsMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO DECISION_REQUIREMENTS (DECISION_REQUIREMENTS_KEY, DECISION_REQUIREMENTS_ID, NAME, TENANT_ID, VERSION, RESOURCE_NAME, XML) VALUES (?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "DecisionRequirementsMapper.deleteByKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM DECISION_REQUIREMENTS WHERE DECISION_REQUIREMENTS_KEY IN"
+ },
+ {
+  "id": "DeployedResourceMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO DEPLOYED_RESOURCE (RESOURCE_KEY, RESOURCE_ID, RESOURCE_NAME, RESOURCE_TYPE, VERSION, VERSION_TAG, DEPLOYMENT_KEY, TENANT_ID, RESOURCE_CONTENT) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "DeployedResourceMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM DEPLOYED_RESOURCE WHERE RESOURCE_KEY = ?"
+ },
+ {
+  "id": "DeployedResourceMapper.get",
+  "kind": "select",
+  "sql": "SELECT RESOURCE_KEY, RESOURCE_ID, RESOURCE_NAME, RESOURCE_TYPE, VERSION, VERSION_TAG, DEPLOYMENT_KEY, TENANT_ID, RESOURCE_CONTENT FROM DEPLOYED_RESOURCE WHERE RESOURCE_KEY = ?"
+ },
+ {
+  "id": "DeployedResourceMapper.getMetadata",
+  "kind": "select",
+  "sql": "SELECT RESOURCE_KEY, RESOURCE_ID, RESOURCE_NAME, RESOURCE_TYPE, VERSION, VERSION_TAG, DEPLOYMENT_KEY, TENANT_ID, NULL AS RESOURCE_CONTENT FROM DEPLOYED_RESOURCE WHERE RESOURCE_KEY = ?"
+ },
+ {
+  "id": "DeployedResourceMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM DEPLOYED_RESOURCE t ) t"
+ },
+ {
+  "id": "DeployedResourceMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT RESOURCE_KEY, RESOURCE_ID, RESOURCE_NAME, RESOURCE_TYPE, VERSION, VERSION_TAG, DEPLOYMENT_KEY, TENANT_ID, NULL AS RESOURCE_CONTENT FROM DEPLOYED_RESOURCE ) t"
+ },
+ {
+  "id": "ExporterPositionMapper.findOne",
+  "kind": "select",
+  "sql": "SELECT PARTITION_ID, EXPORTER, LAST_EXPORTED_POSITION, CREATED, LAST_UPDATED FROM EXPORTER_POSITION WHERE PARTITION_ID = ?"
+ },
+ {
+  "id": "ExporterPositionMapper.findOneForUpdate",
+  "kind": "select",
+  "sql": "SELECT PARTITION_ID, EXPORTER, LAST_EXPORTED_POSITION, CREATED, LAST_UPDATED FROM EXPORTER_POSITION WITH (UPDLOCK, ROWLOCK) WHERE PARTITION_ID = ?"
+ },
+ {
+  "id": "ExporterPositionMapper.findOneForUpdate",
+  "kind": "select",
+  "sql": "SELECT PARTITION_ID, EXPORTER, LAST_EXPORTED_POSITION, CREATED, LAST_UPDATED FROM EXPORTER_POSITION WHERE PARTITION_ID = ? FOR UPDATE"
+ },
+ {
+  "id": "ExporterPositionMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO EXPORTER_POSITION (PARTITION_ID, EXPORTER, LAST_EXPORTED_POSITION, CREATED, LAST_UPDATED) VALUES (?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "ExporterPositionMapper.update",
+  "kind": "update",
+  "sql": "UPDATE EXPORTER_POSITION SET LAST_EXPORTED_POSITION = ?, LAST_UPDATED = ? WHERE PARTITION_ID = ?"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM FLOW_NODE_INSTANCE fni ) t"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT FLOW_NODE_INSTANCE_KEY, FLOW_NODE_SCOPE_KEY, FLOW_NODE_ID, FLOW_NODE_NAME, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, TYPE, STATE, START_DATE, END_DATE, TENANT_ID, TREE_PATH, INCIDENT_KEY, NUM_SUBPROCESS_INCIDENTS, CASE WHEN NUM_SUBPROCESS_INCIDENTS > 0 OR INCIDENT_KEY IS NOT NULL THEN ELSE END AS HAS_INCIDENT, PARTITION_ID FROM FLOW_NODE_INSTANCE ) t"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO FLOW_NODE_INSTANCE (FLOW_NODE_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_NAME, FLOW_NODE_SCOPE_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, TYPE, STATE, START_DATE, END_DATE, TENANT_ID, TREE_PATH, INCIDENT_KEY, NUM_SUBPROCESS_INCIDENTS, PARTITION_ID) VALUES"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT * FROM dual"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.update",
+  "kind": "update",
+  "sql": "UPDATE FLOW_NODE_INSTANCE SET FLOW_NODE_NAME = ?, WHERE FLOW_NODE_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.updateKeepingName",
+  "kind": "update",
+  "sql": "UPDATE FLOW_NODE_INSTANCE SET WHERE FLOW_NODE_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.updateStateAndEndDate",
+  "kind": "update",
+  "sql": "UPDATE FLOW_NODE_INSTANCE SET STATE = ?, END_DATE = ? WHERE FLOW_NODE_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.updateIncident",
+  "kind": "update",
+  "sql": "UPDATE FLOW_NODE_INSTANCE SET INCIDENT_KEY = ? WHERE FLOW_NODE_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.updateNameIfNull",
+  "kind": "update",
+  "sql": "UPDATE FLOW_NODE_INSTANCE SET FLOW_NODE_NAME = ? WHERE FLOW_NODE_INSTANCE_KEY = ? AND FLOW_NODE_NAME IS NULL"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.incrementSubprocessIncidentCount",
+  "kind": "update",
+  "sql": "UPDATE FLOW_NODE_INSTANCE SET NUM_SUBPROCESS_INCIDENTS = NUM_SUBPROCESS_INCIDENTS + 1 WHERE FLOW_NODE_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.decrementSubprocessIncidentCount",
+  "kind": "update",
+  "sql": "UPDATE FLOW_NODE_INSTANCE SET NUM_SUBPROCESS_INCIDENTS = NUM_SUBPROCESS_INCIDENTS - 1 WHERE FLOW_NODE_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "FlowNodeInstanceMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "FlowNodeInstanceMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "FormMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO FORM (FORM_ID, FORM_KEY, TENANT_ID, SCHEMA_XML, VERSION, IS_DELETED) VALUES (?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "FormMapper.update",
+  "kind": "update",
+  "sql": "UPDATE FORM SET FORM_ID = ?, TENANT_ID = ?, SCHEMA_XML = ?, VERSION = ?, IS_DELETED = ? WHERE FORM_KEY = ?"
+ },
+ {
+  "id": "FormMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM FORM WHERE 1 = 1 ) t"
+ },
+ {
+  "id": "FormMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT FORM_KEY, TENANT_ID, FORM_ID, SCHEMA_XML, VERSION FROM FORM WHERE 1 = 1 ) t"
+ },
+ {
+  "id": "GlobalListenerMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO GLOBAL_LISTENER (ID, LISTENER_ID, TYPE, RETRIES, AFTER_NON_GLOBAL, PRIORITY, SOURCE, LISTENER_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "GlobalListenerMapper.insertEventTypes",
+  "kind": "insert",
+  "sql": "INSERT INTO GLOBAL_LISTENER_EVENT_TYPE (GLOBAL_LISTENER_ID, EVENT_TYPE) VALUES"
+ },
+ {
+  "id": "GlobalListenerMapper.insertEventTypes",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "GlobalListenerMapper.update",
+  "kind": "update",
+  "sql": "UPDATE GLOBAL_LISTENER SET LISTENER_ID = ?, TYPE = ?, RETRIES = ?, AFTER_NON_GLOBAL = ?, PRIORITY = ?, SOURCE = ?, LISTENER_TYPE = ? WHERE ID = ?"
+ },
+ {
+  "id": "GlobalListenerMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM GLOBAL_LISTENER WHERE ID = ?"
+ },
+ {
+  "id": "GlobalListenerMapper.deleteEventTypes",
+  "kind": "delete",
+  "sql": "DELETE FROM GLOBAL_LISTENER_EVENT_TYPE WHERE GLOBAL_LISTENER_ID = ?"
+ },
+ {
+  "id": "GlobalListenerMapper.get",
+  "kind": "select",
+  "sql": "SELECT gl.*, et.EVENT_TYPE FROM ( SELECT gl.ID, gl.LISTENER_ID, gl.TYPE, gl.RETRIES, gl.AFTER_NON_GLOBAL, gl.PRIORITY, gl.SOURCE, gl.LISTENER_TYPE FROM GLOBAL_LISTENER gl WHERE ID = ? ) gl LEFT JOIN GLOBAL_LISTENER_EVENT_TYPE et ON (et.GLOBAL_LISTENER_ID = gl.ID)"
+ },
+ {
+  "id": "GlobalListenerMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT gl.*, et.EVENT_TYPE FROM ( SELECT * FROM ( SELECT gl.ID, gl.LISTENER_ID, gl.TYPE, gl.RETRIES, gl.AFTER_NON_GLOBAL, gl.PRIORITY, gl.SOURCE, gl.LISTENER_TYPE FROM GLOBAL_LISTENER gl ) filtered ) gl LEFT JOIN GLOBAL_LISTENER_EVENT_TYPE et ON (et.GLOBAL_LISTENER_ID = gl.ID) ) sorted"
+ },
+ {
+  "id": "GlobalListenerMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM GLOBAL_LISTENER gl ) t"
+ },
+ {
+  "id": "GroupMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM GROUP_ g ) t"
+ },
+ {
+  "id": "GroupMapper.search",
+  "kind": "select",
+  "sql": "SELECT t.GROUP_KEY, t.GROUP_ID, t.NAME, t.DESCRIPTION, gm.GROUP_ID AS MEMBER_GROUP_ID, gm.ENTITY_ID AS MEMBER_ENTITY_ID, gm.ENTITY_TYPE AS MEMBER_ENTITY_TYPE FROM ( SELECT * FROM ( SELECT g.GROUP_KEY, g.GROUP_ID, g.NAME, g.DESCRIPTION FROM GROUP_ g ) t ) t LEFT JOIN GROUP_MEMBER gm ON t.GROUP_ID = gm.GROUP_ID"
+ },
+ {
+  "id": "GroupMapper.countMembers",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM GROUP_MEMBER gm JOIN GROUP_ g ON g.GROUP_ID = gm.GROUP_ID"
+ },
+ {
+  "id": "GroupMapper.searchMembers",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT g.GROUP_KEY, g.GROUP_ID, g.NAME, g.DESCRIPTION, gm.ENTITY_ID, gm.ENTITY_TYPE FROM GROUP_MEMBER gm JOIN GROUP_ g ON g.GROUP_ID = gm.GROUP_ID ) t"
+ },
+ {
+  "id": "GroupMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO GROUP_ (GROUP_KEY, GROUP_ID, NAME, DESCRIPTION) VALUES (?, ?, ?, ?)"
+ },
+ {
+  "id": "GroupMapper.update",
+  "kind": "update",
+  "sql": "UPDATE GROUP_ SET NAME = ?, DESCRIPTION = ? WHERE GROUP_ID = ?"
+ },
+ {
+  "id": "GroupMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM GROUP_ WHERE GROUP_ID = ?"
+ },
+ {
+  "id": "GroupMapper.insertMember",
+  "kind": "insert",
+  "sql": "INSERT INTO GROUP_MEMBER (GROUP_ID, ENTITY_ID, ENTITY_TYPE) VALUES (?, ?, ?)"
+ },
+ {
+  "id": "GroupMapper.deleteMember",
+  "kind": "delete",
+  "sql": "DELETE FROM GROUP_MEMBER WHERE GROUP_ID = ? AND ENTITY_ID = ? AND ENTITY_TYPE = ?"
+ },
+ {
+  "id": "HistoryDeletionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO HISTORY_DELETION ( RESOURCE_KEY, BATCH_OPERATION_KEY, RESOURCE_TYPE, PARTITION_ID ) VALUES ( ?, ?, ?, ? ) ON CONFLICT (RESOURCE_KEY, BATCH_OPERATION_KEY) DO NOTHING"
+ },
+ {
+  "id": "HistoryDeletionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO HISTORY_DELETION ( RESOURCE_KEY, BATCH_OPERATION_KEY, RESOURCE_TYPE, PARTITION_ID ) VALUES ( ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE RESOURCE_KEY = RESOURCE_KEY"
+ },
+ {
+  "id": "HistoryDeletionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO HISTORY_DELETION ( RESOURCE_KEY, BATCH_OPERATION_KEY, RESOURCE_TYPE, PARTITION_ID ) VALUES ( ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE RESOURCE_KEY = RESOURCE_KEY"
+ },
+ {
+  "id": "HistoryDeletionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE INTO HISTORY_DELETION hd USING dual ON (hd.RESOURCE_KEY = ? AND hd.BATCH_OPERATION_KEY = ?) WHEN NOT MATCHED THEN INSERT (RESOURCE_KEY, BATCH_OPERATION_KEY, RESOURCE_TYPE, PARTITION_ID) VALUES (?, ?, ?, ?)"
+ },
+ {
+  "id": "HistoryDeletionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE INTO HISTORY_DELETION hd USING (SELECT ? AS RESOURCE_KEY, ? AS BATCH_OPERATION_KEY FROM dual) src ON (hd.RESOURCE_KEY = src.RESOURCE_KEY AND hd.BATCH_OPERATION_KEY = src.BATCH_OPERATION_KEY) WHEN NOT MATCHED THEN INSERT (RESOURCE_KEY, BATCH_OPERATION_KEY, RESOURCE_TYPE, PARTITION_ID) VALUES (?, ?, ?, ?)"
+ },
+ {
+  "id": "HistoryDeletionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE HISTORY_DELETION AS target USING (SELECT ? AS RESOURCE_KEY, ? AS BATCH_OPERATION_KEY, ? AS RESOURCE_TYPE, ? AS PARTITION_ID) AS source ON (target.RESOURCE_KEY = source.RESOURCE_KEY AND target.BATCH_OPERATION_KEY = source.BATCH_OPERATION_KEY) WHEN NOT MATCHED THEN INSERT (RESOURCE_KEY, BATCH_OPERATION_KEY, RESOURCE_TYPE, PARTITION_ID) VALUES (source.RESOURCE_KEY, source.BATCH_OPERATION_KEY, source.RESOURCE_TYPE, source.PARTITION_ID);"
+ },
+ {
+  "id": "HistoryDeletionMapper.getHistoryDeletionBatch",
+  "kind": "select",
+  "sql": "SELECT * FROM HISTORY_DELETION WHERE PARTITION_ID = ? ORDER BY BATCH_OPERATION_KEY, RESOURCE_KEY LIMIT ?"
+ },
+ {
+  "id": "HistoryDeletionMapper.getHistoryDeletionBatch",
+  "kind": "select",
+  "sql": "SELECT TOP (?) * FROM HISTORY_DELETION WHERE PARTITION_ID = ? ORDER BY BATCH_OPERATION_KEY, RESOURCE_KEY"
+ },
+ {
+  "id": "HistoryDeletionMapper.getHistoryDeletionBatch",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT * FROM HISTORY_DELETION WHERE PARTITION_ID = ? ORDER BY BATCH_OPERATION_KEY, RESOURCE_KEY ) WHERE ROWNUM <= ?"
+ },
+ {
+  "id": "HistoryDeletionMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM HISTORY_DELETION WHERE RESOURCE_KEY = ? AND BATCH_OPERATION_KEY = ?"
+ },
+ {
+  "id": "HistoryDeletionMapper.deleteByResourceKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM HISTORY_DELETION WHERE RESOURCE_KEY IN"
+ },
+ {
+  "id": "IncidentMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM INCIDENT i ) t"
+ },
+ {
+  "id": "IncidentMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT i.INCIDENT_KEY, i.FLOW_NODE_INSTANCE_KEY, i.FLOW_NODE_ID, i.PROCESS_INSTANCE_KEY, i.ROOT_PROCESS_INSTANCE_KEY, i.PROCESS_DEFINITION_ID, i.PROCESS_DEFINITION_KEY, i.ERROR_MESSAGE, i.ERROR_MESSAGE_HASH, i.ERROR_TYPE, i.STATE, i.CREATION_DATE, i.JOB_KEY, i.TENANT_ID FROM INCIDENT i ) t"
+ },
+ {
+  "id": "IncidentMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO INCIDENT (INCIDENT_KEY, FLOW_NODE_INSTANCE_KEY, FLOW_NODE_ID, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, ERROR_MESSAGE, ERROR_MESSAGE_HASH, ERROR_TYPE, STATE, CREATION_DATE, JOB_KEY, TENANT_ID, PARTITION_ID, TREE_PATH) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "IncidentMapper.update",
+  "kind": "update",
+  "sql": "UPDATE INCIDENT SET FLOW_NODE_INSTANCE_KEY = ?, FLOW_NODE_ID = ?, PROCESS_INSTANCE_KEY = ?, PROCESS_DEFINITION_ID = ?, PROCESS_DEFINITION_KEY = ?, ERROR_MESSAGE = ?, ERROR_MESSAGE_HASH = ?, ERROR_TYPE = ?, STATE = ?, CREATION_DATE = ?, JOB_KEY = ?, TENANT_ID = ?, TREE_PATH = ? WHERE INCIDENT_KEY = ?"
+ },
+ {
+  "id": "IncidentMapper.updateState",
+  "kind": "update",
+  "sql": "UPDATE INCIDENT SET STATE = ? WHERE INCIDENT_KEY = ?"
+ },
+ {
+  "id": "IncidentMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "IncidentMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "IncidentMapper.processInstanceStatisticsByErrorCount",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT i.ERROR_MESSAGE_HASH FROM INCIDENT i WHERE i.STATE = 'ACTIVE' GROUP BY i.ERROR_MESSAGE_HASH, i.ERROR_MESSAGE ) t"
+ },
+ {
+  "id": "IncidentMapper.processInstanceStatisticsByError",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT i.ERROR_MESSAGE_HASH AS ERROR_HASH_CODE, i.ERROR_MESSAGE AS ERROR_MESSAGE, COUNT(DISTINCT i.PROCESS_INSTANCE_KEY) AS ACTIVE_INSTANCES_WITH_ERROR_COUNT FROM INCIDENT i WHERE i.STATE = 'ACTIVE' GROUP BY i.ERROR_MESSAGE_HASH, i.ERROR_MESSAGE ) t"
+ },
+ {
+  "id": "IncidentMapper.processInstanceStatisticsByDefinitionCount",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT i.PROCESS_DEFINITION_KEY FROM INCIDENT i LEFT JOIN PROCESS_DEFINITION pd ON pd.PROCESS_DEFINITION_KEY = i.PROCESS_DEFINITION_KEY AND pd.TENANT_ID = i.TENANT_ID WHERE i.STATE = 'ACTIVE' AND i.ERROR_MESSAGE_HASH = ? GROUP BY i.PROCESS_DEFINITION_KEY, i.TENANT_ID, pd.PROCESS_DEFINITION_ID, pd.NAME, pd.VERSION ) t"
+ },
+ {
+  "id": "IncidentMapper.processInstanceStatisticsByDefinition",
+  "kind": "select",
+  "sql": "SELECT pd.PROCESS_DEFINITION_ID AS PROCESS_DEFINITION_ID, i.PROCESS_DEFINITION_KEY AS PROCESS_DEFINITION_KEY, pd.NAME AS PROCESS_DEFINITION_NAME, pd.VERSION AS PROCESS_DEFINITION_VERSION, i.TENANT_ID AS TENANT_ID, COUNT(DISTINCT i.PROCESS_INSTANCE_KEY) AS ACTIVE_INSTANCES_WITH_ERROR_COUNT FROM INCIDENT i LEFT JOIN PROCESS_DEFINITION pd ON pd.PROCESS_DEFINITION_KEY = i.PROCESS_DEFINITION_KEY AND pd.TENANT_ID = i.TENANT_ID WHERE i.STATE = 'ACTIVE' AND i.ERROR_MESSAGE_HASH = ? GROUP BY i.PROCESS_DEFINITION_KEY, i.TENANT_ID, pd.PROCESS_DEFINITION_ID, pd.NAME, pd.VERSION"
+ },
+ {
+  "id": "IncidentMapper.findOne",
+  "kind": "select",
+  "sql": "SELECT i.INCIDENT_KEY, i.FLOW_NODE_INSTANCE_KEY, i.FLOW_NODE_ID, i.PROCESS_INSTANCE_KEY, i.PROCESS_DEFINITION_ID, i.PROCESS_DEFINITION_KEY, i.ERROR_MESSAGE, i.ERROR_MESSAGE_HASH, i.ERROR_TYPE, i.STATE, i.CREATION_DATE, i.JOB_KEY, i.TENANT_ID FROM INCIDENT i WHERE i.INCIDENT_KEY = ?"
+ },
+ {
+  "id": "JobMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM JOB ) t"
+ },
+ {
+  "id": "JobMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT JOB_KEY, PARTITION_ID, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, BUSINESS_ID, ELEMENT_INSTANCE_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, TENANT_ID, TYPE, WORKER, STATE, RETRIES, PRIORITY, ERROR_MESSAGE, ERROR_CODE, END_TIME, CUSTOM_HEADERS, KIND, ELEMENT_ID, IS_DENIED, DENIED_REASON, LISTENER_EVENT_TYPE, DEADLINE, HAS_FAILED_WITH_RETRIES_LEFT, CREATION_TIME, LAST_UPDATE_TIME FROM JOB ) t"
+ },
+ {
+  "id": "JobMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO JOB (JOB_KEY, PARTITION_ID, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, BUSINESS_ID, ELEMENT_INSTANCE_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, TENANT_ID, TYPE, WORKER, STATE, RETRIES, PRIORITY, ERROR_MESSAGE, ERROR_CODE, END_TIME, CUSTOM_HEADERS, KIND, ELEMENT_ID, IS_DENIED, DENIED_REASON, LISTENER_EVENT_TYPE, DEADLINE, HAS_FAILED_WITH_RETRIES_LEFT, CREATION_TIME, LAST_UPDATE_TIME) VALUES"
+ },
+ {
+  "id": "JobMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT * FROM dual"
+ },
+ {
+  "id": "JobMapper.update",
+  "kind": "update",
+  "sql": "UPDATE JOB PROCESS_INSTANCE_KEY = ?, ELEMENT_INSTANCE_KEY = ?, PROCESS_DEFINITION_ID = ?, PROCESS_DEFINITION_KEY = ?, TENANT_ID = ?, RETRIES = ?, PRIORITY = ?, STATE = ?, TYPE = ?, WORKER = ?, KIND = ?, LISTENER_EVENT_TYPE = ?, HAS_FAILED_WITH_RETRIES_LEFT = ?, LAST_UPDATE_TIME = ?, WHERE JOB_KEY = ?"
+ },
+ {
+  "id": "JobMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "JobMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "JobMetricsBatchMapper.globalJobStatistics",
+  "kind": "select",
+  "sql": "SELECT SUM(CREATED_COUNT) AS CREATED_COUNT, MAX(LAST_CREATED_AT) AS LAST_CREATED_AT, SUM(COMPLETED_COUNT) AS COMPLETED_COUNT, MAX(LAST_COMPLETED_AT) AS LAST_COMPLETED_AT, SUM(FAILED_COUNT) AS FAILED_COUNT, MAX(LAST_FAILED_AT) AS LAST_FAILED_AT, CASE WHEN MAX(CASE WHEN INCOMPLETE_BATCH = THEN 1 ELSE 0 END) = 1 THEN ELSE END AS INCOMPLETE_BATCH FROM JOB_METRICS_BATCH"
+ },
+ {
+  "id": "JobMetricsBatchMapper.jobTypeStatistics",
+  "kind": "select",
+  "sql": "SELECT JOB_TYPE, SUM(CREATED_COUNT) AS CREATED_COUNT, MAX(LAST_CREATED_AT) AS LAST_CREATED_AT, SUM(COMPLETED_COUNT) AS COMPLETED_COUNT, MAX(LAST_COMPLETED_AT) AS LAST_COMPLETED_AT, SUM(FAILED_COUNT) AS FAILED_COUNT, MAX(LAST_FAILED_AT) AS LAST_FAILED_AT, COUNT(DISTINCT WORKER) AS WORKERS FROM JOB_METRICS_BATCH GROUP BY JOB_TYPE"
+ },
+ {
+  "id": "JobMetricsBatchMapper.jobWorkerStatistics",
+  "kind": "select",
+  "sql": "SELECT WORKER, SUM(CREATED_COUNT) AS CREATED_COUNT, MAX(LAST_CREATED_AT) AS LAST_CREATED_AT, SUM(COMPLETED_COUNT) AS COMPLETED_COUNT, MAX(LAST_COMPLETED_AT) AS LAST_COMPLETED_AT, SUM(FAILED_COUNT) AS FAILED_COUNT, MAX(LAST_FAILED_AT) AS LAST_FAILED_AT FROM JOB_METRICS_BATCH AND WORKER IS NOT NULL GROUP BY WORKER"
+ },
+ {
+  "id": "JobMetricsBatchMapper.jobTimeSeriesStatistics",
+  "kind": "select",
+  "sql": "SELECT BUCKET_TIME, SUM(CREATED_COUNT) AS CREATED_COUNT, MAX(LAST_CREATED_AT) AS LAST_CREATED_AT, SUM(COMPLETED_COUNT) AS COMPLETED_COUNT, MAX(LAST_COMPLETED_AT) AS LAST_COMPLETED_AT, SUM(FAILED_COUNT) AS FAILED_COUNT, MAX(LAST_FAILED_AT) AS LAST_FAILED_AT FROM ( SELECT AS BUCKET_TIME, CREATED_COUNT, LAST_CREATED_AT, COMPLETED_COUNT, LAST_COMPLETED_AT, FAILED_COUNT, LAST_FAILED_AT FROM JOB_METRICS_BATCH ) BUCKETED GROUP BY BUCKET_TIME"
+ },
+ {
+  "id": "JobMetricsBatchMapper.jobErrorStatistics",
+  "kind": "select",
+  "sql": "SELECT ERROR_CODE, ERROR_MESSAGE, COUNT(DISTINCT WORKER) AS WORKERS FROM JOB WHERE STATE IN ('ERROR_THROWN', 'FAILED', 'TIMED_OUT') GROUP BY ERROR_CODE, ERROR_MESSAGE"
+ },
+ {
+  "id": "JobMetricsBatchMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO JOB_METRICS_BATCH (JOB_METRICS_BATCH_KEY, PARTITION_ID, START_TIME, END_TIME, INCOMPLETE_BATCH, TENANT_ID, FAILED_COUNT, LAST_FAILED_AT, COMPLETED_COUNT, LAST_COMPLETED_AT, CREATED_COUNT, LAST_CREATED_AT, JOB_TYPE, WORKER) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "JobMetricsBatchMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE FROM JOB_METRICS_BATCH WHERE PARTITION_ID = ? AND END_TIME < ? LIMIT ?"
+ },
+ {
+  "id": "JobMetricsBatchMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE TOP(?) FROM JOB_METRICS_BATCH WHERE PARTITION_ID = ? AND END_TIME < ?"
+ },
+ {
+  "id": "JobMetricsBatchMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE FROM JOB_METRICS_BATCH WHERE JOB_METRICS_BATCH_KEY IN (SELECT JOB_METRICS_BATCH_KEY FROM JOB_METRICS_BATCH WHERE PARTITION_ID = ? AND END_TIME < ? AND ROWNUM <= ?)"
+ },
+ {
+  "id": "JobMetricsBatchMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE FROM JOB_METRICS_BATCH WHERE JOB_METRICS_BATCH_KEY IN (SELECT JOB_METRICS_BATCH_KEY FROM JOB_METRICS_BATCH WHERE PARTITION_ID = ? AND END_TIME < ? LIMIT ?)"
+ },
+ {
+  "id": "MappingRuleMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO MAPPING_RULES (MAPPING_RULE_ID, MAPPING_RULE_KEY, CLAIM_NAME, CLAIM_VALUE, NAME) VALUES (?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "MappingRuleMapper.update",
+  "kind": "update",
+  "sql": "UPDATE MAPPING_RULES SET NAME = ?, CLAIM_NAME = ?, CLAIM_VALUE = ? WHERE MAPPING_RULE_ID = ?"
+ },
+ {
+  "id": "MappingRuleMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM MAPPING_RULES WHERE MAPPING_RULE_ID = ?"
+ },
+ {
+  "id": "MappingRuleMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM MAPPING_RULES m ) t"
+ },
+ {
+  "id": "MappingRuleMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT MAPPING_RULE_ID, MAPPING_RULE_KEY, CLAIM_NAME, CLAIM_VALUE, NAME FROM MAPPING_RULES m ) t"
+ },
+ {
+  "id": "MessageSubscriptionMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM MESSAGE_SUBSCRIPTION ) t"
+ },
+ {
+  "id": "MessageSubscriptionMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT MESSAGE_SUBSCRIPTION_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_INSTANCE_KEY, MESSAGE_SUBSCRIPTION_STATE, MESSAGE_SUBSCRIPTION_TYPE, DATE_TIME, MESSAGE_NAME, CORRELATION_KEY, TENANT_ID, PARTITION_ID, PROCESS_DEFINITION_NAME, PROCESS_DEFINITION_VERSION, TOOL_PROPERTIES, TOOL_NAME, INBOUND_CONNECTOR_TYPE, BUSINESS_ID FROM MESSAGE_SUBSCRIPTION ) t"
+ },
+ {
+  "id": "MessageSubscriptionMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO MESSAGE_SUBSCRIPTION ( MESSAGE_SUBSCRIPTION_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_INSTANCE_KEY, MESSAGE_SUBSCRIPTION_STATE, MESSAGE_SUBSCRIPTION_TYPE, DATE_TIME, MESSAGE_NAME, CORRELATION_KEY, TENANT_ID, PARTITION_ID, PROCESS_DEFINITION_NAME, PROCESS_DEFINITION_VERSION, TOOL_PROPERTIES, TOOL_NAME, INBOUND_CONNECTOR_TYPE, BUSINESS_ID ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"
+ },
+ {
+  "id": "MessageSubscriptionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO MESSAGE_SUBSCRIPTION ( MESSAGE_SUBSCRIPTION_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_INSTANCE_KEY, MESSAGE_SUBSCRIPTION_STATE, MESSAGE_SUBSCRIPTION_TYPE, DATE_TIME, MESSAGE_NAME, CORRELATION_KEY, TENANT_ID, PARTITION_ID, PROCESS_DEFINITION_NAME, PROCESS_DEFINITION_VERSION, TOOL_PROPERTIES, TOOL_NAME, INBOUND_CONNECTOR_TYPE, BUSINESS_ID ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ON CONFLICT (MESSAGE_SUBSCRIPTION_KEY) DO UPDATE SET PROCESS_DEFINITION_ID = EXCLUDED.PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY = EXCLUDED.PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY = EXCLUDED.PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY = EXCLUDED.ROOT_PROCESS_INSTANCE_KEY, FLOW_NODE_ID = EXCLUDED.FLOW_NODE_ID, FLOW_NODE_INSTANCE_KEY = EXCLUDED.FLOW_NODE_INSTANCE_KEY, MESSAGE_SUBSCRIPTION_STATE = EXCLUDED.MESSAGE_SUBSCRIPTION_STATE, MESSAGE_SUBSCRIPTION_TYPE = EXCLUDED.MESSAGE_SUBSCRIPTION_TYPE, DATE_TIME = EXCLUDED.DATE_TIME, MESSAGE_NAME = EXCLUDED.MESSAGE_NAME, CORRELATION_KEY = EXCLUDED.CORRELATION_KEY, TENANT_ID = EXCLUDED.TENANT_ID, PARTITION_ID = EXCLUDED.PARTITION_ID, PROCESS_DEFINITION_NAME = EXCLUDED.PROCESS_DEFINITION_NAME, PROCESS_DEFINITION_VERSION = EXCLUDED.PROCESS_DEFINITION_VERSION, TOOL_PROPERTIES = EXCLUDED.TOOL_PROPERTIES, TOOL_NAME = EXCLUDED.TOOL_NAME, INBOUND_CONNECTOR_TYPE = EXCLUDED.INBOUND_CONNECTOR_TYPE, BUSINESS_ID = EXCLUDED.BUSINESS_ID"
+ },
+ {
+  "id": "MessageSubscriptionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO MESSAGE_SUBSCRIPTION ( MESSAGE_SUBSCRIPTION_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_INSTANCE_KEY, MESSAGE_SUBSCRIPTION_STATE, MESSAGE_SUBSCRIPTION_TYPE, DATE_TIME, MESSAGE_NAME, CORRELATION_KEY, TENANT_ID, PARTITION_ID, PROCESS_DEFINITION_NAME, PROCESS_DEFINITION_VERSION, TOOL_PROPERTIES, TOOL_NAME, INBOUND_CONNECTOR_TYPE, BUSINESS_ID ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE PROCESS_DEFINITION_ID = VALUES(PROCESS_DEFINITION_ID), PROCESS_DEFINITION_KEY = VALUES(PROCESS_DEFINITION_KEY), PROCESS_INSTANCE_KEY = VALUES(PROCESS_INSTANCE_KEY), ROOT_PROCESS_INSTANCE_KEY = VALUES(ROOT_PROCESS_INSTANCE_KEY), FLOW_NODE_ID = VALUES(FLOW_NODE_ID), FLOW_NODE_INSTANCE_KEY = VALUES(FLOW_NODE_INSTANCE_KEY), MESSAGE_SUBSCRIPTION_STATE = VALUES(MESSAGE_SUBSCRIPTION_STATE), MESSAGE_SUBSCRIPTION_TYPE = VALUES(MESSAGE_SUBSCRIPTION_TYPE), DATE_TIME = VALUES(DATE_TIME), MESSAGE_NAME = VALUES(MESSAGE_NAME), CORRELATION_KEY = VALUES(CORRELATION_KEY), TENANT_ID = VALUES(TENANT_ID), PARTITION_ID = VALUES(PARTITION_ID), PROCESS_DEFINITION_NAME = VALUES(PROCESS_DEFINITION_NAME), PROCESS_DEFINITION_VERSION = VALUES(PROCESS_DEFINITION_VERSION), TOOL_PROPERTIES = VALUES(TOOL_PROPERTIES), TOOL_NAME = VALUES(TOOL_NAME), INBOUND_CONNECTOR_TYPE = VALUES(INBOUND_CONNECTOR_TYPE), BUSINESS_ID = VALUES(BUSINESS_ID)"
+ },
+ {
+  "id": "MessageSubscriptionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO MESSAGE_SUBSCRIPTION ( MESSAGE_SUBSCRIPTION_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_INSTANCE_KEY, MESSAGE_SUBSCRIPTION_STATE, MESSAGE_SUBSCRIPTION_TYPE, DATE_TIME, MESSAGE_NAME, CORRELATION_KEY, TENANT_ID, PARTITION_ID, PROCESS_DEFINITION_NAME, PROCESS_DEFINITION_VERSION, TOOL_PROPERTIES, TOOL_NAME, INBOUND_CONNECTOR_TYPE, BUSINESS_ID ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE PROCESS_DEFINITION_ID = VALUES(PROCESS_DEFINITION_ID), PROCESS_DEFINITION_KEY = VALUES(PROCESS_DEFINITION_KEY), PROCESS_INSTANCE_KEY = VALUES(PROCESS_INSTANCE_KEY), ROOT_PROCESS_INSTANCE_KEY = VALUES(ROOT_PROCESS_INSTANCE_KEY), FLOW_NODE_ID = VALUES(FLOW_NODE_ID), FLOW_NODE_INSTANCE_KEY = VALUES(FLOW_NODE_INSTANCE_KEY), MESSAGE_SUBSCRIPTION_STATE = VALUES(MESSAGE_SUBSCRIPTION_STATE), MESSAGE_SUBSCRIPTION_TYPE = VALUES(MESSAGE_SUBSCRIPTION_TYPE), DATE_TIME = VALUES(DATE_TIME), MESSAGE_NAME = VALUES(MESSAGE_NAME), CORRELATION_KEY = VALUES(CORRELATION_KEY), TENANT_ID = VALUES(TENANT_ID), PARTITION_ID = VALUES(PARTITION_ID), PROCESS_DEFINITION_NAME = VALUES(PROCESS_DEFINITION_NAME), PROCESS_DEFINITION_VERSION = VALUES(PROCESS_DEFINITION_VERSION), TOOL_PROPERTIES = VALUES(TOOL_PROPERTIES), TOOL_NAME = VALUES(TOOL_NAME), INBOUND_CONNECTOR_TYPE = VALUES(INBOUND_CONNECTOR_TYPE), BUSINESS_ID = VALUES(BUSINESS_ID)"
+ },
+ {
+  "id": "MessageSubscriptionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE INTO MESSAGE_SUBSCRIPTION ms USING dual ON (ms.MESSAGE_SUBSCRIPTION_KEY = ?) WHEN NOT MATCHED THEN INSERT (MESSAGE_SUBSCRIPTION_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_INSTANCE_KEY, MESSAGE_SUBSCRIPTION_STATE, MESSAGE_SUBSCRIPTION_TYPE, DATE_TIME, MESSAGE_NAME, CORRELATION_KEY, TENANT_ID, PARTITION_ID, PROCESS_DEFINITION_NAME, PROCESS_DEFINITION_VERSION, TOOL_PROPERTIES, TOOL_NAME, INBOUND_CONNECTOR_TYPE, BUSINESS_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHEN MATCHED THEN UPDATE SET ms.PROCESS_DEFINITION_ID = ?, ms.PROCESS_DEFINITION_KEY = ?, ms.PROCESS_INSTANCE_KEY = ?, ms.ROOT_PROCESS_INSTANCE_KEY = ?, ms.FLOW_NODE_ID = ?, ms.FLOW_NODE_INSTANCE_KEY = ?, ms.MESSAGE_SUBSCRIPTION_STATE = ?, ms.MESSAGE_SUBSCRIPTION_TYPE = ?, ms.DATE_TIME = ?, ms.MESSAGE_NAME = ?, ms.CORRELATION_KEY = ?, ms.TENANT_ID = ?, ms.PARTITION_ID = ?, ms.PROCESS_DEFINITION_NAME = ?, ms.PROCESS_DEFINITION_VERSION = ?, ms.TOOL_PROPERTIES = ?, ms.TOOL_NAME = ?, ms.INBOUND_CONNECTOR_TYPE = ?, ms.BUSINESS_ID = ?"
+ },
+ {
+  "id": "MessageSubscriptionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE INTO MESSAGE_SUBSCRIPTION ms USING dual ON (ms.MESSAGE_SUBSCRIPTION_KEY = ?) WHEN NOT MATCHED THEN INSERT (MESSAGE_SUBSCRIPTION_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_INSTANCE_KEY, MESSAGE_SUBSCRIPTION_STATE, MESSAGE_SUBSCRIPTION_TYPE, DATE_TIME, MESSAGE_NAME, CORRELATION_KEY, TENANT_ID, PARTITION_ID, PROCESS_DEFINITION_NAME, PROCESS_DEFINITION_VERSION, TOOL_PROPERTIES, TOOL_NAME, INBOUND_CONNECTOR_TYPE, BUSINESS_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHEN MATCHED THEN UPDATE SET ms.PROCESS_DEFINITION_ID = ?, ms.PROCESS_DEFINITION_KEY = ?, ms.PROCESS_INSTANCE_KEY = ?, ms.ROOT_PROCESS_INSTANCE_KEY = ?, ms.FLOW_NODE_ID = ?, ms.FLOW_NODE_INSTANCE_KEY = ?, ms.MESSAGE_SUBSCRIPTION_STATE = ?, ms.MESSAGE_SUBSCRIPTION_TYPE = ?, ms.DATE_TIME = ?, ms.MESSAGE_NAME = ?, ms.CORRELATION_KEY = ?, ms.TENANT_ID = ?, ms.PARTITION_ID = ?, ms.PROCESS_DEFINITION_NAME = ?, ms.PROCESS_DEFINITION_VERSION = ?, ms.TOOL_PROPERTIES = ?, ms.TOOL_NAME = ?, ms.INBOUND_CONNECTOR_TYPE = ?, ms.BUSINESS_ID = ?"
+ },
+ {
+  "id": "MessageSubscriptionMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE INTO MESSAGE_SUBSCRIPTION AS target USING (SELECT 1 AS dummy) AS src ON (target.MESSAGE_SUBSCRIPTION_KEY = ?) WHEN NOT MATCHED THEN INSERT (MESSAGE_SUBSCRIPTION_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, FLOW_NODE_ID, FLOW_NODE_INSTANCE_KEY, MESSAGE_SUBSCRIPTION_STATE, MESSAGE_SUBSCRIPTION_TYPE, DATE_TIME, MESSAGE_NAME, CORRELATION_KEY, TENANT_ID, PARTITION_ID, PROCESS_DEFINITION_NAME, PROCESS_DEFINITION_VERSION, TOOL_PROPERTIES, TOOL_NAME, INBOUND_CONNECTOR_TYPE, BUSINESS_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHEN MATCHED THEN UPDATE SET target.PROCESS_DEFINITION_ID = ?, target.PROCESS_DEFINITION_KEY = ?, target.PROCESS_INSTANCE_KEY = ?, target.ROOT_PROCESS_INSTANCE_KEY = ?, target.FLOW_NODE_ID = ?, target.FLOW_NODE_INSTANCE_KEY = ?, target.MESSAGE_SUBSCRIPTION_STATE = ?, target.MESSAGE_SUBSCRIPTION_TYPE = ?, target.DATE_TIME = ?, target.MESSAGE_NAME = ?, target.CORRELATION_KEY = ?, target.TENANT_ID = ?, target.PARTITION_ID = ?, target.PROCESS_DEFINITION_NAME = ?, target.PROCESS_DEFINITION_VERSION = ?, target.TOOL_PROPERTIES = ?, target.TOOL_NAME = ?, target.INBOUND_CONNECTOR_TYPE = ?, target.BUSINESS_ID = ?;"
+ },
+ {
+  "id": "MessageSubscriptionMapper.update",
+  "kind": "update",
+  "sql": "UPDATE MESSAGE_SUBSCRIPTION SET PROCESS_DEFINITION_ID = ?, PROCESS_DEFINITION_KEY = ?, PROCESS_INSTANCE_KEY = ?, FLOW_NODE_ID = ?, FLOW_NODE_INSTANCE_KEY = ?, MESSAGE_SUBSCRIPTION_STATE = ?, MESSAGE_SUBSCRIPTION_TYPE = ?, DATE_TIME = ?, MESSAGE_NAME = ?, CORRELATION_KEY = ?, TENANT_ID = ?, PROCESS_DEFINITION_NAME = ?, PROCESS_DEFINITION_VERSION = ?, TOOL_PROPERTIES = ?, TOOL_NAME = ?, INBOUND_CONNECTOR_TYPE = ?, BUSINESS_ID = ? WHERE MESSAGE_SUBSCRIPTION_KEY = ?"
+ },
+ {
+  "id": "MessageSubscriptionMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "MessageSubscriptionMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "MessageSubscriptionMapper.deleteStartEventSubscriptionsByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM MESSAGE_SUBSCRIPTION WHERE PROCESS_DEFINITION_KEY IN AND MESSAGE_SUBSCRIPTION_TYPE = 'START_EVENT' LIMIT ?"
+ },
+ {
+  "id": "MessageSubscriptionMapper.deleteStartEventSubscriptionsByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE TOP (?) FROM MESSAGE_SUBSCRIPTION WHERE PROCESS_DEFINITION_KEY IN AND MESSAGE_SUBSCRIPTION_TYPE = 'START_EVENT'"
+ },
+ {
+  "id": "MessageSubscriptionMapper.deleteStartEventSubscriptionsByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM MESSAGE_SUBSCRIPTION WHERE rowid IN (SELECT rowid FROM MESSAGE_SUBSCRIPTION WHERE PROCESS_DEFINITION_KEY IN AND MESSAGE_SUBSCRIPTION_TYPE = 'START_EVENT' AND ROWNUM <= ?)"
+ },
+ {
+  "id": "MessageSubscriptionMapper.deleteStartEventSubscriptionsByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM MESSAGE_SUBSCRIPTION WHERE ctid IN (SELECT ctid FROM MESSAGE_SUBSCRIPTION WHERE PROCESS_DEFINITION_KEY IN AND MESSAGE_SUBSCRIPTION_TYPE = 'START_EVENT' LIMIT ?)"
+ },
+ {
+  "id": "MessageSubscriptionMapper.getProcessDefinitionStatistics",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT MIN(ms.PROCESS_DEFINITION_ID) AS PROCESS_DEFINITION_ID, ms.PROCESS_DEFINITION_KEY, COUNT(DISTINCT ms.FLOW_NODE_INSTANCE_KEY) AS ACTIVE_SUBSCRIPTIONS, COUNT(DISTINCT ms.PROCESS_INSTANCE_KEY) AS PROCESS_INSTANCES_WITH_ACTIVE_SUBSCRIPTIONS, ms.TENANT_ID FROM MESSAGE_SUBSCRIPTION ms GROUP BY ms.PROCESS_DEFINITION_KEY, ms.TENANT_ID ) t"
+ },
+ {
+  "id": "PersistentWebSessionMapper.findById",
+  "kind": "select",
+  "sql": "SELECT SESSION_ID, CREATION_TIME, LAST_ACCESSED_TIME, MAX_INACTIVE_INTERVAL_IN_SECONDS, ATTRIBUTES FROM WEB_SESSION WHERE SESSION_ID = ?"
+ },
+ {
+  "id": "PersistentWebSessionMapper.findAll",
+  "kind": "select",
+  "sql": "SELECT SESSION_ID, CREATION_TIME, LAST_ACCESSED_TIME, MAX_INACTIVE_INTERVAL_IN_SECONDS, ATTRIBUTES FROM WEB_SESSION"
+ },
+ {
+  "id": "PersistentWebSessionMapper.upsert",
+  "kind": "insert",
+  "sql": "MERGE INTO WEB_SESSION target USING (SELECT CAST(? AS VARCHAR) AS SESSION_ID, CAST(? AS BIGINT) AS CREATION_TIME, CAST(? AS BIGINT) AS LAST_ACCESSED_TIME, CAST(? AS BIGINT) AS MAX_INACTIVE_INTERVAL_IN_SECONDS, CAST(? AS BINARY LARGE OBJECT) AS ATTRIBUTES ) source ON (target.SESSION_ID = source.SESSION_ID) WHEN MATCHED THEN UPDATE SET CREATION_TIME = source.CREATION_TIME, LAST_ACCESSED_TIME = source.LAST_ACCESSED_TIME, MAX_INACTIVE_INTERVAL_IN_SECONDS = source.MAX_INACTIVE_INTERVAL_IN_SECONDS, ATTRIBUTES = source.ATTRIBUTES WHEN NOT MATCHED THEN INSERT (SESSION_ID, CREATION_TIME, LAST_ACCESSED_TIME, MAX_INACTIVE_INTERVAL_IN_SECONDS, ATTRIBUTES) VALUES (source.SESSION_ID, source.CREATION_TIME, source.LAST_ACCESSED_TIME, source.MAX_INACTIVE_INTERVAL_IN_SECONDS, source.ATTRIBUTES)"
+ },
+ {
+  "id": "PersistentWebSessionMapper.upsert",
+  "kind": "insert",
+  "sql": "INSERT INTO WEB_SESSION (SESSION_ID, CREATION_TIME, LAST_ACCESSED_TIME, MAX_INACTIVE_INTERVAL_IN_SECONDS, ATTRIBUTES) VALUES (?, ?, ?, ?, ?) ON CONFLICT (SESSION_ID) DO UPDATE SET CREATION_TIME = ?, LAST_ACCESSED_TIME = ?, MAX_INACTIVE_INTERVAL_IN_SECONDS = ?, ATTRIBUTES = ?"
+ },
+ {
+  "id": "PersistentWebSessionMapper.upsert",
+  "kind": "insert",
+  "sql": "INSERT INTO WEB_SESSION (SESSION_ID, CREATION_TIME, LAST_ACCESSED_TIME, MAX_INACTIVE_INTERVAL_IN_SECONDS, ATTRIBUTES) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE CREATION_TIME = ?, LAST_ACCESSED_TIME = ?, MAX_INACTIVE_INTERVAL_IN_SECONDS = ?, ATTRIBUTES = ?"
+ },
+ {
+  "id": "PersistentWebSessionMapper.upsert",
+  "kind": "insert",
+  "sql": "INSERT INTO WEB_SESSION (SESSION_ID, CREATION_TIME, LAST_ACCESSED_TIME, MAX_INACTIVE_INTERVAL_IN_SECONDS, ATTRIBUTES) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE CREATION_TIME = ?, LAST_ACCESSED_TIME = ?, MAX_INACTIVE_INTERVAL_IN_SECONDS = ?, ATTRIBUTES = ?"
+ },
+ {
+  "id": "PersistentWebSessionMapper.upsert",
+  "kind": "insert",
+  "sql": "MERGE INTO WEB_SESSION AS target USING (SELECT ? AS SESSION_ID) AS source ON target.SESSION_ID = source.SESSION_ID WHEN MATCHED THEN UPDATE SET CREATION_TIME = ?, LAST_ACCESSED_TIME = ?, MAX_INACTIVE_INTERVAL_IN_SECONDS = ?, ATTRIBUTES = ? WHEN NOT MATCHED THEN INSERT (SESSION_ID, CREATION_TIME, LAST_ACCESSED_TIME, MAX_INACTIVE_INTERVAL_IN_SECONDS, ATTRIBUTES) VALUES (?, ?, ?, ?, ?);"
+ },
+ {
+  "id": "PersistentWebSessionMapper.upsert",
+  "kind": "insert",
+  "sql": "MERGE INTO WEB_SESSION target USING (SELECT ? AS SESSION_ID, ? AS CREATION_TIME, ? AS LAST_ACCESSED_TIME, ? AS MAX_INACTIVE_INTERVAL_IN_SECONDS, ? AS ATTRIBUTES FROM dual) source ON (target.SESSION_ID = source.SESSION_ID) WHEN MATCHED THEN UPDATE SET CREATION_TIME = source.CREATION_TIME, LAST_ACCESSED_TIME = source.LAST_ACCESSED_TIME, MAX_INACTIVE_INTERVAL_IN_SECONDS = source.MAX_INACTIVE_INTERVAL_IN_SECONDS, ATTRIBUTES = source.ATTRIBUTES WHEN NOT MATCHED THEN INSERT (SESSION_ID, CREATION_TIME, LAST_ACCESSED_TIME, MAX_INACTIVE_INTERVAL_IN_SECONDS, ATTRIBUTES) VALUES (source.SESSION_ID, source.CREATION_TIME, source.LAST_ACCESSED_TIME, source.MAX_INACTIVE_INTERVAL_IN_SECONDS, source.ATTRIBUTES)"
+ },
+ {
+  "id": "PersistentWebSessionMapper.deleteById",
+  "kind": "delete",
+  "sql": "DELETE FROM WEB_SESSION WHERE SESSION_ID = ?"
+ },
+ {
+  "id": "ProcessDefinitionMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM PROCESS_DEFINITION t ) t"
+ },
+ {
+  "id": "ProcessDefinitionMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_ID, RESOURCE_NAME, NAME, TENANT_ID, VERSION_TAG, VERSION, FORM_ID, STATE FROM PROCESS_DEFINITION ) t"
+ },
+ {
+  "id": "ProcessDefinitionMapper.flowNodeStatistics",
+  "kind": "select",
+  "sql": "SELECT res.FLOW_NODE_ID, SUM(CASE WHEN res.COUNT_ACTIVE > 0 THEN 1 ELSE 0 END) AS COUNT_ACTIVE, SUM(CASE WHEN res.COUNT_CANCELED > 0 THEN 1 ELSE 0 END) AS COUNT_CANCELED, SUM(CASE WHEN res.COUNT_COMPLETED > 0 THEN 1 ELSE 0 END) AS COUNT_COMPLETED, SUM(CASE WHEN res.COUNT_INCIDENTs > 0 THEN 1 ELSE 0 END) AS COUNT_INCIDENTS FROM ( SELECT fni.FLOW_NODE_ID, SUM(CASE WHEN fni.STATE = 'ACTIVE' AND fni.NUM_SUBPROCESS_INCIDENTS = 0 AND fni.INCIDENT_KEY IS NULL THEN 1 ELSE 0 END) AS COUNT_ACTIVE, SUM(CASE WHEN fni.STATE = 'TERMINATED' THEN 1 ELSE 0 END) AS COUNT_CANCELED, SUM(CASE WHEN fni.STATE = 'COMPLETED' THEN 1 ELSE 0 END) AS COUNT_COMPLETED, SUM(CASE WHEN fni.STATE = 'ACTIVE' AND (fni.NUM_SUBPROCESS_INCIDENTS > 0 OR fni.INCIDENT_KEY IS NOT NULL) THEN 1 ELSE 0 END) AS COUNT_INCIDENTS FROM PROCESS_DEFINITION pd JOIN PROCESS_INSTANCE pi ON (pd.PROCESS_DEFINITION_KEY = pi.PROCESS_DEFINITION_KEY) JOIN FLOW_NODE_INSTANCE fni ON (pi.PROCESS_INSTANCE_KEY = fni.PROCESS_INSTANCE_KEY) WHERE pd.PROCESS_DEFINITION_KEY = ? GROUP BY pi.PROCESS_INSTANCE_KEY, fni.FLOW_NODE_ID ) res GROUP BY res.FLOW_NODE_ID"
+ },
+ {
+  "id": "ProcessDefinitionMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO PROCESS_DEFINITION (PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_ID, RESOURCE_NAME, BPMN_XML, NAME, TENANT_ID, VERSION_TAG, VERSION, FORM_ID, STATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "ProcessDefinitionMapper.markDeleted",
+  "kind": "update",
+  "sql": "UPDATE PROCESS_DEFINITION SET STATE = ? WHERE PROCESS_DEFINITION_KEY = ?"
+ },
+ {
+  "id": "ProcessDefinitionMapper.markDraining",
+  "kind": "update",
+  "sql": "UPDATE PROCESS_DEFINITION SET STATE = ? WHERE PROCESS_DEFINITION_KEY = ?"
+ },
+ {
+  "id": "ProcessDefinitionMapper.processInstanceStatisticsCount",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM PROCESS_INSTANCE pi WHERE pi.STATE = 'ACTIVE' GROUP BY pi.PROCESS_DEFINITION_ID, pi.TENANT_ID ) t"
+ },
+ {
+  "id": "ProcessDefinitionMapper.processInstanceStatistics",
+  "kind": "select",
+  "sql": "SELECT pi.PROCESS_DEFINITION_ID, pi.TENANT_ID, (SELECT pd.NAME FROM PROCESS_DEFINITION pd WHERE pd.PROCESS_DEFINITION_ID = pi.PROCESS_DEFINITION_ID AND pd.TENANT_ID = pi.TENANT_ID ORDER BY pd.VERSION DESC ) AS LATEST_PROCESS_DEFINITION_NAME, CASE WHEN (SELECT COUNT(DISTINCT pd.VERSION) FROM PROCESS_DEFINITION pd WHERE pd.PROCESS_DEFINITION_ID = pi.PROCESS_DEFINITION_ID AND (pd.TENANT_ID = pi.TENANT_ID OR (pd.TENANT_ID IS NULL AND pi.TENANT_ID IS NULL)) AND (pd.STATE IS NULL OR pd.STATE != 'DELETED')) > 1 THEN 1 ELSE 0 END AS HAS_MULTIPLE_VERSIONS, SUM(CASE WHEN pi.NUM_INCIDENTS = 0 OR pi.NUM_INCIDENTS IS NULL THEN 1 ELSE 0 END) AS ACTIVE_INSTANCES_WITHOUT_INCIDENT_COUNT, SUM(CASE WHEN pi.NUM_INCIDENTS > 0 THEN 1 ELSE 0 END) AS ACTIVE_INSTANCES_WITH_INCIDENT_COUNT FROM PROCESS_INSTANCE pi WHERE pi.STATE = 'ACTIVE' GROUP BY pi.PROCESS_DEFINITION_ID, pi.TENANT_ID"
+ },
+ {
+  "id": "ProcessDefinitionMapper.processInstanceVersionStatisticsCount",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM (SELECT 1 as col FROM PROCESS_INSTANCE pi JOIN PROCESS_DEFINITION pd ON pd.PROCESS_DEFINITION_KEY = pi.PROCESS_DEFINITION_KEY WHERE pi.PROCESS_DEFINITION_ID = ? AND pi.STATE = 'ACTIVE' GROUP BY pi.PROCESS_DEFINITION_ID, pi.PROCESS_DEFINITION_KEY, pi.VERSION, pi.TENANT_ID, pd.NAME ) t"
+ },
+ {
+  "id": "ProcessDefinitionMapper.processInstanceVersionStatistics",
+  "kind": "select",
+  "sql": "SELECT pi.PROCESS_DEFINITION_ID, pi.PROCESS_DEFINITION_KEY, pi.VERSION AS PROCESS_DEFINITION_VERSION, pd.NAME AS PROCESS_DEFINITION_NAME, pi.TENANT_ID, SUM(CASE WHEN pi.NUM_INCIDENTS = 0 OR pi.NUM_INCIDENTS IS NULL THEN 1 ELSE 0 END) AS ACTIVE_INSTANCES_WITHOUT_INCIDENT_COUNT, SUM(CASE WHEN pi.NUM_INCIDENTS > 0 THEN 1 ELSE 0 END) AS ACTIVE_INSTANCES_WITH_INCIDENT_COUNT FROM PROCESS_INSTANCE pi LEFT JOIN PROCESS_DEFINITION pd ON pd.PROCESS_DEFINITION_KEY = pi.PROCESS_DEFINITION_KEY WHERE pi.PROCESS_DEFINITION_ID = ? AND pi.STATE = 'ACTIVE' GROUP BY pi.PROCESS_DEFINITION_ID, pi.PROCESS_DEFINITION_KEY, pi.VERSION, pi.TENANT_ID, pd.NAME"
+ },
+ {
+  "id": "ProcessDefinitionMapper.deleteByKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM PROCESS_DEFINITION WHERE PROCESS_DEFINITION_KEY IN"
+ },
+ {
+  "id": "ProcessInstanceMapper.findOne",
+  "kind": "select",
+  "sql": "SELECT pi.PROCESS_INSTANCE_KEY, pi.ROOT_PROCESS_INSTANCE_KEY, pi.PROCESS_DEFINITION_ID, pi.PROCESS_DEFINITION_KEY, pi.STATE, pi.START_DATE, pi.END_DATE, pi.TENANT_ID, CASE WHEN pi.NUM_INCIDENTS = 0 THEN ELSE END AS HAS_INCIDENT, pi.PARENT_PROCESS_INSTANCE_KEY, pi.PARENT_ELEMENT_INSTANCE_KEY, pi.VERSION AS PROCESS_DEFINITION_VERSION, pi.TREE_PATH, pi.BUSINESS_ID, pi.SUSPENDED_DATE, pd.NAME AS PROCESS_DEFINITION_NAME, pd.VERSION_TAG AS PROCESS_DEFINITION_VERSION_TAG, pit.TAG_VALUE AS TAG_VALUE FROM PROCESS_INSTANCE pi LEFT JOIN PROCESS_DEFINITION pd ON (pi.PROCESS_DEFINITION_KEY = pd.PROCESS_DEFINITION_KEY) LEFT JOIN PROCESS_INSTANCE_TAG pit ON (pit.PROCESS_INSTANCE_KEY = pi.PROCESS_INSTANCE_KEY) WHERE pi.PROCESS_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "ProcessInstanceMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM PROCESS_INSTANCE pi LEFT JOIN PROCESS_DEFINITION pd ON (pi.PROCESS_DEFINITION_KEY = pd.PROCESS_DEFINITION_KEY) ) t"
+ },
+ {
+  "id": "ProcessInstanceMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT pif.PROCESS_INSTANCE_KEY, pif.ROOT_PROCESS_INSTANCE_KEY, pif.PROCESS_DEFINITION_ID, pif.PROCESS_DEFINITION_KEY, pif.STATE, pif.START_DATE, pif.END_DATE, pif.TENANT_ID, pif.HAS_INCIDENT, pif.PARENT_PROCESS_INSTANCE_KEY, pif.PARENT_ELEMENT_INSTANCE_KEY, pif.PROCESS_DEFINITION_VERSION, pif.TREE_PATH, pif.BUSINESS_ID, pif.SUSPENDED_DATE, pif.PROCESS_DEFINITION_NAME, pif.PROCESS_DEFINITION_VERSION_TAG, pit.TAG_VALUE AS TAG_VALUE FROM ( SELECT * FROM ( SELECT pi.PROCESS_INSTANCE_KEY, pi.ROOT_PROCESS_INSTANCE_KEY, pi.PROCESS_DEFINITION_ID, pi.PROCESS_DEFINITION_KEY, pi.STATE, pi.START_DATE, pi.END_DATE, pi.TENANT_ID, CASE WHEN pi.NUM_INCIDENTS = 0 THEN ELSE END AS HAS_INCIDENT, pi.PARENT_PROCESS_INSTANCE_KEY, pi.PARENT_ELEMENT_INSTANCE_KEY, pi.VERSION PROCESS_DEFINITION_VERSION, pi.TREE_PATH, pi.BUSINESS_ID, pi.SUSPENDED_DATE, pd.NAME AS PROCESS_DEFINITION_NAME, pd.VERSION_TAG AS PROCESS_DEFINITION_VERSION_TAG FROM PROCESS_INSTANCE pi LEFT JOIN PROCESS_DEFINITION pd ON (pi.PROCESS_DEFINITION_KEY = pd.PROCESS_DEFINITION_KEY) ) filtered ) pif LEFT JOIN PROCESS_INSTANCE_TAG pit ON (pit.PROCESS_INSTANCE_KEY = pif.PROCESS_INSTANCE_KEY) ) sorted"
+ },
+ {
+  "id": "ProcessInstanceMapper.flowNodeStatistics",
+  "kind": "select",
+  "sql": "SELECT fni.FLOW_NODE_ID, SUM(CASE WHEN fni.STATE = 'ACTIVE' AND fni.NUM_SUBPROCESS_INCIDENTS = 0 AND fni.INCIDENT_KEY IS NULL THEN 1 ELSE 0 END) AS COUNT_ACTIVE, SUM(CASE WHEN fni.STATE = 'TERMINATED' THEN 1 ELSE 0 END) AS COUNT_CANCELED, SUM(CASE WHEN fni.STATE = 'COMPLETED' THEN 1 ELSE 0 END) AS COUNT_COMPLETED, SUM(CASE WHEN fni.STATE = 'ACTIVE' AND (fni.NUM_SUBPROCESS_INCIDENTS > 0 OR fni.INCIDENT_KEY IS NOT NULL) THEN 1 ELSE 0 END) AS COUNT_INCIDENTS FROM PROCESS_INSTANCE pi JOIN FLOW_NODE_INSTANCE fni ON (pi.PROCESS_INSTANCE_KEY = fni.PROCESS_INSTANCE_KEY) WHERE pi.PROCESS_INSTANCE_KEY = ? AND (fni.TYPE != 'MULTI_INSTANCE_BODY' OR fni.INCIDENT_KEY IS NOT NULL) GROUP BY fni.FLOW_NODE_ID"
+ },
+ {
+  "id": "ProcessInstanceMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO PROCESS_INSTANCE (PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, PROCESS_DEFINITION_KEY, STATE, START_DATE, END_DATE, TENANT_ID, PARENT_PROCESS_INSTANCE_KEY, PARENT_ELEMENT_INSTANCE_KEY, NUM_INCIDENTS, VERSION, PARTITION_ID, TREE_PATH, HISTORY_CLEANUP_DATE, BUSINESS_ID, SUSPENDED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "ProcessInstanceMapper.update",
+  "kind": "update",
+  "sql": "UPDATE PROCESS_INSTANCE SET PROCESS_DEFINITION_ID = ?, PROCESS_DEFINITION_KEY = ?, STATE = ?, START_DATE = ?, END_DATE = ?, TENANT_ID = ?, PARENT_PROCESS_INSTANCE_KEY = ?, PARENT_ELEMENT_INSTANCE_KEY = ?, NUM_INCIDENTS = ?, VERSION = ?, TREE_PATH = ?, HISTORY_CLEANUP_DATE = ?, BUSINESS_ID = ?, SUSPENDED_DATE = ? WHERE PROCESS_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "ProcessInstanceMapper.updateStateAndEndDate",
+  "kind": "update",
+  "sql": "UPDATE PROCESS_INSTANCE SET STATE = ?, END_DATE = ?, SUSPENDED_DATE = NULL WHERE PROCESS_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "ProcessInstanceMapper.updateBusinessId",
+  "kind": "update",
+  "sql": "UPDATE PROCESS_INSTANCE SET BUSINESS_ID = ? WHERE PROCESS_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "ProcessInstanceMapper.updateSuspendedState",
+  "kind": "update",
+  "sql": "UPDATE PROCESS_INSTANCE SET STATE = ?, SUSPENDED_DATE = ? WHERE PROCESS_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "ProcessInstanceMapper.incrementIncidentCount",
+  "kind": "update",
+  "sql": "UPDATE PROCESS_INSTANCE SET NUM_INCIDENTS = NUM_INCIDENTS + 1 WHERE PROCESS_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "ProcessInstanceMapper.decrementIncidentCount",
+  "kind": "update",
+  "sql": "UPDATE PROCESS_INSTANCE SET NUM_INCIDENTS = NUM_INCIDENTS - 1 WHERE PROCESS_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "ProcessInstanceMapper.insertTags",
+  "kind": "insert",
+  "sql": "INSERT INTO PROCESS_INSTANCE_TAG (PROCESS_INSTANCE_KEY, TAG_VALUE) VALUES"
+ },
+ {
+  "id": "ProcessInstanceMapper.insertTags",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "ProcessInstanceMapper.updateHistoryCleanupDate",
+  "kind": "update",
+  "sql": "UPDATE PROCESS_INSTANCE SET HISTORY_CLEANUP_DATE = ? WHERE PROCESS_INSTANCE_KEY IN AND ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE_KEY"
+ },
+ {
+  "id": "ProcessInstanceMapper.deleteByKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM PROCESS_INSTANCE WHERE PROCESS_INSTANCE_KEY IN"
+ },
+ {
+  "id": "ProcessInstanceMapper.selectExpiredRootProcessInstances",
+  "kind": "select",
+  "sql": "SELECT PROCESS_INSTANCE_KEY FROM PROCESS_INSTANCE WHERE PARTITION_ID = ? AND HISTORY_CLEANUP_DATE < ? AND ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE_KEY ORDER BY HISTORY_CLEANUP_DATE"
+ },
+ {
+  "id": "ProcessInstanceMapper.deleteChildrenByRootProcessInstances",
+  "kind": "delete",
+  "sql": "DELETE FROM PROCESS_INSTANCE WHERE ROOT_PROCESS_INSTANCE_KEY IN AND ROOT_PROCESS_INSTANCE_KEY != PROCESS_INSTANCE_KEY LIMIT ?"
+ },
+ {
+  "id": "ProcessInstanceMapper.deleteChildrenByRootProcessInstances",
+  "kind": "delete",
+  "sql": "DELETE TOP (?) FROM PROCESS_INSTANCE WHERE ROOT_PROCESS_INSTANCE_KEY IN AND ROOT_PROCESS_INSTANCE_KEY != PROCESS_INSTANCE_KEY"
+ },
+ {
+  "id": "ProcessInstanceMapper.deleteChildrenByRootProcessInstances",
+  "kind": "delete",
+  "sql": "DELETE FROM PROCESS_INSTANCE t1 WHERE PROCESS_INSTANCE_KEY IN (SELECT t2.PROCESS_INSTANCE_KEY FROM PROCESS_INSTANCE t2 WHERE t2.ROOT_PROCESS_INSTANCE_KEY IN ( SELECT COLUMN_VALUE FROM XMLTABLE('/d/r' PASSING XMLTYPE(?) COLUMNS COLUMN_VALUE NUMBER PATH 'text()') ) AND t2.ROOT_PROCESS_INSTANCE_KEY != t2.PROCESS_INSTANCE_KEY AND ROWNUM <= ?)"
+ },
+ {
+  "id": "ProcessInstanceMapper.deleteChildrenByRootProcessInstances",
+  "kind": "delete",
+  "sql": "DELETE FROM PROCESS_INSTANCE t1 USING (SELECT PROCESS_INSTANCE_KEY FROM PROCESS_INSTANCE WHERE ROOT_PROCESS_INSTANCE_KEY = ANY(?) AND ROOT_PROCESS_INSTANCE_KEY != PROCESS_INSTANCE_KEY LIMIT ?) t2 WHERE t1.PROCESS_INSTANCE_KEY = t2.PROCESS_INSTANCE_KEY"
+ },
+ {
+  "id": "PurgeMapper.disableForeignKeyChecks",
+  "kind": "update",
+  "sql": "SET FOREIGN_KEY_CHECKS = 0"
+ },
+ {
+  "id": "PurgeMapper.enableForeignKeyChecks",
+  "kind": "update",
+  "sql": "SET FOREIGN_KEY_CHECKS = 1"
+ },
+ {
+  "id": "PurgeMapper.disableForeignKeyChecks",
+  "kind": "update",
+  "sql": "SET FOREIGN_KEY_CHECKS = 0"
+ },
+ {
+  "id": "PurgeMapper.enableForeignKeyChecks",
+  "kind": "update",
+  "sql": "SET FOREIGN_KEY_CHECKS = 1"
+ },
+ {
+  "id": "PurgeMapper.disableForeignKeyChecks",
+  "kind": "update",
+  "sql": "SET REFERENTIAL_INTEGRITY FALSE"
+ },
+ {
+  "id": "PurgeMapper.enableForeignKeyChecks",
+  "kind": "update",
+  "sql": "SET REFERENTIAL_INTEGRITY TRUE"
+ },
+ {
+  "id": "PurgeMapper.truncateTable",
+  "kind": "update",
+  "sql": "TRUNCATE TABLE"
+ },
+ {
+  "id": "PurgeMapper.truncateTable",
+  "kind": "update",
+  "sql": "TRUNCATE TABLE CASCADE"
+ },
+ {
+  "id": "PurgeMapper.truncateTable",
+  "kind": "update",
+  "sql": "TRUNCATE TABLE CASCADE"
+ },
+ {
+  "id": "PurgeMapper.truncateTable",
+  "kind": "update",
+  "sql": "DELETE FROM"
+ },
+ {
+  "id": "ReplicationStatusMapper.getCurrentLogStatus",
+  "kind": "select",
+  "sql": "SELECT pg_wal_lsn_diff(pg_current_wal_lsn(), '0/0')::bigint last_lsn"
+ },
+ {
+  "id": "ReplicationStatusMapper.getCurrentDbTime",
+  "kind": "select",
+  "sql": "SELECT (EXTRACT(EPOCH FROM clock_timestamp()) * 1000)::bigint"
+ },
+ {
+  "id": "ReplicationStatusMapper.getReplicationStatus",
+  "kind": "select",
+  "sql": "SELECT COALESCE(pg_wal_lsn_diff(replay_lsn, '0/0'), 0)::bigint AS logStatus, pid::text AS replicaId, (EXTRACT(EPOCH FROM replay_lag) * 1000)::bigint AS replicationLagMs, (EXTRACT(EPOCH FROM (clock_timestamp() - replay_lag)) * 1000)::bigint AS replicatedUntilMs FROM pg_stat_replication WHERE pid IS NOT NULL;"
+ },
+ {
+  "id": "ReplicationStatusMapper.getCurrentLogStatus",
+  "kind": "select",
+  "sql": "SELECT CONVERT(bigint, last_commit_lsn) AS last_lsn FROM sys.dm_hadr_database_replica_states WHERE is_local = 1 AND database_id = DB_ID()"
+ },
+ {
+  "id": "ReplicationStatusMapper.getCurrentDbTime",
+  "kind": "select",
+  "sql": "SELECT DATEDIFF_BIG(millisecond, '19700101', last_commit_time) FROM sys.dm_hadr_database_replica_states WHERE is_local = 1 AND database_id = DB_ID()"
+ },
+ {
+  "id": "ReplicationStatusMapper.getReplicationStatus",
+  "kind": "select",
+  "sql": "SELECT CONVERT(bigint, ISNULL(secondary.last_commit_lsn, 0)) AS logStatus, CONVERT(nvarchar(36), secondary.replica_id) AS replicaId, DATEDIFF_BIG(millisecond, secondary.last_commit_time, pri.last_commit_time) AS replicationLagMs, DATEDIFF_BIG(millisecond, '19700101', secondary.last_commit_time) AS replicatedUntilMs FROM sys.dm_hadr_database_replica_states secondary JOIN sys.dm_hadr_database_replica_states pri ON secondary.group_database_id = pri.group_database_id AND pri.is_local = 1 AND pri.database_id = DB_ID() WHERE secondary.is_local = 0 AND secondary.last_commit_time IS NOT NULL"
+ },
+ {
+  "id": "ReplicationStatusMapper.getCurrentLogStatus",
+  "kind": "select",
+  "sql": "SELECT current_scn FROM v$database"
+ },
+ {
+  "id": "ReplicationStatusMapper.getReplicationStatus",
+  "kind": "select",
+  "sql": "SELECT ad.applied_scn AS logStatus, TO_CHAR(ad.dest_id) AS replicaId, CAST(NULL AS NUMBER) AS replicationLagMs, CAST(NULL AS NUMBER) AS replicatedUntilMs FROM v$archive_dest ad JOIN v$archive_dest_status ads ON ads.dest_id = ad.dest_id WHERE ads.type IN ('PHYSICAL', 'LOGICAL') AND ads.status = 'VALID' AND ad.status = 'VALID' AND ad.target IN ('STANDBY', 'REMOTE') AND ad.applied_scn > 0"
+ },
+ {
+  "id": "ReplicationStatusMapper.isAurora",
+  "kind": "select",
+  "sql": "SELECT to_regprocedure('aurora_version()') IS NOT NULL"
+ },
+ {
+  "id": "ReplicationStatusMapper.hasRequiredPrivileges",
+  "kind": "select",
+  "sql": "SELECT pg_has_role(current_user, 'pg_monitor', 'MEMBER')"
+ },
+ {
+  "id": "ReplicationStatusMapper.hasRequiredPrivileges",
+  "kind": "select",
+  "sql": "SELECT CASE WHEN HAS_PERMS_BY_NAME(null, null, 'VIEW SERVER STATE') = 1 OR ISNULL(HAS_PERMS_BY_NAME(null, null, 'VIEW SERVER PERFORMANCE STATE'), 0) = 1 THEN 1 ELSE 0 END"
+ },
+ {
+  "id": "ReplicationStatusMapper.isAurora",
+  "kind": "select",
+  "sql": "SELECT EXISTS(SELECT 1 FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'information_schema' AND TABLE_NAME = 'REPLICA_HOST_STATUS')"
+ },
+ {
+  "id": "ReplicationStatusMapper.getCurrentDbTime",
+  "kind": "select",
+  "sql": "SELECT CAST(UNIX_TIMESTAMP(NOW(3)) * 1000 AS SIGNED)"
+ },
+ {
+  "id": "ReplicationStatusMapper.isAuroraGlobalDatabase",
+  "kind": "select",
+  "sql": "SELECT to_regprocedure('aurora_global_db_instance_status()') IS NOT NULL"
+ },
+ {
+  "id": "ReplicationStatusMapper.isAuroraGlobalDatabase",
+  "kind": "select",
+  "sql": "SELECT EXISTS(SELECT 1 FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'information_schema' AND TABLE_NAME = 'AURORA_GLOBAL_DB_INSTANCE_STATUS')"
+ },
+ {
+  "id": "ReplicationStatusMapper.getAuroraCurrentLogStatus",
+  "kind": "select",
+  "sql": "SELECT COALESCE(durable_lsn, 0) FROM aurora_global_db_instance_status() WHERE session_id = 'MASTER_SESSION_ID'"
+ },
+ {
+  "id": "ReplicationStatusMapper.getAuroraCurrentLogStatus",
+  "kind": "select",
+  "sql": "SELECT COALESCE(DURABLE_LSN, 0) FROM information_schema.aurora_global_db_instance_status WHERE SESSION_ID = 'MASTER_SESSION_ID'"
+ },
+ {
+  "id": "ReplicationStatusMapper.getAuroraReplicationStatus",
+  "kind": "select",
+  "sql": "SELECT COALESCE(durable_lsn, 0) AS logStatus, server_id AS replicaId, visibility_lag_in_msec AS replicationLagMs, (EXTRACT(EPOCH FROM clock_timestamp()) * 1000 - visibility_lag_in_msec)::bigint AS replicatedUntilMs FROM aurora_global_db_instance_status() WHERE session_id != 'MASTER_SESSION_ID'"
+ },
+ {
+  "id": "ReplicationStatusMapper.getAuroraReplicationStatus",
+  "kind": "select",
+  "sql": "SELECT COALESCE(DURABLE_LSN, 0) AS logStatus, SERVER_ID AS replicaId, VISIBILITY_LAG_IN_MSEC AS replicationLagMs, CAST(UNIX_TIMESTAMP(NOW(3)) * 1000 AS SIGNED) - VISIBILITY_LAG_IN_MSEC AS replicatedUntilMs FROM information_schema.aurora_global_db_instance_status WHERE SESSION_ID != 'MASTER_SESSION_ID'"
+ },
+ {
+  "id": "RoleMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM ROLES r ) t"
+ },
+ {
+  "id": "RoleMapper.countMembers",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM ROLE_MEMBER rm JOIN ROLES r ON r.ROLE_ID = rm.ROLE_ID ) t"
+ },
+ {
+  "id": "RoleMapper.search",
+  "kind": "select",
+  "sql": "SELECT t.ROLE_ID, t.ROLE_KEY, t.NAME, t.DESCRIPTION, rm.ROLE_ID AS MEMBER_ROLE_ID, rm.ENTITY_ID AS MEMBER_ENTITY_ID, rm.ENTITY_TYPE AS MEMBER_ENTITY_TYPE FROM ( SELECT * FROM ( SELECT r.ROLE_ID, r.ROLE_KEY, r.NAME, r.DESCRIPTION FROM ROLES r ) t ) t LEFT JOIN ROLE_MEMBER rm ON t.ROLE_ID = rm.ROLE_ID"
+ },
+ {
+  "id": "RoleMapper.searchMembers",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT r.ROLE_ID, r.ROLE_KEY, r.NAME, r.DESCRIPTION, rm.ENTITY_ID, rm.ENTITY_TYPE FROM ROLE_MEMBER rm JOIN ROLES r ON r.ROLE_ID = rm.ROLE_ID ) t"
+ },
+ {
+  "id": "RoleMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO ROLES (ROLE_KEY, ROLE_ID, NAME, DESCRIPTION) VALUES (?, ?, ?, ?)"
+ },
+ {
+  "id": "RoleMapper.update",
+  "kind": "update",
+  "sql": "UPDATE ROLES SET NAME = ?, DESCRIPTION = ? WHERE ROLE_ID = ?"
+ },
+ {
+  "id": "RoleMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM ROLES WHERE ROLE_ID = ?"
+ },
+ {
+  "id": "RoleMapper.insertMember",
+  "kind": "insert",
+  "sql": "INSERT INTO ROLE_MEMBER (ROLE_ID, ENTITY_ID, ENTITY_TYPE) VALUES (?, ?, ?)"
+ },
+ {
+  "id": "RoleMapper.deleteMember",
+  "kind": "delete",
+  "sql": "DELETE FROM ROLE_MEMBER WHERE ROLE_ID = ? AND ENTITY_ID = ? AND ENTITY_TYPE = ?"
+ },
+ {
+  "id": "SequenceFlowMapper.search",
+  "kind": "select",
+  "sql": "SELECT distinct sf.FLOW_NODE_ID, sf.PROCESS_INSTANCE_KEY, sf.ROOT_PROCESS_INSTANCE_KEY, sf.PROCESS_DEFINITION_KEY, sf.PROCESS_DEFINITION_ID, sf.TENANT_ID FROM SEQUENCE_FLOW sf WHERE sf.PROCESS_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "SequenceFlowMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO SEQUENCE_FLOW (FLOW_NODE_ID, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_ID, TENANT_ID, PARTITION_ID) VALUES (?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "SequenceFlowMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO SEQUENCE_FLOW (FLOW_NODE_ID, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_ID, TENANT_ID, PARTITION_ID) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING"
+ },
+ {
+  "id": "SequenceFlowMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO SEQUENCE_FLOW (FLOW_NODE_ID, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_ID, TENANT_ID, PARTITION_ID) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE FLOW_NODE_ID = FLOW_NODE_ID -- this will not trigger an update"
+ },
+ {
+  "id": "SequenceFlowMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO SEQUENCE_FLOW (FLOW_NODE_ID, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_ID, TENANT_ID, PARTITION_ID) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE FLOW_NODE_ID = FLOW_NODE_ID -- this will not trigger an update"
+ },
+ {
+  "id": "SequenceFlowMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE INTO SEQUENCE_FLOW sf USING dual ON (sf.FLOW_NODE_ID = ? AND sf.PROCESS_INSTANCE_KEY = ?) WHEN NOT MATCHED THEN INSERT (FLOW_NODE_ID, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_ID, TENANT_ID, PARTITION_ID) VALUES (?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "SequenceFlowMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE INTO SEQUENCE_FLOW sf USING dual ON (sf.FLOW_NODE_ID = ? AND sf.PROCESS_INSTANCE_KEY = ?) WHEN NOT MATCHED THEN INSERT (FLOW_NODE_ID, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_ID, TENANT_ID, PARTITION_ID) VALUES (?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "SequenceFlowMapper.createIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE INTO SEQUENCE_FLOW AS target USING (SELECT 1 AS dummy) AS src ON (target.FLOW_NODE_ID = ? AND target.PROCESS_INSTANCE_KEY = ?) WHEN NOT MATCHED THEN INSERT (FLOW_NODE_ID, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_KEY, PROCESS_DEFINITION_ID, TENANT_ID, PARTITION_ID) VALUES (?, ?, ?, ?, ?, ?, ?);"
+ },
+ {
+  "id": "SequenceFlowMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "SequenceFlowMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "SequenceFlowMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM SEQUENCE_FLOW WHERE FLOW_NODE_ID = ? AND PROCESS_INSTANCE_KEY = ?"
+ },
+ {
+  "id": "TableMetricsMapper.countTableRows",
+  "kind": "select",
+  "sql": "SELECT c.relname AS TABLE_NAME, COALESCE(c.reltuples::BIGINT, -1) AS ROW_COUNT FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = CURRENT_SCHEMA() AND c.relkind = 'r' AND c.relname IN"
+ },
+ {
+  "id": "TableMetricsMapper.countTableRows",
+  "kind": "select",
+  "sql": "SELECT table_name AS TABLE_NAME, NVL(num_rows, -1) AS ROW_COUNT FROM user_tables WHERE table_name IN"
+ },
+ {
+  "id": "TableMetricsMapper.countTableRows",
+  "kind": "select",
+  "sql": "SELECT UPPER(table_name) AS TABLE_NAME, IFNULL(table_rows, -1) AS ROW_COUNT FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name IN"
+ },
+ {
+  "id": "TableMetricsMapper.countTableRows",
+  "kind": "select",
+  "sql": "SELECT UPPER(table_name) AS TABLE_NAME, IFNULL(table_rows, -1) AS ROW_COUNT FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name IN"
+ },
+ {
+  "id": "TableMetricsMapper.countTableRows",
+  "kind": "select",
+  "sql": "SELECT t.name AS TABLE_NAME, ISNULL(SUM(p.rows), -1) AS ROW_COUNT FROM sys.tables t INNER JOIN sys.partitions p ON t.object_id = p.object_id WHERE t.schema_id = SCHEMA_ID() AND p.index_id IN (0, 1) AND t.name IN GROUP BY t.object_id, t.name"
+ },
+ {
+  "id": "TableMetricsMapper.countSingleTableRows",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM"
+ },
+ {
+  "id": "TenantMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM TENANT t ) t"
+ },
+ {
+  "id": "TenantMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT TENANT_KEY, t.TENANT_ID, NAME, DESCRIPTION FROM TENANT t ) t"
+ },
+ {
+  "id": "TenantMapper.countMembers",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM TENANT_MEMBER tm JOIN TENANT t ON t.TENANT_ID = tm.TENANT_ID ) t"
+ },
+ {
+  "id": "TenantMapper.searchMembers",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT t.TENANT_KEY, t.TENANT_ID, t.NAME, t.DESCRIPTION, tm.ENTITY_ID, tm.ENTITY_TYPE FROM TENANT_MEMBER tm JOIN TENANT t ON t.TENANT_ID = tm.TENANT_ID ) t"
+ },
+ {
+  "id": "TenantMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO TENANT (TENANT_KEY, TENANT_ID, NAME, DESCRIPTION) VALUES (?, ?, ?, ?)"
+ },
+ {
+  "id": "TenantMapper.update",
+  "kind": "update",
+  "sql": "UPDATE TENANT SET NAME = ?, DESCRIPTION = ? WHERE TENANT_ID = ?"
+ },
+ {
+  "id": "TenantMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM TENANT WHERE TENANT_ID = ?"
+ },
+ {
+  "id": "TenantMapper.insertMember",
+  "kind": "insert",
+  "sql": "INSERT INTO TENANT_MEMBER (TENANT_ID, ENTITY_ID, ENTITY_TYPE) VALUES (?, ?, ?)"
+ },
+ {
+  "id": "TenantMapper.deleteMember",
+  "kind": "delete",
+  "sql": "DELETE FROM TENANT_MEMBER WHERE TENANT_ID = ? AND ENTITY_ID = ? AND ENTITY_TYPE = ?"
+ },
+ {
+  "id": "UsageMetricMapper.usageMetricTenantsStatistics",
+  "kind": "select",
+  "sql": "SELECT TENANT_ID, SUM(CASE WHEN EVENT_TYPE = 0 THEN EVENT_VALUE END) AS RPI, SUM(CASE WHEN EVENT_TYPE = 1 THEN EVENT_VALUE END) AS EDI FROM USAGE_METRIC GROUP BY TENANT_ID"
+ },
+ {
+  "id": "UsageMetricMapper.usageMetricStatistics",
+  "kind": "select",
+  "sql": "SELECT SUM(CASE WHEN EVENT_TYPE = 0 THEN EVENT_VALUE END) AS RPI, SUM(CASE WHEN EVENT_TYPE = 1 THEN EVENT_VALUE END) AS EDI, COUNT(distinct TENANT_ID) AS AT FROM USAGE_METRIC"
+ },
+ {
+  "id": "UsageMetricMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO USAGE_METRIC (USAGE_METRIC_KEY, START_TIME, END_TIME, TENANT_ID, EVENT_TYPE, EVENT_VALUE, PARTITION_ID) VALUES (?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "UsageMetricMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE FROM USAGE_METRIC WHERE PARTITION_ID = ? AND END_TIME < ? LIMIT ?"
+ },
+ {
+  "id": "UsageMetricMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE TOP(?) FROM USAGE_METRIC WHERE PARTITION_ID = ? AND END_TIME < ?"
+ },
+ {
+  "id": "UsageMetricMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE FROM USAGE_METRIC WHERE rowid IN (SELECT rowid FROM USAGE_METRIC WHERE PARTITION_ID = ? AND END_TIME < ? AND ROWNUM <= ?)"
+ },
+ {
+  "id": "UsageMetricMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE FROM USAGE_METRIC WHERE ctid IN (SELECT ctid FROM USAGE_METRIC WHERE PARTITION_ID = ? AND END_TIME < ? LIMIT ?)"
+ },
+ {
+  "id": "UsageMetricTUMapper.usageMetricTUStatistics",
+  "kind": "select",
+  "sql": "SELECT COUNT(DISTINCT ASSIGNEE_HASH) AS TU FROM USAGE_METRIC_TU"
+ },
+ {
+  "id": "UsageMetricTUMapper.usageMetricTUTenantsStatistics",
+  "kind": "select",
+  "sql": "SELECT TENANT_ID, COUNT(DISTINCT ASSIGNEE_HASH) AS TU FROM USAGE_METRIC_TU GROUP BY TENANT_ID"
+ },
+ {
+  "id": "UsageMetricTUMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO USAGE_METRIC_TU (USAGE_METRIC_KEY, START_TIME, END_TIME, TENANT_ID, ASSIGNEE_HASH, PARTITION_ID) VALUES (?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "UsageMetricTUMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE FROM USAGE_METRIC_TU WHERE PARTITION_ID = ? AND END_TIME < ? LIMIT ?"
+ },
+ {
+  "id": "UsageMetricTUMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE TOP(?) FROM USAGE_METRIC_TU WHERE PARTITION_ID = ? AND END_TIME < ?"
+ },
+ {
+  "id": "UsageMetricTUMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE FROM USAGE_METRIC_TU WHERE rowid IN (SELECT rowid FROM USAGE_METRIC_TU WHERE PARTITION_ID = ? AND END_TIME < ? AND ROWNUM <= ?)"
+ },
+ {
+  "id": "UsageMetricTUMapper.cleanupMetrics",
+  "kind": "delete",
+  "sql": "DELETE FROM USAGE_METRIC_TU WHERE ctid IN (SELECT ctid FROM USAGE_METRIC_TU WHERE PARTITION_ID = ? AND END_TIME < ? LIMIT ?)"
+ },
+ {
+  "id": "UserMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM USER_ t ) t"
+ },
+ {
+  "id": "UserMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT USER_KEY, USERNAME, NAME, EMAIL, PASSWORD FROM USER_ t ) t"
+ },
+ {
+  "id": "UserMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO USER_ (USER_KEY, USERNAME, NAME, EMAIL, PASSWORD) VALUES (?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "UserMapper.update",
+  "kind": "update",
+  "sql": "UPDATE USER_ SET NAME = ?, EMAIL = ?, PASSWORD = ? WHERE USERNAME = ?"
+ },
+ {
+  "id": "UserMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM USER_ WHERE USERNAME = ?"
+ },
+ {
+  "id": "UserTaskMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO USER_TASK (USER_TASK_KEY, ELEMENT_ID, NAME, PROCESS_DEFINITION_ID, CREATION_DATE, COMPLETION_DATE, ASSIGNEE, STATE, FORM_KEY, PROCESS_DEFINITION_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, BUSINESS_ID, ELEMENT_INSTANCE_KEY, TENANT_ID, DUE_DATE, FOLLOW_UP_DATE, EXTERNAL_FORM_REFERENCE, PROCESS_DEFINITION_VERSION, CUSTOM_HEADERS, PRIORITY, IS_SUSPENDED, PARTITION_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "UserTaskMapper.insertCandidateUsers",
+  "kind": "insert",
+  "sql": "INSERT INTO CANDIDATE_USER (USER_TASK_KEY, CANDIDATE_USER) VALUES"
+ },
+ {
+  "id": "UserTaskMapper.insertCandidateUsers",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "UserTaskMapper.insertCandidateGroups",
+  "kind": "insert",
+  "sql": "INSERT INTO CANDIDATE_GROUP (USER_TASK_KEY, CANDIDATE_GROUP) VALUES"
+ },
+ {
+  "id": "UserTaskMapper.insertCandidateGroups",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "UserTaskMapper.insertTags",
+  "kind": "insert",
+  "sql": "INSERT INTO USER_TASK_TAG (USER_TASK_KEY, TAG_VALUE) VALUES"
+ },
+ {
+  "id": "UserTaskMapper.insertTags",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT 1 FROM DUAL"
+ },
+ {
+  "id": "UserTaskMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT ut.*, cg.CANDIDATE_GROUP, cu.CANDIDATE_USER, t.TAG_VALUE FROM ( SELECT * FROM ( SELECT ut.USER_TASK_KEY, ut.ELEMENT_ID, ut.NAME, ut.PROCESS_DEFINITION_ID, ut.CREATION_DATE, ut.COMPLETION_DATE, ut.ASSIGNEE, ut.STATE, ut.FORM_KEY, ut.PROCESS_DEFINITION_KEY, ut.PROCESS_INSTANCE_KEY, ut.ROOT_PROCESS_INSTANCE_KEY, ut.BUSINESS_ID, ut.ELEMENT_INSTANCE_KEY, ut.TENANT_ID, ut.DUE_DATE, ut.FOLLOW_UP_DATE, ut.EXTERNAL_FORM_REFERENCE, ut.PROCESS_DEFINITION_VERSION, ut.CUSTOM_HEADERS, ut.PRIORITY, ut.IS_SUSPENDED FROM USER_TASK ut ) filtered ) ut LEFT JOIN CANDIDATE_USER cu ON (cu.USER_TASK_KEY = ut.USER_TASK_KEY) LEFT JOIN CANDIDATE_GROUP cg ON (cg.USER_TASK_KEY = ut.USER_TASK_KEY) LEFT JOIN USER_TASK_TAG t ON (t.USER_TASK_KEY = ut.USER_TASK_KEY) ) sorted"
+ },
+ {
+  "id": "UserTaskMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM USER_TASK ut ) t"
+ },
+ {
+  "id": "UserTaskMapper.update",
+  "kind": "update",
+  "sql": "UPDATE USER_TASK SET COMPLETION_DATE = ?, DUE_DATE = ?, STATE = ?, FOLLOW_UP_DATE = ?, CUSTOM_HEADERS = ?, PRIORITY = ?, ASSIGNEE = ? WHERE USER_TASK_KEY = ?"
+ },
+ {
+  "id": "UserTaskMapper.updateState",
+  "kind": "update",
+  "sql": "UPDATE USER_TASK SET STATE = ? WHERE USER_TASK_KEY = ?"
+ },
+ {
+  "id": "UserTaskMapper.deleteCandidateUsers",
+  "kind": "delete",
+  "sql": "DELETE FROM CANDIDATE_USER WHERE USER_TASK_KEY = ?"
+ },
+ {
+  "id": "UserTaskMapper.deleteCandidateGroups",
+  "kind": "delete",
+  "sql": "DELETE FROM CANDIDATE_GROUP WHERE USER_TASK_KEY = ?"
+ },
+ {
+  "id": "UserTaskMapper.migrateToProcess",
+  "kind": "update",
+  "sql": "UPDATE USER_TASK SET ELEMENT_ID = ?, NAME = ?, PROCESS_DEFINITION_ID = ?, PROCESS_DEFINITION_KEY = ?, PROCESS_DEFINITION_VERSION = ? WHERE USER_TASK_KEY = ?"
+ },
+ {
+  "id": "UserTaskMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "UserTaskMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "VariableMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM VARIABLE ) t"
+ },
+ {
+  "id": "VariableMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT VAR_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, SCOPE_KEY, VAR_NAME, VAR_VALUE, VAR_FULL_VALUE, TENANT_ID, IS_PREVIEW, PROCESS_DEFINITION_ID FROM VARIABLE ) t"
+ },
+ {
+  "id": "VariableMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO VARIABLE (VAR_KEY, PROCESS_INSTANCE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_DEFINITION_ID, SCOPE_KEY, TYPE, VAR_NAME, DOUBLE_VALUE, LONG_VALUE, VAR_VALUE, VAR_FULL_VALUE, TENANT_ID, IS_PREVIEW, PARTITION_ID, ELEMENT_INSTANCE_KEY) VALUES"
+ },
+ {
+  "id": "VariableMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT ALL SELECT * FROM dual"
+ },
+ {
+  "id": "VariableMapper.update",
+  "kind": "update",
+  "sql": "UPDATE VARIABLE SET TYPE = ?, DOUBLE_VALUE = ?, LONG_VALUE = ?, VAR_VALUE = ?, VAR_FULL_VALUE = ?, IS_PREVIEW = ? WHERE VAR_KEY = ?"
+ },
+ {
+  "id": "VariableMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "VariableMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "VariableMapper.migrateToProcess",
+  "kind": "update",
+  "sql": "UPDATE VARIABLE SET PROCESS_DEFINITION_ID = ? WHERE VAR_KEY = ?"
+ },
+ {
+  "id": "VariableMapper.insertLookupIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT INTO PROCESS_DEF_VAR_NAME_LOOKUP (PROCESS_DEFINITION_KEY, VAR_NAME) VALUES (?, ?) ON CONFLICT (PROCESS_DEFINITION_KEY, VAR_NAME) DO NOTHING"
+ },
+ {
+  "id": "VariableMapper.insertLookupIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT IGNORE INTO PROCESS_DEF_VAR_NAME_LOOKUP (PROCESS_DEFINITION_KEY, VAR_NAME) VALUES (?, ?)"
+ },
+ {
+  "id": "VariableMapper.insertLookupIfNotExists",
+  "kind": "insert",
+  "sql": "INSERT IGNORE INTO PROCESS_DEF_VAR_NAME_LOOKUP (PROCESS_DEFINITION_KEY, VAR_NAME) VALUES (?, ?)"
+ },
+ {
+  "id": "VariableMapper.insertLookupIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE INTO PROCESS_DEF_VAR_NAME_LOOKUP t USING (SELECT CAST(? AS BIGINT) AS PROCESS_DEFINITION_KEY, CAST(? AS VARCHAR) AS VAR_NAME) s ON (t.PROCESS_DEFINITION_KEY = s.PROCESS_DEFINITION_KEY AND t.VAR_NAME = s.VAR_NAME) WHEN NOT MATCHED THEN INSERT (PROCESS_DEFINITION_KEY, VAR_NAME) VALUES (s.PROCESS_DEFINITION_KEY, s.VAR_NAME)"
+ },
+ {
+  "id": "VariableMapper.insertLookupIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE INTO PROCESS_DEF_VAR_NAME_LOOKUP t USING (SELECT ? AS PROCESS_DEFINITION_KEY, ? AS VAR_NAME FROM dual) s ON (t.PROCESS_DEFINITION_KEY = s.PROCESS_DEFINITION_KEY AND t.VAR_NAME = s.VAR_NAME) WHEN NOT MATCHED THEN INSERT (PROCESS_DEFINITION_KEY, VAR_NAME) VALUES (s.PROCESS_DEFINITION_KEY, s.VAR_NAME)"
+ },
+ {
+  "id": "VariableMapper.insertLookupIfNotExists",
+  "kind": "insert",
+  "sql": "MERGE PROCESS_DEF_VAR_NAME_LOOKUP AS target USING (SELECT ? AS PROCESS_DEFINITION_KEY, ? AS VAR_NAME) AS source ON (target.PROCESS_DEFINITION_KEY = source.PROCESS_DEFINITION_KEY AND target.VAR_NAME = source.VAR_NAME) WHEN NOT MATCHED THEN INSERT (PROCESS_DEFINITION_KEY, VAR_NAME) VALUES (source.PROCESS_DEFINITION_KEY, source.VAR_NAME);"
+ },
+ {
+  "id": "VariableMapper.findLookupVariableNames",
+  "kind": "select",
+  "sql": "SELECT VAR_NAME FROM PROCESS_DEF_VAR_NAME_LOOKUP WHERE PROCESS_DEFINITION_KEY = ?"
+ },
+ {
+  "id": "VariableMapper.findVariableNames",
+  "kind": "select",
+  "sql": "SELECT DISTINCT l.VAR_NAME FROM PROCESS_DEF_VAR_NAME_LOOKUP l JOIN PROCESS_DEFINITION pd ON pd.PROCESS_DEFINITION_KEY = l.PROCESS_DEFINITION_KEY ORDER BY l.VAR_NAME"
+ },
+ {
+  "id": "VariableMapper.deleteLookupByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM PROCESS_DEF_VAR_NAME_LOOKUP WHERE PROCESS_DEFINITION_KEY IN LIMIT ?"
+ },
+ {
+  "id": "VariableMapper.deleteLookupByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE TOP (?) FROM PROCESS_DEF_VAR_NAME_LOOKUP WHERE PROCESS_DEFINITION_KEY IN"
+ },
+ {
+  "id": "VariableMapper.deleteLookupByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM PROCESS_DEF_VAR_NAME_LOOKUP WHERE rowid IN (SELECT rowid FROM PROCESS_DEF_VAR_NAME_LOOKUP WHERE PROCESS_DEFINITION_KEY IN AND ROWNUM <= ?)"
+ },
+ {
+  "id": "VariableMapper.deleteLookupByProcessDefinitionKeys",
+  "kind": "delete",
+  "sql": "DELETE FROM PROCESS_DEF_VAR_NAME_LOOKUP WHERE ctid IN (SELECT ctid FROM PROCESS_DEF_VAR_NAME_LOOKUP WHERE PROCESS_DEFINITION_KEY IN LIMIT ?)"
+ },
+ {
+  "id": "WaitStateMapper.findOne",
+  "kind": "select",
+  "sql": "SELECT WAIT_STATE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_INSTANCE_KEY, ELEMENT_INSTANCE_KEY, ELEMENT_ID, ELEMENT_TYPE, WAIT_STATE_TYPE, PROCESS_DEFINITION_ID, DETAILS, TENANT_ID, PARTITION_ID FROM WAIT_STATE WHERE WAIT_STATE_KEY = ?"
+ },
+ {
+  "id": "WaitStateMapper.count",
+  "kind": "select",
+  "sql": "SELECT COUNT(*) FROM ( SELECT 1 as col FROM WAIT_STATE ) t"
+ },
+ {
+  "id": "WaitStateMapper.search",
+  "kind": "select",
+  "sql": "SELECT * FROM ( SELECT WAIT_STATE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_INSTANCE_KEY, ELEMENT_INSTANCE_KEY, ELEMENT_ID, ELEMENT_TYPE, WAIT_STATE_TYPE, PROCESS_DEFINITION_ID, DETAILS, TENANT_ID, PARTITION_ID FROM WAIT_STATE ) t"
+ },
+ {
+  "id": "WaitStateMapper.waitStateStatistics",
+  "kind": "select",
+  "sql": "SELECT ELEMENT_ID, COUNT(*) AS WAITING_COUNT FROM WAIT_STATE WHERE PROCESS_INSTANCE_KEY = ? GROUP BY ELEMENT_ID"
+ },
+ {
+  "id": "WaitStateMapper.insert",
+  "kind": "insert",
+  "sql": "INSERT INTO WAIT_STATE (WAIT_STATE_KEY, ROOT_PROCESS_INSTANCE_KEY, PROCESS_INSTANCE_KEY, ELEMENT_INSTANCE_KEY, ELEMENT_ID, ELEMENT_TYPE, WAIT_STATE_TYPE, PROCESS_DEFINITION_ID, DETAILS, TENANT_ID, PARTITION_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+ },
+ {
+  "id": "WaitStateMapper.update",
+  "kind": "update",
+  "sql": "UPDATE WAIT_STATE ELEMENT_INSTANCE_KEY = ?, ELEMENT_TYPE = ?, PROCESS_DEFINITION_ID = ?, DETAILS = ? WHERE WAIT_STATE_KEY = ?"
+ },
+ {
+  "id": "WaitStateMapper.delete",
+  "kind": "delete",
+  "sql": "DELETE FROM WAIT_STATE WHERE WAIT_STATE_KEY = ?"
+ },
+ {
+  "id": "WaitStateMapper.deleteRootProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ },
+ {
+  "id": "WaitStateMapper.deleteProcessInstanceRelatedData",
+  "kind": "delete",
+  "sql": "DELETE FROM t1 USING (SELECT FROM WHERE = ANY(?) LIMIT ?) t2 WHERE t1. = t2."
+ }
+]

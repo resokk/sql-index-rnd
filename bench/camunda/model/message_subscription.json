@@ -1,0 +1,127 @@
+{
+  "table": "MESSAGE_SUBSCRIPTION",
+  "entity": "Подписка на сообщение",
+  "description": "Ожидание сообщения процессом",
+  "columns": [
+    {
+      "name": "MESSAGE_SUBSCRIPTION_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "FLOW_NODE_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор элемента BPMN"
+    },
+    {
+      "name": "FLOW_NODE_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра элемента"
+    },
+    {
+      "name": "MESSAGE_SUBSCRIPTION_STATE",
+      "type": "VARCHAR(20)",
+      "values": [
+        "CREATED",
+        "CORRELATED",
+        "DELETED",
+        "MIGRATED"
+      ]
+    },
+    {
+      "name": "DATE_TIME",
+      "type": "TIMESTAMP(3) WITH TIME ZONE"
+    },
+    {
+      "name": "MESSAGE_NAME",
+      "type": "VARCHAR(256)",
+      "description": "имя сообщения"
+    },
+    {
+      "name": "CORRELATION_KEY",
+      "type": "VARCHAR(256)",
+      "description": "ключ корреляции"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    },
+    {
+      "name": "MESSAGE_SUBSCRIPTION_TYPE",
+      "type": "VARCHAR(50)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_NAME",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_VERSION",
+      "type": "SMALLINT",
+      "description": "версия определения процесса"
+    },
+    {
+      "name": "TOOL_PROPERTIES",
+      "type": "TEXT"
+    },
+    {
+      "name": "TOOL_NAME",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "INBOUND_CONNECTOR_TYPE",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "BUSINESS_ID",
+      "type": "VARCHAR(256)",
+      "description": "бизнес-идентификатор"
+    }
+  ],
+  "relations": [
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "MESSAGE_SUBSCRIPTION.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "MESSAGE_SUBSCRIPTION.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "MESSAGE_SUBSCRIPTION.ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "FLOW_NODE_INSTANCE",
+      "on": "MESSAGE_SUBSCRIPTION.FLOW_NODE_INSTANCE_KEY = FLOW_NODE_INSTANCE.FLOW_NODE_INSTANCE_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "MESSAGE_SUBSCRIPTION.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

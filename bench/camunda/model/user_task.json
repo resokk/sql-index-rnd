@@ -1,0 +1,152 @@
+{
+  "table": "USER_TASK",
+  "entity": "Пользовательская задача",
+  "description": "Задача для человека: исполнитель, срок, приоритет, состояние",
+  "columns": [
+    {
+      "name": "USER_TASK_KEY",
+      "type": "BIGINT",
+      "description": "ключ пользовательской задачи"
+    },
+    {
+      "name": "ELEMENT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор элемента BPMN"
+    },
+    {
+      "name": "NAME",
+      "type": "VARCHAR(256)",
+      "description": "наименование"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "CREATION_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата создания"
+    },
+    {
+      "name": "COMPLETION_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата завершения"
+    },
+    {
+      "name": "ASSIGNEE",
+      "type": "VARCHAR(256)",
+      "description": "исполнитель (логин)"
+    },
+    {
+      "name": "STATE",
+      "type": "VARCHAR(20)",
+      "description": "состояние",
+      "values": [
+        "CREATED",
+        "COMPLETED",
+        "CANCELED",
+        "FAILED"
+      ]
+    },
+    {
+      "name": "FORM_KEY",
+      "type": "BIGINT",
+      "description": "ключ формы"
+    },
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "ELEMENT_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра элемента"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "DUE_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "срок выполнения"
+    },
+    {
+      "name": "FOLLOW_UP_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата напоминания"
+    },
+    {
+      "name": "EXTERNAL_FORM_REFERENCE",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_VERSION",
+      "type": "SMALLINT",
+      "description": "версия определения процесса"
+    },
+    {
+      "name": "CUSTOM_HEADERS",
+      "type": "TEXT"
+    },
+    {
+      "name": "PRIORITY",
+      "type": "INT",
+      "description": "приоритет"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    },
+    {
+      "name": "BUSINESS_ID",
+      "type": "VARCHAR(256)",
+      "description": "бизнес-идентификатор"
+    },
+    {
+      "name": "IS_SUSPENDED",
+      "type": "BOOLEAN",
+      "description": "задача приостановлена"
+    }
+  ],
+  "relations": [
+    {
+      "table": "FORM",
+      "on": "USER_TASK.FORM_KEY = FORM.FORM_KEY"
+    },
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "USER_TASK.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "USER_TASK.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "USER_TASK.ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "FLOW_NODE_INSTANCE",
+      "on": "USER_TASK.ELEMENT_INSTANCE_KEY = FLOW_NODE_INSTANCE.FLOW_NODE_INSTANCE_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "USER_TASK.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

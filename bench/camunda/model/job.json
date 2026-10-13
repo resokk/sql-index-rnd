@@ -1,0 +1,172 @@
+{
+  "table": "JOB",
+  "entity": "Задание (джоб)",
+  "description": "Задание для воркера: тип, воркер, повторы, состояние, ошибка",
+  "columns": [
+    {
+      "name": "JOB_KEY",
+      "type": "BIGINT",
+      "description": "ключ задания"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "ELEMENT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор элемента BPMN"
+    },
+    {
+      "name": "ELEMENT_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра элемента"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "TYPE",
+      "type": "VARCHAR(255)",
+      "description": "тип"
+    },
+    {
+      "name": "WORKER",
+      "type": "VARCHAR(256)",
+      "description": "имя воркера"
+    },
+    {
+      "name": "STATE",
+      "type": "VARCHAR(20)",
+      "description": "состояние",
+      "values": [
+        "CREATED",
+        "COMPLETED",
+        "FAILED",
+        "RETRIES_UPDATED",
+        "TIMED_OUT",
+        "CANCELED",
+        "ERROR_THROWN"
+      ]
+    },
+    {
+      "name": "KIND",
+      "type": "VARCHAR(50)",
+      "description": "вид",
+      "values": [
+        "BPMN_ELEMENT",
+        "EXECUTION_LISTENER",
+        "TASK_LISTENER"
+      ]
+    },
+    {
+      "name": "LISTENER_EVENT_TYPE",
+      "type": "VARCHAR(50)"
+    },
+    {
+      "name": "ERROR_MESSAGE",
+      "type": "VARCHAR(4000)",
+      "description": "текст ошибки"
+    },
+    {
+      "name": "ERROR_CODE",
+      "type": "VARCHAR(255)",
+      "description": "код ошибки"
+    },
+    {
+      "name": "DEADLINE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "крайний срок"
+    },
+    {
+      "name": "END_TIME",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "время окончания"
+    },
+    {
+      "name": "CUSTOM_HEADERS",
+      "type": "TEXT"
+    },
+    {
+      "name": "RETRIES",
+      "type": "SMALLINT",
+      "description": "оставшиеся повторы"
+    },
+    {
+      "name": "HAS_FAILED_WITH_RETRIES_LEFT",
+      "type": "BOOLEAN"
+    },
+    {
+      "name": "IS_DENIED",
+      "type": "BOOLEAN"
+    },
+    {
+      "name": "DENIED_REASON",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    },
+    {
+      "name": "CREATION_TIME",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "время создания"
+    },
+    {
+      "name": "LAST_UPDATE_TIME",
+      "type": "TIMESTAMP(3) WITH TIME ZONE"
+    },
+    {
+      "name": "PRIORITY",
+      "type": "INTEGER",
+      "description": "приоритет"
+    },
+    {
+      "name": "BUSINESS_ID",
+      "type": "VARCHAR(256)",
+      "description": "бизнес-идентификатор"
+    }
+  ],
+  "relations": [
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "JOB.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "JOB.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "JOB.ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "FLOW_NODE_INSTANCE",
+      "on": "JOB.ELEMENT_INSTANCE_KEY = FLOW_NODE_INSTANCE.FLOW_NODE_INSTANCE_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "JOB.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

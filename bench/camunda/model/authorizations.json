@@ -1,0 +1,44 @@
+{
+  "table": "AUTHORIZATIONS",
+  "entity": "Разрешение",
+  "description": "Права доступа владельца на ресурс",
+  "columns": [
+    {
+      "name": "AUTHORIZATION_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "OWNER_ID",
+      "type": "VARCHAR(256)",
+      "description": "владелец разрешения"
+    },
+    {
+      "name": "OWNER_TYPE",
+      "type": "VARCHAR(255)"
+    },
+    {
+      "name": "RESOURCE_TYPE",
+      "type": "VARCHAR(255)",
+      "description": "тип ресурса"
+    },
+    {
+      "name": "RESOURCE_MATCHER",
+      "type": "SMALLINT"
+    },
+    {
+      "name": "RESOURCE_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор ресурса"
+    },
+    {
+      "name": "RESOURCE_PROPERTY_NAME",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "PERMISSION_TYPE",
+      "type": "VARCHAR(255)",
+      "description": "тип разрешения"
+    }
+  ],
+  "relations": []
+}

@@ -1,0 +1,29 @@
+{
+  "table": "CLUSTER_VARIABLE_METADATA",
+  "entity": "Метаданные переменной кластера",
+  "description": "Ключ-значение метаданных переменной кластера",
+  "columns": [
+    {
+      "name": "CLUSTER_VARIABLE_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "METADATA_KEY",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "METADATA_VALUE",
+      "type": "VARCHAR(8192)"
+    },
+    {
+      "name": "METADATA_VALUE_NUMBER",
+      "type": "DOUBLE PRECISION"
+    }
+  ],
+  "relations": [
+    {
+      "table": "CLUSTER_VARIABLE",
+      "on": "CLUSTER_VARIABLE_METADATA.CLUSTER_VARIABLE_ID = CLUSTER_VARIABLE.CLUSTER_VARIABLE_ID"
+    }
+  ]
+}

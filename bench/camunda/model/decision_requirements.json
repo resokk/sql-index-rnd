@@ -1,0 +1,46 @@
+{
+  "table": "DECISION_REQUIREMENTS",
+  "entity": "Модель требований решений",
+  "description": "DRD/DMN-файл, содержащий решения",
+  "columns": [
+    {
+      "name": "DECISION_REQUIREMENTS_KEY",
+      "type": "BIGINT",
+      "description": "ключ модели требований"
+    },
+    {
+      "name": "DECISION_REQUIREMENTS_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "NAME",
+      "type": "VARCHAR(256)",
+      "description": "наименование"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "VERSION",
+      "type": "SMALLINT",
+      "description": "номер версии"
+    },
+    {
+      "name": "RESOURCE_NAME",
+      "type": "VARCHAR(256)",
+      "description": "имя файла ресурса"
+    },
+    {
+      "name": "XML",
+      "type": "TEXT"
+    }
+  ],
+  "relations": [
+    {
+      "table": "TENANT",
+      "on": "DECISION_REQUIREMENTS.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

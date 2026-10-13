@@ -1,0 +1,570 @@
+{"q": "Общее количество экземпляров процессов", "sql": "SELECT COUNT(*) FROM PROCESS_INSTANCE"}
+{"q": "Топ-5 значений «идентификатор процесса (BPMN id)» по числу экземпляров процессов", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM PROCESS_INSTANCE GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Список активных экземпляров процессов (только ключи)", "sql": "SELECT PROCESS_INSTANCE_KEY FROM PROCESS_INSTANCE WHERE STATE = 'ACTIVE'"}
+{"q": "Выведи ключи завершённых экземпляров процессов", "sql": "SELECT PROCESS_INSTANCE_KEY FROM PROCESS_INSTANCE WHERE STATE = 'COMPLETED'"}
+{"q": "Выведи ключи отменённых экземпляров процессов", "sql": "SELECT PROCESS_INSTANCE_KEY FROM PROCESS_INSTANCE WHERE STATE = 'CANCELED'"}
+{"q": "Топ-5 значений «состояние» по числу экземпляров процессов", "sql": "SELECT STATE, COUNT(*) AS cnt FROM PROCESS_INSTANCE GROUP BY STATE ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько экземпляров процессов, начатых за последние 3 дней?", "sql": "SELECT COUNT(*) FROM PROCESS_INSTANCE WHERE START_DATE >= NOW() - INTERVAL '3 days'"}
+{"q": "Количество экземпляров процессов по дням (дата начала)", "sql": "SELECT CAST(START_DATE AS DATE), COUNT(*) FROM PROCESS_INSTANCE GROUP BY CAST(START_DATE AS DATE)"}
+{"q": "Сколько экземпляров процессов, завершённых за последние 10 дней?", "sql": "SELECT COUNT(*) FROM PROCESS_INSTANCE WHERE END_DATE >= NOW() - INTERVAL '10 days'"}
+{"q": "Количество экземпляров процессов по дням (дата окончания)", "sql": "SELECT CAST(END_DATE AS DATE), COUNT(*) FROM PROCESS_INSTANCE GROUP BY CAST(END_DATE AS DATE)"}
+{"q": "Топ-10 значений «идентификатор тенанта» по числу экземпляров процессов", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM PROCESS_INSTANCE GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Максимальное значение «число инцидентов» по всем экземпляров процессов", "sql": "SELECT MAX(NUM_INCIDENTS) FROM PROCESS_INSTANCE"}
+{"q": "Максимальное «число инцидентов» для экземпляров процессов в разрезе: идентификатор процесса (BPMN id)", "sql": "SELECT PROCESS_DEFINITION_ID, MAX(NUM_INCIDENTS) FROM PROCESS_INSTANCE GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Сколько экземпляров процессов в разрезе: номер версии?", "sql": "SELECT VERSION, COUNT(*) FROM PROCESS_INSTANCE GROUP BY VERSION"}
+{"q": "Топ-10 значений «номер версии» по числу экземпляров процессов", "sql": "SELECT VERSION, COUNT(*) AS cnt FROM PROCESS_INSTANCE GROUP BY VERSION ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько экземпляров процессов по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM PROCESS_INSTANCE c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько экземпляров процессов по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM PROCESS_INSTANCE c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько отменённых экземпляров процессов по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM PROCESS_INSTANCE c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID WHERE c.STATE = 'CANCELED' GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько всего определений процессов?", "sql": "SELECT COUNT(*) FROM PROCESS_DEFINITION"}
+{"q": "Сгруппируй определений процессов по PROCESS_DEFINITION_ID и посчитай количество", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM PROCESS_DEFINITION GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-10 значений «идентификатор процесса (BPMN id)» по числу определений процессов", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM PROCESS_DEFINITION GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько определений процессов с PROCESS_DEFINITION_ID = 'kyc-check'?", "sql": "SELECT COUNT(*) FROM PROCESS_DEFINITION WHERE PROCESS_DEFINITION_ID = 'kyc-check'"}
+{"q": "Сколько определений процессов в разрезе: идентификатор тенанта?", "sql": "SELECT TENANT_ID, COUNT(*) FROM PROCESS_DEFINITION GROUP BY TENANT_ID"}
+{"q": "Топ-3 значений «идентификатор тенанта» по числу определений процессов", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM PROCESS_DEFINITION GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи определений процессов, где идентификатор тенанта = tenant-2", "sql": "SELECT PROCESS_DEFINITION_KEY FROM PROCESS_DEFINITION WHERE TENANT_ID = 'tenant-2'"}
+{"q": "Количество определений процессов по каждому значению поля «номер версии»", "sql": "SELECT VERSION, COUNT(*) FROM PROCESS_DEFINITION GROUP BY VERSION"}
+{"q": "Топ-5 значений «номер версии» по числу определений процессов", "sql": "SELECT VERSION, COUNT(*) AS cnt FROM PROCESS_DEFINITION GROUP BY VERSION ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько активных определений процессов?", "sql": "SELECT COUNT(*) FROM PROCESS_DEFINITION WHERE STATE = 'ACTIVE'"}
+{"q": "Выведи ключи активных определений процессов", "sql": "SELECT PROCESS_DEFINITION_KEY FROM PROCESS_DEFINITION WHERE STATE = 'ACTIVE'"}
+{"q": "Количество удалённых определений процессов", "sql": "SELECT COUNT(*) FROM PROCESS_DEFINITION WHERE STATE = 'DELETED'"}
+{"q": "Сколько определений процессов в разрезе: состояние?", "sql": "SELECT STATE, COUNT(*) FROM PROCESS_DEFINITION GROUP BY STATE"}
+{"q": "Топ-10 значений «состояние» по числу определений процессов", "sql": "SELECT STATE, COUNT(*) AS cnt FROM PROCESS_DEFINITION GROUP BY STATE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько определений процессов по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM PROCESS_DEFINITION c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько активных определений процессов по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM PROCESS_DEFINITION c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID WHERE c.STATE = 'ACTIVE' GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Общее количество инцидентов", "sql": "SELECT COUNT(*) FROM INCIDENT"}
+{"q": "Сколько инцидентов в разрезе: идентификатор элемента BPMN?", "sql": "SELECT FLOW_NODE_ID, COUNT(*) FROM INCIDENT GROUP BY FLOW_NODE_ID"}
+{"q": "Топ-10 значений «идентификатор элемента BPMN» по числу инцидентов", "sql": "SELECT FLOW_NODE_ID, COUNT(*) AS cnt FROM INCIDENT GROUP BY FLOW_NODE_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи инцидентов, где идентификатор элемента BPMN = flow_node_id-18", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE FLOW_NODE_ID = 'flow_node_id-18'"}
+{"q": "Сгруппируй инцидентов по PROCESS_DEFINITION_ID и посчитай количество", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM INCIDENT GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-3 значений «идентификатор процесса (BPMN id)» по числу инцидентов", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM INCIDENT GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи инцидентов, где идентификатор процесса (BPMN id) = loan-application", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE PROCESS_DEFINITION_ID = 'loan-application'"}
+{"q": "Список инцидентов со значением тип ошибки = JOB_NO_RETRIES (только ключи)", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE ERROR_TYPE = 'JOB_NO_RETRIES'"}
+{"q": "Список инцидентов со значением тип ошибки = EXTRACT_VALUE_ERROR (только ключи)", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE ERROR_TYPE = 'EXTRACT_VALUE_ERROR'"}
+{"q": "Список инцидентов со значением тип ошибки = CALLED_ELEMENT_ERROR (только ключи)", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE ERROR_TYPE = 'CALLED_ELEMENT_ERROR'"}
+{"q": "Выведи ключи инцидентов со значением тип ошибки = UNHANDLED_ERROR_EVENT", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE ERROR_TYPE = 'UNHANDLED_ERROR_EVENT'"}
+{"q": "Выведи ключи инцидентов со значением тип ошибки = DECISION_EVALUATION_ERROR", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE ERROR_TYPE = 'DECISION_EVALUATION_ERROR'"}
+{"q": "Список инцидентов со значением тип ошибки = IO_MAPPING_ERROR (только ключи)", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE ERROR_TYPE = 'IO_MAPPING_ERROR'"}
+{"q": "Топ-10 значений «тип ошибки» по числу инцидентов", "sql": "SELECT ERROR_TYPE, COUNT(*) AS cnt FROM INCIDENT GROUP BY ERROR_TYPE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Количество активных инцидентов", "sql": "SELECT COUNT(*) FROM INCIDENT WHERE STATE = 'ACTIVE'"}
+{"q": "Список активных инцидентов (только ключи)", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE STATE = 'ACTIVE'"}
+{"q": "Сколько решённых инцидентов?", "sql": "SELECT COUNT(*) FROM INCIDENT WHERE STATE = 'RESOLVED'"}
+{"q": "Выведи ключи решённых инцидентов", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE STATE = 'RESOLVED'"}
+{"q": "Количество мигрированных инцидентов", "sql": "SELECT COUNT(*) FROM INCIDENT WHERE STATE = 'MIGRATED'"}
+{"q": "Выведи ключи мигрированных инцидентов", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE STATE = 'MIGRATED'"}
+{"q": "Количество ожидающих инцидентов", "sql": "SELECT COUNT(*) FROM INCIDENT WHERE STATE = 'PENDING'"}
+{"q": "Выведи ключи ожидающих инцидентов", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE STATE = 'PENDING'"}
+{"q": "Количество инцидентов по каждому значению поля «состояние»", "sql": "SELECT STATE, COUNT(*) FROM INCIDENT GROUP BY STATE"}
+{"q": "Топ-5 значений «состояние» по числу инцидентов", "sql": "SELECT STATE, COUNT(*) AS cnt FROM INCIDENT GROUP BY STATE ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сгруппируй инцидентов по TENANT_ID и посчитай количество", "sql": "SELECT TENANT_ID, COUNT(*) FROM INCIDENT GROUP BY TENANT_ID"}
+{"q": "Топ-3 значений «идентификатор тенанта» по числу инцидентов", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM INCIDENT GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи инцидентов, где идентификатор тенанта = tenant-1", "sql": "SELECT INCIDENT_KEY FROM INCIDENT WHERE TENANT_ID = 'tenant-1'"}
+{"q": "Сколько инцидентов по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM INCIDENT c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько мигрированных инцидентов по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM INCIDENT c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'MIGRATED' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько инцидентов по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM INCIDENT c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько мигрированных инцидентов по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM INCIDENT c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'MIGRATED' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько инцидентов по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM INCIDENT c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько мигрированных инцидентов по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM INCIDENT c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY WHERE c.STATE = 'MIGRATED' GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько инцидентов по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM INCIDENT c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько ожидающих инцидентов по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM INCIDENT c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID WHERE c.STATE = 'PENDING' GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Посчитай число пользовательских задач", "sql": "SELECT COUNT(*) FROM USER_TASK"}
+{"q": "Количество пользовательских задач по каждому значению поля «идентификатор элемента BPMN»", "sql": "SELECT ELEMENT_ID, COUNT(*) FROM USER_TASK GROUP BY ELEMENT_ID"}
+{"q": "Топ-3 значений «идентификатор элемента BPMN» по числу пользовательских задач", "sql": "SELECT ELEMENT_ID, COUNT(*) AS cnt FROM USER_TASK GROUP BY ELEMENT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи пользовательских задач, где идентификатор элемента BPMN = element_id-10", "sql": "SELECT USER_TASK_KEY FROM USER_TASK WHERE ELEMENT_ID = 'element_id-10'"}
+{"q": "Количество пользовательских задач по каждому значению поля «идентификатор процесса (BPMN id)»", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM USER_TASK GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-10 значений «идентификатор процесса (BPMN id)» по числу пользовательских задач", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM USER_TASK GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько пользовательских задач с PROCESS_DEFINITION_ID = 'kyc-check'?", "sql": "SELECT COUNT(*) FROM USER_TASK WHERE PROCESS_DEFINITION_ID = 'kyc-check'"}
+{"q": "Сколько пользовательских задач, созданных за последние 14 дней?", "sql": "SELECT COUNT(*) FROM USER_TASK WHERE CREATION_DATE >= NOW() - INTERVAL '14 days'"}
+{"q": "Количество пользовательских задач по дням (дата создания)", "sql": "SELECT CAST(CREATION_DATE AS DATE), COUNT(*) FROM USER_TASK GROUP BY CAST(CREATION_DATE AS DATE)"}
+{"q": "Сколько пользовательских задач, завершённых за последние 30 дней?", "sql": "SELECT COUNT(*) FROM USER_TASK WHERE COMPLETION_DATE >= NOW() - INTERVAL '30 days'"}
+{"q": "Количество пользовательских задач по дням (дата завершения)", "sql": "SELECT CAST(COMPLETION_DATE AS DATE), COUNT(*) FROM USER_TASK GROUP BY CAST(COMPLETION_DATE AS DATE)"}
+{"q": "Количество пользовательских задач по каждому значению поля «исполнитель (логин)»", "sql": "SELECT ASSIGNEE, COUNT(*) FROM USER_TASK GROUP BY ASSIGNEE"}
+{"q": "Топ-10 значений «исполнитель (логин)» по числу пользовательских задач", "sql": "SELECT ASSIGNEE, COUNT(*) AS cnt FROM USER_TASK GROUP BY ASSIGNEE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи пользовательских задач, где исполнитель (логин) = smirnova", "sql": "SELECT USER_TASK_KEY FROM USER_TASK WHERE ASSIGNEE = 'smirnova'"}
+{"q": "Количество созданных пользовательских задач", "sql": "SELECT COUNT(*) FROM USER_TASK WHERE STATE = 'CREATED'"}
+{"q": "Выведи ключи созданных пользовательских задач", "sql": "SELECT USER_TASK_KEY FROM USER_TASK WHERE STATE = 'CREATED'"}
+{"q": "Количество завершённых пользовательских задач", "sql": "SELECT COUNT(*) FROM USER_TASK WHERE STATE = 'COMPLETED'"}
+{"q": "Список завершённых пользовательских задач (только ключи)", "sql": "SELECT USER_TASK_KEY FROM USER_TASK WHERE STATE = 'COMPLETED'"}
+{"q": "Сколько отменённых пользовательских задач?", "sql": "SELECT COUNT(*) FROM USER_TASK WHERE STATE = 'CANCELED'"}
+{"q": "Выведи ключи отменённых пользовательских задач", "sql": "SELECT USER_TASK_KEY FROM USER_TASK WHERE STATE = 'CANCELED'"}
+{"q": "Количество упавших пользовательских задач", "sql": "SELECT COUNT(*) FROM USER_TASK WHERE STATE = 'FAILED'"}
+{"q": "Выведи ключи упавших пользовательских задач", "sql": "SELECT USER_TASK_KEY FROM USER_TASK WHERE STATE = 'FAILED'"}
+{"q": "Сколько пользовательских задач в разрезе: состояние?", "sql": "SELECT STATE, COUNT(*) FROM USER_TASK GROUP BY STATE"}
+{"q": "Топ-5 значений «состояние» по числу пользовательских задач", "sql": "SELECT STATE, COUNT(*) AS cnt FROM USER_TASK GROUP BY STATE ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько пользовательских задач в разрезе: идентификатор тенанта?", "sql": "SELECT TENANT_ID, COUNT(*) FROM USER_TASK GROUP BY TENANT_ID"}
+{"q": "Топ-10 значений «идентификатор тенанта» по числу пользовательских задач", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM USER_TASK GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько пользовательских задач с TENANT_ID = 'tenant-2'?", "sql": "SELECT COUNT(*) FROM USER_TASK WHERE TENANT_ID = 'tenant-2'"}
+{"q": "Сколько пользовательских задач, со сроком за последние 30 дней?", "sql": "SELECT COUNT(*) FROM USER_TASK WHERE DUE_DATE >= NOW() - INTERVAL '30 days'"}
+{"q": "Количество пользовательских задач по дням (срок выполнения)", "sql": "SELECT CAST(DUE_DATE AS DATE), COUNT(*) FROM USER_TASK GROUP BY CAST(DUE_DATE AS DATE)"}
+{"q": "Сколько пользовательских задач в разрезе: приоритет?", "sql": "SELECT PRIORITY, COUNT(*) FROM USER_TASK GROUP BY PRIORITY"}
+{"q": "Топ-3 значений «приоритет» по числу пользовательских задач", "sql": "SELECT PRIORITY, COUNT(*) AS cnt FROM USER_TASK GROUP BY PRIORITY ORDER BY cnt DESC LIMIT 3"}
+{"q": "Среднее значение «приоритет» по всем пользовательских задач", "sql": "SELECT AVG(PRIORITY) FROM USER_TASK"}
+{"q": "Среднее «приоритет» для пользовательских задач в разрезе: состояние", "sql": "SELECT STATE, AVG(PRIORITY) FROM USER_TASK GROUP BY STATE"}
+{"q": "Сколько отменённых пользовательских задач по каждому форме? Выведи FORM_ID", "sql": "SELECT p.FORM_ID, COUNT(*) FROM USER_TASK c JOIN FORM p ON c.FORM_KEY = p.FORM_KEY WHERE c.STATE = 'CANCELED' GROUP BY p.FORM_KEY, p.FORM_ID"}
+{"q": "Сколько пользовательских задач по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM USER_TASK c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько завершённых пользовательских задач по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM USER_TASK c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY WHERE c.STATE = 'COMPLETED' GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько пользовательских задач по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM USER_TASK c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько упавших пользовательских задач по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM USER_TASK c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'FAILED' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько пользовательских задач по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM USER_TASK c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько отменённых пользовательских задач по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM USER_TASK c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'CANCELED' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько пользовательских задач по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM USER_TASK c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько упавших пользовательских задач по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM USER_TASK c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID WHERE c.STATE = 'FAILED' GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Общее количество заданий", "sql": "SELECT COUNT(*) FROM JOB"}
+{"q": "Сгруппируй заданий по PROCESS_DEFINITION_ID и посчитай количество", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM JOB GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-5 значений «идентификатор процесса (BPMN id)» по числу заданий", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM JOB GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько заданий с PROCESS_DEFINITION_ID = 'shipment'?", "sql": "SELECT COUNT(*) FROM JOB WHERE PROCESS_DEFINITION_ID = 'shipment'"}
+{"q": "Сколько заданий в разрезе: идентификатор элемента BPMN?", "sql": "SELECT ELEMENT_ID, COUNT(*) FROM JOB GROUP BY ELEMENT_ID"}
+{"q": "Топ-3 значений «идентификатор элемента BPMN» по числу заданий", "sql": "SELECT ELEMENT_ID, COUNT(*) AS cnt FROM JOB GROUP BY ELEMENT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи заданий, где идентификатор элемента BPMN = element_id-4", "sql": "SELECT JOB_KEY FROM JOB WHERE ELEMENT_ID = 'element_id-4'"}
+{"q": "Сколько заданий в разрезе: идентификатор тенанта?", "sql": "SELECT TENANT_ID, COUNT(*) FROM JOB GROUP BY TENANT_ID"}
+{"q": "Топ-5 значений «идентификатор тенанта» по числу заданий", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM JOB GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько заданий с TENANT_ID = 'tenant-1'?", "sql": "SELECT COUNT(*) FROM JOB WHERE TENANT_ID = 'tenant-1'"}
+{"q": "Количество заданий по каждому значению поля «тип»", "sql": "SELECT TYPE, COUNT(*) FROM JOB GROUP BY TYPE"}
+{"q": "Топ-3 значений «тип» по числу заданий", "sql": "SELECT TYPE, COUNT(*) AS cnt FROM JOB GROUP BY TYPE ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько заданий с TYPE = 'update-crm'?", "sql": "SELECT COUNT(*) FROM JOB WHERE TYPE = 'update-crm'"}
+{"q": "Топ-10 значений «имя воркера» по числу заданий", "sql": "SELECT WORKER, COUNT(*) AS cnt FROM JOB GROUP BY WORKER ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи заданий, где имя воркера = crm-worker", "sql": "SELECT JOB_KEY FROM JOB WHERE WORKER = 'crm-worker'"}
+{"q": "Сколько созданных заданий?", "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'CREATED'"}
+{"q": "Список созданных заданий (только ключи)", "sql": "SELECT JOB_KEY FROM JOB WHERE STATE = 'CREATED'"}
+{"q": "Количество завершённых заданий", "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'COMPLETED'"}
+{"q": "Список завершённых заданий (только ключи)", "sql": "SELECT JOB_KEY FROM JOB WHERE STATE = 'COMPLETED'"}
+{"q": "Количество упавших заданий", "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'FAILED'"}
+{"q": "Список упавших заданий (только ключи)", "sql": "SELECT JOB_KEY FROM JOB WHERE STATE = 'FAILED'"}
+{"q": "Сколько заданий со значением состояние = RETRIES_UPDATED?", "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'RETRIES_UPDATED'"}
+{"q": "Список заданий со значением состояние = RETRIES_UPDATED (только ключи)", "sql": "SELECT JOB_KEY FROM JOB WHERE STATE = 'RETRIES_UPDATED'"}
+{"q": "Количество просроченных по таймауту заданий", "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'TIMED_OUT'"}
+{"q": "Выведи ключи просроченных по таймауту заданий", "sql": "SELECT JOB_KEY FROM JOB WHERE STATE = 'TIMED_OUT'"}
+{"q": "Сколько отменённых заданий?", "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'CANCELED'"}
+{"q": "Выведи ключи отменённых заданий", "sql": "SELECT JOB_KEY FROM JOB WHERE STATE = 'CANCELED'"}
+{"q": "Сколько заданий со значением состояние = ERROR_THROWN?", "sql": "SELECT COUNT(*) FROM JOB WHERE STATE = 'ERROR_THROWN'"}
+{"q": "Список заданий со значением состояние = ERROR_THROWN (только ключи)", "sql": "SELECT JOB_KEY FROM JOB WHERE STATE = 'ERROR_THROWN'"}
+{"q": "Сколько заданий в разрезе: состояние?", "sql": "SELECT STATE, COUNT(*) FROM JOB GROUP BY STATE"}
+{"q": "Топ-3 значений «состояние» по числу заданий", "sql": "SELECT STATE, COUNT(*) AS cnt FROM JOB GROUP BY STATE ORDER BY cnt DESC LIMIT 3"}
+{"q": "Количество заданий со значением вид = BPMN_ELEMENT", "sql": "SELECT COUNT(*) FROM JOB WHERE KIND = 'BPMN_ELEMENT'"}
+{"q": "Выведи ключи заданий со значением вид = BPMN_ELEMENT", "sql": "SELECT JOB_KEY FROM JOB WHERE KIND = 'BPMN_ELEMENT'"}
+{"q": "Сколько заданий со значением вид = EXECUTION_LISTENER?", "sql": "SELECT COUNT(*) FROM JOB WHERE KIND = 'EXECUTION_LISTENER'"}
+{"q": "Выведи ключи заданий со значением вид = EXECUTION_LISTENER", "sql": "SELECT JOB_KEY FROM JOB WHERE KIND = 'EXECUTION_LISTENER'"}
+{"q": "Сколько заданий со значением вид = TASK_LISTENER?", "sql": "SELECT COUNT(*) FROM JOB WHERE KIND = 'TASK_LISTENER'"}
+{"q": "Выведи ключи заданий со значением вид = TASK_LISTENER", "sql": "SELECT JOB_KEY FROM JOB WHERE KIND = 'TASK_LISTENER'"}
+{"q": "Количество заданий по каждому значению поля «вид»", "sql": "SELECT KIND, COUNT(*) FROM JOB GROUP BY KIND"}
+{"q": "Топ-10 значений «вид» по числу заданий", "sql": "SELECT KIND, COUNT(*) AS cnt FROM JOB GROUP BY KIND ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько заданий, завершённых за последние 3 дней?", "sql": "SELECT COUNT(*) FROM JOB WHERE END_TIME >= NOW() - INTERVAL '3 days'"}
+{"q": "Количество заданий по дням (время окончания)", "sql": "SELECT CAST(END_TIME AS DATE), COUNT(*) FROM JOB GROUP BY CAST(END_TIME AS DATE)"}
+{"q": "Сумма значение «оставшиеся повторы» по всем заданий", "sql": "SELECT SUM(RETRIES) FROM JOB"}
+{"q": "Сумма «оставшиеся повторы» для заданий в разрезе: тип", "sql": "SELECT TYPE, SUM(RETRIES) FROM JOB GROUP BY TYPE"}
+{"q": "Сколько заданий, созданных за последние 30 дней?", "sql": "SELECT COUNT(*) FROM JOB WHERE CREATION_TIME >= NOW() - INTERVAL '30 days'"}
+{"q": "Количество заданий по дням (время создания)", "sql": "SELECT CAST(CREATION_TIME AS DATE), COUNT(*) FROM JOB GROUP BY CAST(CREATION_TIME AS DATE)"}
+{"q": "Сколько заданий в разрезе: приоритет?", "sql": "SELECT PRIORITY, COUNT(*) FROM JOB GROUP BY PRIORITY"}
+{"q": "Топ-10 значений «приоритет» по числу заданий", "sql": "SELECT PRIORITY, COUNT(*) AS cnt FROM JOB GROUP BY PRIORITY ORDER BY cnt DESC LIMIT 10"}
+{"q": "Среднее значение «приоритет» по всем заданий", "sql": "SELECT AVG(PRIORITY) FROM JOB"}
+{"q": "Среднее «приоритет» для заданий в разрезе: идентификатор тенанта", "sql": "SELECT TENANT_ID, AVG(PRIORITY) FROM JOB GROUP BY TENANT_ID"}
+{"q": "Сколько заданий по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM JOB c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько отменённых заданий по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM JOB c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY WHERE c.STATE = 'CANCELED' GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько заданий по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM JOB c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько упавших заданий по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM JOB c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'FAILED' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько заданий по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM JOB c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько просроченных по таймауту заданий по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM JOB c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'TIMED_OUT' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько заданий по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM JOB c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько созданных заданий по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM JOB c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID WHERE c.STATE = 'CREATED' GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько всего переменных?", "sql": "SELECT COUNT(*) FROM VARIABLE"}
+{"q": "Количество переменных по каждому значению поля «идентификатор процесса (BPMN id)»", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM VARIABLE GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-5 значений «идентификатор процесса (BPMN id)» по числу переменных", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM VARIABLE GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько переменных с PROCESS_DEFINITION_ID = 'invoice-approval'?", "sql": "SELECT COUNT(*) FROM VARIABLE WHERE PROCESS_DEFINITION_ID = 'invoice-approval'"}
+{"q": "Выведи ключи переменных со значением тип = STRING", "sql": "SELECT VAR_KEY FROM VARIABLE WHERE TYPE = 'STRING'"}
+{"q": "Список переменных со значением тип = LONG (только ключи)", "sql": "SELECT VAR_KEY FROM VARIABLE WHERE TYPE = 'LONG'"}
+{"q": "Список переменных со значением тип = DOUBLE (только ключи)", "sql": "SELECT VAR_KEY FROM VARIABLE WHERE TYPE = 'DOUBLE'"}
+{"q": "Выведи ключи переменных со значением тип = BOOLEAN", "sql": "SELECT VAR_KEY FROM VARIABLE WHERE TYPE = 'BOOLEAN'"}
+{"q": "Список переменных со значением тип = JSON (только ключи)", "sql": "SELECT VAR_KEY FROM VARIABLE WHERE TYPE = 'JSON'"}
+{"q": "Топ-10 значений «тип» по числу переменных", "sql": "SELECT TYPE, COUNT(*) AS cnt FROM VARIABLE GROUP BY TYPE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сгруппируй переменных по VAR_NAME и посчитай количество", "sql": "SELECT VAR_NAME, COUNT(*) FROM VARIABLE GROUP BY VAR_NAME"}
+{"q": "Топ-3 значений «имя переменной» по числу переменных", "sql": "SELECT VAR_NAME, COUNT(*) AS cnt FROM VARIABLE GROUP BY VAR_NAME ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько переменных с VAR_NAME = 'var_name-5'?", "sql": "SELECT COUNT(*) FROM VARIABLE WHERE VAR_NAME = 'var_name-5'"}
+{"q": "Максимальное значение «double value» по всем переменных", "sql": "SELECT MAX(DOUBLE_VALUE) FROM VARIABLE"}
+{"q": "Максимальное «double value» для переменных в разрезе: идентификатор процесса (BPMN id)", "sql": "SELECT PROCESS_DEFINITION_ID, MAX(DOUBLE_VALUE) FROM VARIABLE GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Максимальное значение «long value» по всем переменных", "sql": "SELECT MAX(LONG_VALUE) FROM VARIABLE"}
+{"q": "Максимальное «long value» для переменных в разрезе: имя переменной", "sql": "SELECT VAR_NAME, MAX(LONG_VALUE) FROM VARIABLE GROUP BY VAR_NAME"}
+{"q": "Сгруппируй переменных по TENANT_ID и посчитай количество", "sql": "SELECT TENANT_ID, COUNT(*) FROM VARIABLE GROUP BY TENANT_ID"}
+{"q": "Топ-5 значений «идентификатор тенанта» по числу переменных", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM VARIABLE GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько переменных с TENANT_ID = 'tenant-2'?", "sql": "SELECT COUNT(*) FROM VARIABLE WHERE TENANT_ID = 'tenant-2'"}
+{"q": "Сколько переменных по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM VARIABLE c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько переменных по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM VARIABLE c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько переменных по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM VARIABLE c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько всего экземпляров элементов процесса?", "sql": "SELECT COUNT(*) FROM FLOW_NODE_INSTANCE"}
+{"q": "Сгруппируй экземпляров элементов процесса по FLOW_NODE_ID и посчитай количество", "sql": "SELECT FLOW_NODE_ID, COUNT(*) FROM FLOW_NODE_INSTANCE GROUP BY FLOW_NODE_ID"}
+{"q": "Топ-10 значений «идентификатор элемента BPMN» по числу экземпляров элементов процесса", "sql": "SELECT FLOW_NODE_ID, COUNT(*) AS cnt FROM FLOW_NODE_INSTANCE GROUP BY FLOW_NODE_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько экземпляров элементов процесса с FLOW_NODE_ID = 'flow_node_id-5'?", "sql": "SELECT COUNT(*) FROM FLOW_NODE_INSTANCE WHERE FLOW_NODE_ID = 'flow_node_id-5'"}
+{"q": "Сколько экземпляров элементов процесса в разрезе: идентификатор процесса (BPMN id)?", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM FLOW_NODE_INSTANCE GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-10 значений «идентификатор процесса (BPMN id)» по числу экземпляров элементов процесса", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM FLOW_NODE_INSTANCE GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи экземпляров элементов процесса, где идентификатор процесса (BPMN id) = invoice-approval", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE PROCESS_DEFINITION_ID = 'invoice-approval'"}
+{"q": "Выведи ключи экземпляров элементов процесса со значением тип = START_EVENT", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE TYPE = 'START_EVENT'"}
+{"q": "Выведи ключи экземпляров элементов процесса со значением тип = END_EVENT", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE TYPE = 'END_EVENT'"}
+{"q": "Список экземпляров элементов процесса со значением тип = SERVICE_TASK (только ключи)", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE TYPE = 'SERVICE_TASK'"}
+{"q": "Выведи ключи экземпляров элементов процесса со значением тип = USER_TASK", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE TYPE = 'USER_TASK'"}
+{"q": "Список экземпляров элементов процесса со значением тип = EXCLUSIVE_GATEWAY (только ключи)", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE TYPE = 'EXCLUSIVE_GATEWAY'"}
+{"q": "Список экземпляров элементов процесса со значением тип = CALL_ACTIVITY (только ключи)", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE TYPE = 'CALL_ACTIVITY'"}
+{"q": "Список экземпляров элементов процесса со значением тип = SUB_PROCESS (только ключи)", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE TYPE = 'SUB_PROCESS'"}
+{"q": "Список экземпляров элементов процесса со значением тип = INTERMEDIATE_CATCH_EVENT (только ключи)", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE TYPE = 'INTERMEDIATE_CATCH_EVENT'"}
+{"q": "Топ-3 значений «тип» по числу экземпляров элементов процесса", "sql": "SELECT TYPE, COUNT(*) AS cnt FROM FLOW_NODE_INSTANCE GROUP BY TYPE ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько активных экземпляров элементов процесса?", "sql": "SELECT COUNT(*) FROM FLOW_NODE_INSTANCE WHERE STATE = 'ACTIVE'"}
+{"q": "Выведи ключи активных экземпляров элементов процесса", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE STATE = 'ACTIVE'"}
+{"q": "Сколько завершённых экземпляров элементов процесса?", "sql": "SELECT COUNT(*) FROM FLOW_NODE_INSTANCE WHERE STATE = 'COMPLETED'"}
+{"q": "Список завершённых экземпляров элементов процесса (только ключи)", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE STATE = 'COMPLETED'"}
+{"q": "Сколько прерванных экземпляров элементов процесса?", "sql": "SELECT COUNT(*) FROM FLOW_NODE_INSTANCE WHERE STATE = 'TERMINATED'"}
+{"q": "Список прерванных экземпляров элементов процесса (только ключи)", "sql": "SELECT FLOW_NODE_INSTANCE_KEY FROM FLOW_NODE_INSTANCE WHERE STATE = 'TERMINATED'"}
+{"q": "Сколько экземпляров элементов процесса в разрезе: состояние?", "sql": "SELECT STATE, COUNT(*) FROM FLOW_NODE_INSTANCE GROUP BY STATE"}
+{"q": "Топ-5 значений «состояние» по числу экземпляров элементов процесса", "sql": "SELECT STATE, COUNT(*) AS cnt FROM FLOW_NODE_INSTANCE GROUP BY STATE ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько экземпляров элементов процесса, начатых за последние 3 дней?", "sql": "SELECT COUNT(*) FROM FLOW_NODE_INSTANCE WHERE START_DATE >= NOW() - INTERVAL '3 days'"}
+{"q": "Количество экземпляров элементов процесса по дням (дата начала)", "sql": "SELECT CAST(START_DATE AS DATE), COUNT(*) FROM FLOW_NODE_INSTANCE GROUP BY CAST(START_DATE AS DATE)"}
+{"q": "Сколько экземпляров элементов процесса, завершённых за последние 30 дней?", "sql": "SELECT COUNT(*) FROM FLOW_NODE_INSTANCE WHERE END_DATE >= NOW() - INTERVAL '30 days'"}
+{"q": "Количество экземпляров элементов процесса по дням (дата окончания)", "sql": "SELECT CAST(END_DATE AS DATE), COUNT(*) FROM FLOW_NODE_INSTANCE GROUP BY CAST(END_DATE AS DATE)"}
+{"q": "Сгруппируй экземпляров элементов процесса по TENANT_ID и посчитай количество", "sql": "SELECT TENANT_ID, COUNT(*) FROM FLOW_NODE_INSTANCE GROUP BY TENANT_ID"}
+{"q": "Топ-5 значений «идентификатор тенанта» по числу экземпляров элементов процесса", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM FLOW_NODE_INSTANCE GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько экземпляров элементов процесса с TENANT_ID = 'tenant-1'?", "sql": "SELECT COUNT(*) FROM FLOW_NODE_INSTANCE WHERE TENANT_ID = 'tenant-1'"}
+{"q": "Сколько экземпляров элементов процесса по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM FLOW_NODE_INSTANCE c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько прерванных экземпляров элементов процесса по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM FLOW_NODE_INSTANCE c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'TERMINATED' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько экземпляров элементов процесса по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM FLOW_NODE_INSTANCE c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько активных экземпляров элементов процесса по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM FLOW_NODE_INSTANCE c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'ACTIVE' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько экземпляров элементов процесса по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM FLOW_NODE_INSTANCE c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько завершённых экземпляров элементов процесса по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM FLOW_NODE_INSTANCE c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY WHERE c.STATE = 'COMPLETED' GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько экземпляров элементов процесса по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM FLOW_NODE_INSTANCE c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько прерванных экземпляров элементов процесса по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM FLOW_NODE_INSTANCE c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID WHERE c.STATE = 'TERMINATED' GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько всего вычислений решений?", "sql": "SELECT COUNT(*) FROM DECISION_INSTANCE"}
+{"q": "Количество вычислений решений по каждому значению поля «идентификатор процесса (BPMN id)»", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM DECISION_INSTANCE GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-3 значений «идентификатор процесса (BPMN id)» по числу вычислений решений", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM DECISION_INSTANCE GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи вычислений решений, где идентификатор процесса (BPMN id) = loan-application", "sql": "SELECT DECISION_INSTANCE_ID FROM DECISION_INSTANCE WHERE PROCESS_DEFINITION_ID = 'loan-application'"}
+{"q": "Количество вычислений решений по каждому значению поля «идентификатор элемента BPMN»", "sql": "SELECT FLOW_NODE_ID, COUNT(*) FROM DECISION_INSTANCE GROUP BY FLOW_NODE_ID"}
+{"q": "Топ-3 значений «идентификатор элемента BPMN» по числу вычислений решений", "sql": "SELECT FLOW_NODE_ID, COUNT(*) AS cnt FROM DECISION_INSTANCE GROUP BY FLOW_NODE_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько вычислений решений с FLOW_NODE_ID = 'flow_node_id-17'?", "sql": "SELECT COUNT(*) FROM DECISION_INSTANCE WHERE FLOW_NODE_ID = 'flow_node_id-17'"}
+{"q": "Сколько вычислений решений, выполненных за последние 3 дней?", "sql": "SELECT COUNT(*) FROM DECISION_INSTANCE WHERE EVALUATION_DATE >= NOW() - INTERVAL '3 days'"}
+{"q": "Количество вычислений решений по дням (дата вычисления)", "sql": "SELECT CAST(EVALUATION_DATE AS DATE), COUNT(*) FROM DECISION_INSTANCE GROUP BY CAST(EVALUATION_DATE AS DATE)"}
+{"q": "Сгруппируй вычислений решений по TYPE и посчитай количество", "sql": "SELECT TYPE, COUNT(*) FROM DECISION_INSTANCE GROUP BY TYPE"}
+{"q": "Топ-3 значений «тип» по числу вычислений решений", "sql": "SELECT TYPE, COUNT(*) AS cnt FROM DECISION_INSTANCE GROUP BY TYPE ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи вычислений решений, где тип = type-8", "sql": "SELECT DECISION_INSTANCE_ID FROM DECISION_INSTANCE WHERE TYPE = 'type-8'"}
+{"q": "Выведи ключи успешно вычисленных вычислений решений", "sql": "SELECT DECISION_INSTANCE_ID FROM DECISION_INSTANCE WHERE STATE = 'EVALUATED'"}
+{"q": "Выведи ключи упавших вычислений решений", "sql": "SELECT DECISION_INSTANCE_ID FROM DECISION_INSTANCE WHERE STATE = 'FAILED'"}
+{"q": "Топ-10 значений «состояние» по числу вычислений решений", "sql": "SELECT STATE, COUNT(*) AS cnt FROM DECISION_INSTANCE GROUP BY STATE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Количество вычислений решений по каждому значению поля «результат»", "sql": "SELECT RESULT, COUNT(*) FROM DECISION_INSTANCE GROUP BY RESULT"}
+{"q": "Топ-10 значений «результат» по числу вычислений решений", "sql": "SELECT RESULT, COUNT(*) AS cnt FROM DECISION_INSTANCE GROUP BY RESULT ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько вычислений решений с RESULT = 'result-6'?", "sql": "SELECT COUNT(*) FROM DECISION_INSTANCE WHERE RESULT = 'result-6'"}
+{"q": "Сгруппируй вычислений решений по TENANT_ID и посчитай количество", "sql": "SELECT TENANT_ID, COUNT(*) FROM DECISION_INSTANCE GROUP BY TENANT_ID"}
+{"q": "Топ-3 значений «идентификатор тенанта» по числу вычислений решений", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM DECISION_INSTANCE GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько вычислений решений с TENANT_ID = 'tenant-2'?", "sql": "SELECT COUNT(*) FROM DECISION_INSTANCE WHERE TENANT_ID = 'tenant-2'"}
+{"q": "Сколько вычислений решений по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM DECISION_INSTANCE c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько успешно вычисленных вычислений решений по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM DECISION_INSTANCE c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'EVALUATED' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько вычислений решений по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM DECISION_INSTANCE c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько успешно вычисленных вычислений решений по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM DECISION_INSTANCE c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'EVALUATED' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько вычислений решений по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM DECISION_INSTANCE c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько упавших вычислений решений по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM DECISION_INSTANCE c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY WHERE c.STATE = 'FAILED' GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько успешно вычисленных вычислений решений по каждому решению? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM DECISION_INSTANCE c JOIN DECISION_DEFINITION p ON c.DECISION_DEFINITION_KEY = p.DECISION_DEFINITION_KEY WHERE c.STATE = 'EVALUATED' GROUP BY p.DECISION_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько вычислений решений по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM DECISION_INSTANCE c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько успешно вычисленных вычислений решений по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM DECISION_INSTANCE c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID WHERE c.STATE = 'EVALUATED' GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько всего определений решений?", "sql": "SELECT COUNT(*) FROM DECISION_DEFINITION"}
+{"q": "Количество определений решений по каждому значению поля «идентификатор тенанта»", "sql": "SELECT TENANT_ID, COUNT(*) FROM DECISION_DEFINITION GROUP BY TENANT_ID"}
+{"q": "Топ-3 значений «идентификатор тенанта» по числу определений решений", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM DECISION_DEFINITION GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи определений решений, где идентификатор тенанта = tenant-2", "sql": "SELECT DECISION_DEFINITION_KEY FROM DECISION_DEFINITION WHERE TENANT_ID = 'tenant-2'"}
+{"q": "Сгруппируй определений решений по VERSION и посчитай количество", "sql": "SELECT VERSION, COUNT(*) FROM DECISION_DEFINITION GROUP BY VERSION"}
+{"q": "Топ-5 значений «номер версии» по числу определений решений", "sql": "SELECT VERSION, COUNT(*) AS cnt FROM DECISION_DEFINITION GROUP BY VERSION ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько определений решений по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM DECISION_DEFINITION c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Общее количество пакетных операций", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION"}
+{"q": "Количество созданных пакетных операций", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE STATE = 'CREATED'"}
+{"q": "Выведи ключи созданных пакетных операций", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE STATE = 'CREATED'"}
+{"q": "Сколько активных пакетных операций?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE STATE = 'ACTIVE'"}
+{"q": "Список активных пакетных операций (только ключи)", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE STATE = 'ACTIVE'"}
+{"q": "Количество завершённых пакетных операций", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE STATE = 'COMPLETED'"}
+{"q": "Список завершённых пакетных операций (только ключи)", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE STATE = 'COMPLETED'"}
+{"q": "Сколько частично завершённых пакетных операций?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE STATE = 'PARTIALLY_COMPLETED'"}
+{"q": "Выведи ключи частично завершённых пакетных операций", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE STATE = 'PARTIALLY_COMPLETED'"}
+{"q": "Сколько отменённых пакетных операций?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE STATE = 'CANCELED'"}
+{"q": "Список отменённых пакетных операций (только ключи)", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE STATE = 'CANCELED'"}
+{"q": "Сколько упавших пакетных операций?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE STATE = 'FAILED'"}
+{"q": "Выведи ключи упавших пакетных операций", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE STATE = 'FAILED'"}
+{"q": "Сколько пакетных операций в разрезе: состояние?", "sql": "SELECT STATE, COUNT(*) FROM BATCH_OPERATION GROUP BY STATE"}
+{"q": "Топ-3 значений «состояние» по числу пакетных операций", "sql": "SELECT STATE, COUNT(*) AS cnt FROM BATCH_OPERATION GROUP BY STATE ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько пакетных операций со значением тип операции = CANCEL_PROCESS_INSTANCE?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE OPERATION_TYPE = 'CANCEL_PROCESS_INSTANCE'"}
+{"q": "Список пакетных операций со значением тип операции = CANCEL_PROCESS_INSTANCE (только ключи)", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE OPERATION_TYPE = 'CANCEL_PROCESS_INSTANCE'"}
+{"q": "Сколько пакетных операций со значением тип операции = MIGRATE_PROCESS_INSTANCE?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE OPERATION_TYPE = 'MIGRATE_PROCESS_INSTANCE'"}
+{"q": "Выведи ключи пакетных операций со значением тип операции = MIGRATE_PROCESS_INSTANCE", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE OPERATION_TYPE = 'MIGRATE_PROCESS_INSTANCE'"}
+{"q": "Количество пакетных операций со значением тип операции = MODIFY_PROCESS_INSTANCE", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE OPERATION_TYPE = 'MODIFY_PROCESS_INSTANCE'"}
+{"q": "Список пакетных операций со значением тип операции = MODIFY_PROCESS_INSTANCE (только ключи)", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE OPERATION_TYPE = 'MODIFY_PROCESS_INSTANCE'"}
+{"q": "Сколько пакетных операций со значением тип операции = RESOLVE_INCIDENT?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE OPERATION_TYPE = 'RESOLVE_INCIDENT'"}
+{"q": "Выведи ключи пакетных операций со значением тип операции = RESOLVE_INCIDENT", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE OPERATION_TYPE = 'RESOLVE_INCIDENT'"}
+{"q": "Сколько пакетных операций со значением тип операции = DELETE_PROCESS_INSTANCE?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE OPERATION_TYPE = 'DELETE_PROCESS_INSTANCE'"}
+{"q": "Выведи ключи пакетных операций со значением тип операции = DELETE_PROCESS_INSTANCE", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE OPERATION_TYPE = 'DELETE_PROCESS_INSTANCE'"}
+{"q": "Количество пакетных операций по каждому значению поля «тип операции»", "sql": "SELECT OPERATION_TYPE, COUNT(*) FROM BATCH_OPERATION GROUP BY OPERATION_TYPE"}
+{"q": "Топ-3 значений «тип операции» по числу пакетных операций", "sql": "SELECT OPERATION_TYPE, COUNT(*) AS cnt FROM BATCH_OPERATION GROUP BY OPERATION_TYPE ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько пакетных операций, начатых за последние 3 дней?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE START_DATE >= NOW() - INTERVAL '3 days'"}
+{"q": "Количество пакетных операций по дням (дата начала)", "sql": "SELECT CAST(START_DATE AS DATE), COUNT(*) FROM BATCH_OPERATION GROUP BY CAST(START_DATE AS DATE)"}
+{"q": "Сколько пакетных операций, завершённых за последние 30 дней?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION WHERE END_DATE >= NOW() - INTERVAL '30 days'"}
+{"q": "Количество пакетных операций по дням (дата окончания)", "sql": "SELECT CAST(END_DATE AS DATE), COUNT(*) FROM BATCH_OPERATION GROUP BY CAST(END_DATE AS DATE)"}
+{"q": "Максимальное значение «всего элементов» по всем пакетных операций", "sql": "SELECT MAX(OPERATIONS_TOTAL_COUNT) FROM BATCH_OPERATION"}
+{"q": "Максимальное «всего элементов» для пакетных операций в разрезе: состояние", "sql": "SELECT STATE, MAX(OPERATIONS_TOTAL_COUNT) FROM BATCH_OPERATION GROUP BY STATE"}
+{"q": "Сумма значение «упавших элементов» по всем пакетных операций", "sql": "SELECT SUM(OPERATIONS_FAILED_COUNT) FROM BATCH_OPERATION"}
+{"q": "Среднее значение «завершённых элементов» по всем пакетных операций", "sql": "SELECT AVG(OPERATIONS_COMPLETED_COUNT) FROM BATCH_OPERATION"}
+{"q": "Среднее «завершённых элементов» для пакетных операций в разрезе: кто выполнил", "sql": "SELECT ACTOR_ID, AVG(OPERATIONS_COMPLETED_COUNT) FROM BATCH_OPERATION GROUP BY ACTOR_ID"}
+{"q": "Сгруппируй пакетных операций по ACTOR_ID и посчитай количество", "sql": "SELECT ACTOR_ID, COUNT(*) FROM BATCH_OPERATION GROUP BY ACTOR_ID"}
+{"q": "Топ-10 значений «кто выполнил» по числу пакетных операций", "sql": "SELECT ACTOR_ID, COUNT(*) AS cnt FROM BATCH_OPERATION GROUP BY ACTOR_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи пакетных операций, где кто выполнил = ivanov", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION WHERE ACTOR_ID = 'ivanov'"}
+{"q": "Общее количество элементов пакетных операций", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION_ITEM"}
+{"q": "Сколько элементов пакетных операций, обработанных за последние 30 дней?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION_ITEM WHERE PROCESSED_DATE >= NOW() - INTERVAL '30 days'"}
+{"q": "Количество элементов пакетных операций по дням (processed date)", "sql": "SELECT CAST(PROCESSED_DATE AS DATE), COUNT(*) FROM BATCH_OPERATION_ITEM GROUP BY CAST(PROCESSED_DATE AS DATE)"}
+{"q": "Сколько активных элементов пакетных операций?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION_ITEM WHERE STATE = 'ACTIVE'"}
+{"q": "Список активных элементов пакетных операций (только ключи)", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION_ITEM WHERE STATE = 'ACTIVE'"}
+{"q": "Сколько завершённых элементов пакетных операций?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION_ITEM WHERE STATE = 'COMPLETED'"}
+{"q": "Список завершённых элементов пакетных операций (только ключи)", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION_ITEM WHERE STATE = 'COMPLETED'"}
+{"q": "Сколько отменённых элементов пакетных операций?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION_ITEM WHERE STATE = 'CANCELED'"}
+{"q": "Список отменённых элементов пакетных операций (только ключи)", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION_ITEM WHERE STATE = 'CANCELED'"}
+{"q": "Сколько упавших элементов пакетных операций?", "sql": "SELECT COUNT(*) FROM BATCH_OPERATION_ITEM WHERE STATE = 'FAILED'"}
+{"q": "Список упавших элементов пакетных операций (только ключи)", "sql": "SELECT BATCH_OPERATION_KEY FROM BATCH_OPERATION_ITEM WHERE STATE = 'FAILED'"}
+{"q": "Количество элементов пакетных операций по каждому значению поля «состояние»", "sql": "SELECT STATE, COUNT(*) FROM BATCH_OPERATION_ITEM GROUP BY STATE"}
+{"q": "Топ-5 значений «состояние» по числу элементов пакетных операций", "sql": "SELECT STATE, COUNT(*) AS cnt FROM BATCH_OPERATION_ITEM GROUP BY STATE ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько элементов пакетных операций по каждому пакетной операции? Выведи OPERATION_TYPE", "sql": "SELECT p.OPERATION_TYPE, COUNT(*) FROM BATCH_OPERATION_ITEM c JOIN BATCH_OPERATION p ON c.BATCH_OPERATION_KEY = p.BATCH_OPERATION_KEY GROUP BY p.BATCH_OPERATION_KEY, p.OPERATION_TYPE"}
+{"q": "Сколько активных элементов пакетных операций по каждому пакетной операции? Выведи OPERATION_TYPE", "sql": "SELECT p.OPERATION_TYPE, COUNT(*) FROM BATCH_OPERATION_ITEM c JOIN BATCH_OPERATION p ON c.BATCH_OPERATION_KEY = p.BATCH_OPERATION_KEY WHERE c.STATE = 'ACTIVE' GROUP BY p.BATCH_OPERATION_KEY, p.OPERATION_TYPE"}
+{"q": "Сколько элементов пакетных операций по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM BATCH_OPERATION_ITEM c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько завершённых элементов пакетных операций по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM BATCH_OPERATION_ITEM c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'COMPLETED' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько элементов пакетных операций по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM BATCH_OPERATION_ITEM c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько упавших элементов пакетных операций по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM BATCH_OPERATION_ITEM c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY WHERE c.STATE = 'FAILED' GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько всего записей журнала аудита?", "sql": "SELECT COUNT(*) FROM AUDIT_LOG"}
+{"q": "Сколько записей журнала аудита в разрезе: тип сущности?", "sql": "SELECT ENTITY_TYPE, COUNT(*) FROM AUDIT_LOG GROUP BY ENTITY_TYPE"}
+{"q": "Топ-10 значений «тип сущности» по числу записей журнала аудита", "sql": "SELECT ENTITY_TYPE, COUNT(*) AS cnt FROM AUDIT_LOG GROUP BY ENTITY_TYPE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи записей журнала аудита, где тип сущности = entity_type-6", "sql": "SELECT AUDIT_LOG_KEY FROM AUDIT_LOG WHERE ENTITY_TYPE = 'entity_type-6'"}
+{"q": "Сколько записей журнала аудита в разрезе: тип операции?", "sql": "SELECT OPERATION_TYPE, COUNT(*) FROM AUDIT_LOG GROUP BY OPERATION_TYPE"}
+{"q": "Топ-10 значений «тип операции» по числу записей журнала аудита", "sql": "SELECT OPERATION_TYPE, COUNT(*) AS cnt FROM AUDIT_LOG GROUP BY OPERATION_TYPE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько записей журнала аудита с OPERATION_TYPE = 'operation_type-2'?", "sql": "SELECT COUNT(*) FROM AUDIT_LOG WHERE OPERATION_TYPE = 'operation_type-2'"}
+{"q": "Сколько записей журнала аудита, зарегистрированных за последние 10 дней?", "sql": "SELECT COUNT(*) FROM AUDIT_LOG WHERE TIMESTAMP >= NOW() - INTERVAL '10 days'"}
+{"q": "Количество записей журнала аудита по дням (время события)", "sql": "SELECT CAST(TIMESTAMP AS DATE), COUNT(*) FROM AUDIT_LOG GROUP BY CAST(TIMESTAMP AS DATE)"}
+{"q": "Топ-3 значений «кто выполнил» по числу записей журнала аудита", "sql": "SELECT ACTOR_ID, COUNT(*) AS cnt FROM AUDIT_LOG GROUP BY ACTOR_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Количество записей журнала аудита по каждому значению поля «идентификатор тенанта»", "sql": "SELECT TENANT_ID, COUNT(*) FROM AUDIT_LOG GROUP BY TENANT_ID"}
+{"q": "Топ-3 значений «идентификатор тенанта» по числу записей журнала аудита", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM AUDIT_LOG GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи записей журнала аудита, где идентификатор тенанта = tenant-1", "sql": "SELECT AUDIT_LOG_KEY FROM AUDIT_LOG WHERE TENANT_ID = 'tenant-1'"}
+{"q": "Список успешных записей журнала аудита (только ключи)", "sql": "SELECT AUDIT_LOG_KEY FROM AUDIT_LOG WHERE RESULT = 'SUCCESS'"}
+{"q": "Список неуспешных записей журнала аудита (только ключи)", "sql": "SELECT AUDIT_LOG_KEY FROM AUDIT_LOG WHERE RESULT = 'FAIL'"}
+{"q": "Топ-3 значений «результат» по числу записей журнала аудита", "sql": "SELECT RESULT, COUNT(*) AS cnt FROM AUDIT_LOG GROUP BY RESULT ORDER BY cnt DESC LIMIT 3"}
+{"q": "Количество записей журнала аудита по каждому значению поля «category»", "sql": "SELECT CATEGORY, COUNT(*) FROM AUDIT_LOG GROUP BY CATEGORY"}
+{"q": "Топ-5 значений «category» по числу записей журнала аудита", "sql": "SELECT CATEGORY, COUNT(*) AS cnt FROM AUDIT_LOG GROUP BY CATEGORY ORDER BY cnt DESC LIMIT 5"}
+{"q": "Покажи ключи записей журнала аудита, где category = category-12", "sql": "SELECT AUDIT_LOG_KEY FROM AUDIT_LOG WHERE CATEGORY = 'category-12'"}
+{"q": "Сколько записей журнала аудита в разрезе: идентификатор процесса (BPMN id)?", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM AUDIT_LOG GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-5 значений «идентификатор процесса (BPMN id)» по числу записей журнала аудита", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM AUDIT_LOG GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько записей журнала аудита с PROCESS_DEFINITION_ID = 'payment-retry'?", "sql": "SELECT COUNT(*) FROM AUDIT_LOG WHERE PROCESS_DEFINITION_ID = 'payment-retry'"}
+{"q": "Сколько записей журнала аудита по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM AUDIT_LOG c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько записей журнала аудита по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM AUDIT_LOG c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько записей журнала аудита по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM AUDIT_LOG c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько записей журнала аудита по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM AUDIT_LOG c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько записей журнала аудита по каждому решению? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM AUDIT_LOG c JOIN DECISION_DEFINITION p ON c.DECISION_DEFINITION_KEY = p.DECISION_DEFINITION_KEY GROUP BY p.DECISION_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько записей журнала аудита по каждому форме? Выведи FORM_ID", "sql": "SELECT p.FORM_ID, COUNT(*) FROM AUDIT_LOG c JOIN FORM p ON c.FORM_KEY = p.FORM_KEY GROUP BY p.FORM_KEY, p.FORM_ID"}
+{"q": "Посчитай число подписок на сообщения", "sql": "SELECT COUNT(*) FROM MESSAGE_SUBSCRIPTION"}
+{"q": "Сколько подписок на сообщения в разрезе: идентификатор процесса (BPMN id)?", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM MESSAGE_SUBSCRIPTION GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-5 значений «идентификатор процесса (BPMN id)» по числу подписок на сообщения", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM MESSAGE_SUBSCRIPTION GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Покажи ключи подписок на сообщения, где идентификатор процесса (BPMN id) = order-process", "sql": "SELECT MESSAGE_SUBSCRIPTION_KEY FROM MESSAGE_SUBSCRIPTION WHERE PROCESS_DEFINITION_ID = 'order-process'"}
+{"q": "Количество подписок на сообщения по каждому значению поля «идентификатор элемента BPMN»", "sql": "SELECT FLOW_NODE_ID, COUNT(*) FROM MESSAGE_SUBSCRIPTION GROUP BY FLOW_NODE_ID"}
+{"q": "Топ-10 значений «идентификатор элемента BPMN» по числу подписок на сообщения", "sql": "SELECT FLOW_NODE_ID, COUNT(*) AS cnt FROM MESSAGE_SUBSCRIPTION GROUP BY FLOW_NODE_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько подписок на сообщения с FLOW_NODE_ID = 'flow_node_id-18'?", "sql": "SELECT COUNT(*) FROM MESSAGE_SUBSCRIPTION WHERE FLOW_NODE_ID = 'flow_node_id-18'"}
+{"q": "Сколько созданных подписок на сообщения?", "sql": "SELECT COUNT(*) FROM MESSAGE_SUBSCRIPTION WHERE MESSAGE_SUBSCRIPTION_STATE = 'CREATED'"}
+{"q": "Выведи ключи созданных подписок на сообщения", "sql": "SELECT MESSAGE_SUBSCRIPTION_KEY FROM MESSAGE_SUBSCRIPTION WHERE MESSAGE_SUBSCRIPTION_STATE = 'CREATED'"}
+{"q": "Сколько сопоставленных подписок на сообщения?", "sql": "SELECT COUNT(*) FROM MESSAGE_SUBSCRIPTION WHERE MESSAGE_SUBSCRIPTION_STATE = 'CORRELATED'"}
+{"q": "Список сопоставленных подписок на сообщения (только ключи)", "sql": "SELECT MESSAGE_SUBSCRIPTION_KEY FROM MESSAGE_SUBSCRIPTION WHERE MESSAGE_SUBSCRIPTION_STATE = 'CORRELATED'"}
+{"q": "Количество удалённых подписок на сообщения", "sql": "SELECT COUNT(*) FROM MESSAGE_SUBSCRIPTION WHERE MESSAGE_SUBSCRIPTION_STATE = 'DELETED'"}
+{"q": "Выведи ключи удалённых подписок на сообщения", "sql": "SELECT MESSAGE_SUBSCRIPTION_KEY FROM MESSAGE_SUBSCRIPTION WHERE MESSAGE_SUBSCRIPTION_STATE = 'DELETED'"}
+{"q": "Сколько мигрированных подписок на сообщения?", "sql": "SELECT COUNT(*) FROM MESSAGE_SUBSCRIPTION WHERE MESSAGE_SUBSCRIPTION_STATE = 'MIGRATED'"}
+{"q": "Список мигрированных подписок на сообщения (только ключи)", "sql": "SELECT MESSAGE_SUBSCRIPTION_KEY FROM MESSAGE_SUBSCRIPTION WHERE MESSAGE_SUBSCRIPTION_STATE = 'MIGRATED'"}
+{"q": "Сколько подписок на сообщения в разрезе: message subscription state?", "sql": "SELECT MESSAGE_SUBSCRIPTION_STATE, COUNT(*) FROM MESSAGE_SUBSCRIPTION GROUP BY MESSAGE_SUBSCRIPTION_STATE"}
+{"q": "Топ-5 значений «message subscription state» по числу подписок на сообщения", "sql": "SELECT MESSAGE_SUBSCRIPTION_STATE, COUNT(*) AS cnt FROM MESSAGE_SUBSCRIPTION GROUP BY MESSAGE_SUBSCRIPTION_STATE ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько подписок на сообщения, созданных за последние 14 дней?", "sql": "SELECT COUNT(*) FROM MESSAGE_SUBSCRIPTION WHERE DATE_TIME >= NOW() - INTERVAL '14 days'"}
+{"q": "Количество подписок на сообщения по дням (date time)", "sql": "SELECT CAST(DATE_TIME AS DATE), COUNT(*) FROM MESSAGE_SUBSCRIPTION GROUP BY CAST(DATE_TIME AS DATE)"}
+{"q": "Количество подписок на сообщения по каждому значению поля «имя сообщения»", "sql": "SELECT MESSAGE_NAME, COUNT(*) FROM MESSAGE_SUBSCRIPTION GROUP BY MESSAGE_NAME"}
+{"q": "Топ-3 значений «имя сообщения» по числу подписок на сообщения", "sql": "SELECT MESSAGE_NAME, COUNT(*) AS cnt FROM MESSAGE_SUBSCRIPTION GROUP BY MESSAGE_NAME ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи подписок на сообщения, где имя сообщения = message_name-20", "sql": "SELECT MESSAGE_SUBSCRIPTION_KEY FROM MESSAGE_SUBSCRIPTION WHERE MESSAGE_NAME = 'message_name-20'"}
+{"q": "Сгруппируй подписок на сообщения по TENANT_ID и посчитай количество", "sql": "SELECT TENANT_ID, COUNT(*) FROM MESSAGE_SUBSCRIPTION GROUP BY TENANT_ID"}
+{"q": "Топ-5 значений «идентификатор тенанта» по числу подписок на сообщения", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM MESSAGE_SUBSCRIPTION GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько подписок на сообщения с TENANT_ID = 'tenant-2'?", "sql": "SELECT COUNT(*) FROM MESSAGE_SUBSCRIPTION WHERE TENANT_ID = 'tenant-2'"}
+{"q": "Сколько подписок на сообщения по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM MESSAGE_SUBSCRIPTION c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько подписок на сообщения по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM MESSAGE_SUBSCRIPTION c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько подписок на сообщения по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM MESSAGE_SUBSCRIPTION c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько подписок на сообщения по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM MESSAGE_SUBSCRIPTION c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Посчитай число пользователей", "sql": "SELECT COUNT(*) FROM USER_"}
+{"q": "Сколько всего групп?", "sql": "SELECT COUNT(*) FROM GROUP_"}
+{"q": "Общее количество тенантов", "sql": "SELECT COUNT(*) FROM TENANT"}
+{"q": "Сколько всего форм?", "sql": "SELECT COUNT(*) FROM FORM"}
+{"q": "Количество форм по каждому значению поля «идентификатор тенанта»", "sql": "SELECT TENANT_ID, COUNT(*) FROM FORM GROUP BY TENANT_ID"}
+{"q": "Топ-3 значений «идентификатор тенанта» по числу форм", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM FORM GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи форм, где идентификатор тенанта = tenant-2", "sql": "SELECT FORM_KEY FROM FORM WHERE TENANT_ID = 'tenant-2'"}
+{"q": "Сколько форм в разрезе: номер версии?", "sql": "SELECT VERSION, COUNT(*) FROM FORM GROUP BY VERSION"}
+{"q": "Топ-10 значений «номер версии» по числу форм", "sql": "SELECT VERSION, COUNT(*) AS cnt FROM FORM GROUP BY VERSION ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько форм по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM FORM c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько всего разрешений?", "sql": "SELECT COUNT(*) FROM AUTHORIZATIONS"}
+{"q": "Сколько разрешений в разрезе: владелец разрешения?", "sql": "SELECT OWNER_ID, COUNT(*) FROM AUTHORIZATIONS GROUP BY OWNER_ID"}
+{"q": "Топ-5 значений «владелец разрешения» по числу разрешений", "sql": "SELECT OWNER_ID, COUNT(*) AS cnt FROM AUTHORIZATIONS GROUP BY OWNER_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько разрешений с OWNER_ID = 'sidorov'?", "sql": "SELECT COUNT(*) FROM AUTHORIZATIONS WHERE OWNER_ID = 'sidorov'"}
+{"q": "Количество разрешений по каждому значению поля «тип ресурса»", "sql": "SELECT RESOURCE_TYPE, COUNT(*) FROM AUTHORIZATIONS GROUP BY RESOURCE_TYPE"}
+{"q": "Топ-10 значений «тип ресурса» по числу разрешений", "sql": "SELECT RESOURCE_TYPE, COUNT(*) AS cnt FROM AUTHORIZATIONS GROUP BY RESOURCE_TYPE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи разрешений, где тип ресурса = resource_type-19", "sql": "SELECT AUTHORIZATION_KEY FROM AUTHORIZATIONS WHERE RESOURCE_TYPE = 'resource_type-19'"}
+{"q": "Количество разрешений по каждому значению поля «тип разрешения»", "sql": "SELECT PERMISSION_TYPE, COUNT(*) FROM AUTHORIZATIONS GROUP BY PERMISSION_TYPE"}
+{"q": "Топ-10 значений «тип разрешения» по числу разрешений", "sql": "SELECT PERMISSION_TYPE, COUNT(*) AS cnt FROM AUTHORIZATIONS GROUP BY PERMISSION_TYPE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько разрешений с PERMISSION_TYPE = 'permission_type-2'?", "sql": "SELECT COUNT(*) FROM AUTHORIZATIONS WHERE PERMISSION_TYPE = 'permission_type-2'"}
+{"q": "Посчитай число запусков ИИ-агентов", "sql": "SELECT COUNT(*) FROM AGENT_INSTANCE"}
+{"q": "Сколько запусков ИИ-агентов в разрезе: идентификатор элемента BPMN?", "sql": "SELECT ELEMENT_ID, COUNT(*) FROM AGENT_INSTANCE GROUP BY ELEMENT_ID"}
+{"q": "Топ-3 значений «идентификатор элемента BPMN» по числу запусков ИИ-агентов", "sql": "SELECT ELEMENT_ID, COUNT(*) AS cnt FROM AGENT_INSTANCE GROUP BY ELEMENT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько запусков ИИ-агентов с ELEMENT_ID = 'element_id-5'?", "sql": "SELECT COUNT(*) FROM AGENT_INSTANCE WHERE ELEMENT_ID = 'element_id-5'"}
+{"q": "Сколько запусков ИИ-агентов в разрезе: идентификатор процесса (BPMN id)?", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM AGENT_INSTANCE GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-3 значений «идентификатор процесса (BPMN id)» по числу запусков ИИ-агентов", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM AGENT_INSTANCE GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи запусков ИИ-агентов, где идентификатор процесса (BPMN id) = payment-retry", "sql": "SELECT AGENT_INSTANCE_KEY FROM AGENT_INSTANCE WHERE PROCESS_DEFINITION_ID = 'payment-retry'"}
+{"q": "Сгруппируй запусков ИИ-агентов по TENANT_ID и посчитай количество", "sql": "SELECT TENANT_ID, COUNT(*) FROM AGENT_INSTANCE GROUP BY TENANT_ID"}
+{"q": "Топ-3 значений «идентификатор тенанта» по числу запусков ИИ-агентов", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM AGENT_INSTANCE GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько запусков ИИ-агентов с TENANT_ID = 'tenant-0'?", "sql": "SELECT COUNT(*) FROM AGENT_INSTANCE WHERE TENANT_ID = 'tenant-0'"}
+{"q": "Сколько выполняющихся запусков ИИ-агентов?", "sql": "SELECT COUNT(*) FROM AGENT_INSTANCE WHERE STATUS = 'RUNNING'"}
+{"q": "Список выполняющихся запусков ИИ-агентов (только ключи)", "sql": "SELECT AGENT_INSTANCE_KEY FROM AGENT_INSTANCE WHERE STATUS = 'RUNNING'"}
+{"q": "Количество завершённых запусков ИИ-агентов", "sql": "SELECT COUNT(*) FROM AGENT_INSTANCE WHERE STATUS = 'COMPLETED'"}
+{"q": "Выведи ключи завершённых запусков ИИ-агентов", "sql": "SELECT AGENT_INSTANCE_KEY FROM AGENT_INSTANCE WHERE STATUS = 'COMPLETED'"}
+{"q": "Количество упавших запусков ИИ-агентов", "sql": "SELECT COUNT(*) FROM AGENT_INSTANCE WHERE STATUS = 'FAILED'"}
+{"q": "Выведи ключи упавших запусков ИИ-агентов", "sql": "SELECT AGENT_INSTANCE_KEY FROM AGENT_INSTANCE WHERE STATUS = 'FAILED'"}
+{"q": "Сколько запусков ИИ-агентов в разрезе: статус?", "sql": "SELECT STATUS, COUNT(*) FROM AGENT_INSTANCE GROUP BY STATUS"}
+{"q": "Топ-3 значений «статус» по числу запусков ИИ-агентов", "sql": "SELECT STATUS, COUNT(*) AS cnt FROM AGENT_INSTANCE GROUP BY STATUS ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сгруппируй запусков ИИ-агентов по MODEL и посчитай количество", "sql": "SELECT MODEL, COUNT(*) FROM AGENT_INSTANCE GROUP BY MODEL"}
+{"q": "Топ-10 значений «модель LLM» по числу запусков ИИ-агентов", "sql": "SELECT MODEL, COUNT(*) AS cnt FROM AGENT_INSTANCE GROUP BY MODEL ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи запусков ИИ-агентов, где модель LLM = model-19", "sql": "SELECT AGENT_INSTANCE_KEY FROM AGENT_INSTANCE WHERE MODEL = 'model-19'"}
+{"q": "Сгруппируй запусков ИИ-агентов по PROVIDER и посчитай количество", "sql": "SELECT PROVIDER, COUNT(*) FROM AGENT_INSTANCE GROUP BY PROVIDER"}
+{"q": "Топ-5 значений «provider» по числу запусков ИИ-агентов", "sql": "SELECT PROVIDER, COUNT(*) AS cnt FROM AGENT_INSTANCE GROUP BY PROVIDER ORDER BY cnt DESC LIMIT 5"}
+{"q": "Покажи ключи запусков ИИ-агентов, где provider = provider-10", "sql": "SELECT AGENT_INSTANCE_KEY FROM AGENT_INSTANCE WHERE PROVIDER = 'provider-10'"}
+{"q": "Сумма значение «входные токены» по всем запусков ИИ-агентов", "sql": "SELECT SUM(INPUT_TOKENS) FROM AGENT_INSTANCE"}
+{"q": "Сумма «входные токены» для запусков ИИ-агентов в разрезе: provider", "sql": "SELECT PROVIDER, SUM(INPUT_TOKENS) FROM AGENT_INSTANCE GROUP BY PROVIDER"}
+{"q": "Максимальное значение «выходные токены» по всем запусков ИИ-агентов", "sql": "SELECT MAX(OUTPUT_TOKENS) FROM AGENT_INSTANCE"}
+{"q": "Максимальное «выходные токены» для запусков ИИ-агентов в разрезе: статус", "sql": "SELECT STATUS, MAX(OUTPUT_TOKENS) FROM AGENT_INSTANCE GROUP BY STATUS"}
+{"q": "Максимальное значение «model calls» по всем запусков ИИ-агентов", "sql": "SELECT MAX(MODEL_CALLS) FROM AGENT_INSTANCE"}
+{"q": "Максимальное «model calls» для запусков ИИ-агентов в разрезе: статус", "sql": "SELECT STATUS, MAX(MODEL_CALLS) FROM AGENT_INSTANCE GROUP BY STATUS"}
+{"q": "Максимальное значение «tool calls» по всем запусков ИИ-агентов", "sql": "SELECT MAX(TOOL_CALLS) FROM AGENT_INSTANCE"}
+{"q": "Максимальное «tool calls» для запусков ИИ-агентов в разрезе: статус", "sql": "SELECT STATUS, MAX(TOOL_CALLS) FROM AGENT_INSTANCE GROUP BY STATUS"}
+{"q": "Сколько запусков ИИ-агентов, созданных за последние 14 дней?", "sql": "SELECT COUNT(*) FROM AGENT_INSTANCE WHERE CREATION_DATE >= NOW() - INTERVAL '14 days'"}
+{"q": "Количество запусков ИИ-агентов по дням (дата создания)", "sql": "SELECT CAST(CREATION_DATE AS DATE), COUNT(*) FROM AGENT_INSTANCE GROUP BY CAST(CREATION_DATE AS DATE)"}
+{"q": "Сколько запусков ИИ-агентов, завершённых за последние 10 дней?", "sql": "SELECT COUNT(*) FROM AGENT_INSTANCE WHERE COMPLETION_DATE >= NOW() - INTERVAL '10 days'"}
+{"q": "Количество запусков ИИ-агентов по дням (дата завершения)", "sql": "SELECT CAST(COMPLETION_DATE AS DATE), COUNT(*) FROM AGENT_INSTANCE GROUP BY CAST(COMPLETION_DATE AS DATE)"}
+{"q": "Сколько запусков ИИ-агентов по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM AGENT_INSTANCE c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько запусков ИИ-агентов по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM AGENT_INSTANCE c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько запусков ИИ-агентов по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM AGENT_INSTANCE c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько запусков ИИ-агентов по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM AGENT_INSTANCE c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько всего записей метрик заданий?", "sql": "SELECT COUNT(*) FROM JOB_METRICS_BATCH"}
+{"q": "Сколько записей метрик заданий, завершённых за последние 14 дней?", "sql": "SELECT COUNT(*) FROM JOB_METRICS_BATCH WHERE END_TIME >= NOW() - INTERVAL '14 days'"}
+{"q": "Количество записей метрик заданий по дням (время окончания)", "sql": "SELECT CAST(END_TIME AS DATE), COUNT(*) FROM JOB_METRICS_BATCH GROUP BY CAST(END_TIME AS DATE)"}
+{"q": "Сколько записей метрик заданий в разрезе: идентификатор тенанта?", "sql": "SELECT TENANT_ID, COUNT(*) FROM JOB_METRICS_BATCH GROUP BY TENANT_ID"}
+{"q": "Топ-10 значений «идентификатор тенанта» по числу записей метрик заданий", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM JOB_METRICS_BATCH GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи записей метрик заданий, где идентификатор тенанта = tenant-1", "sql": "SELECT JOB_METRICS_BATCH_KEY FROM JOB_METRICS_BATCH WHERE TENANT_ID = 'tenant-1'"}
+{"q": "Среднее значение «число упавших» по всем записей метрик заданий", "sql": "SELECT AVG(FAILED_COUNT) FROM JOB_METRICS_BATCH"}
+{"q": "Сумма значение «число завершённых» по всем записей метрик заданий", "sql": "SELECT SUM(COMPLETED_COUNT) FROM JOB_METRICS_BATCH"}
+{"q": "Сумма «число завершённых» для записей метрик заданий в разрезе: идентификатор тенанта", "sql": "SELECT TENANT_ID, SUM(COMPLETED_COUNT) FROM JOB_METRICS_BATCH GROUP BY TENANT_ID"}
+{"q": "Сумма значение «число созданных» по всем записей метрик заданий", "sql": "SELECT SUM(CREATED_COUNT) FROM JOB_METRICS_BATCH"}
+{"q": "Сумма «число созданных» для записей метрик заданий в разрезе: идентификатор тенанта", "sql": "SELECT TENANT_ID, SUM(CREATED_COUNT) FROM JOB_METRICS_BATCH GROUP BY TENANT_ID"}
+{"q": "Сгруппируй записей метрик заданий по JOB_TYPE и посчитай количество", "sql": "SELECT JOB_TYPE, COUNT(*) FROM JOB_METRICS_BATCH GROUP BY JOB_TYPE"}
+{"q": "Топ-10 значений «тип задания» по числу записей метрик заданий", "sql": "SELECT JOB_TYPE, COUNT(*) AS cnt FROM JOB_METRICS_BATCH GROUP BY JOB_TYPE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько записей метрик заданий с JOB_TYPE = 'send-email'?", "sql": "SELECT COUNT(*) FROM JOB_METRICS_BATCH WHERE JOB_TYPE = 'send-email'"}
+{"q": "Сколько записей метрик заданий в разрезе: имя воркера?", "sql": "SELECT WORKER, COUNT(*) FROM JOB_METRICS_BATCH GROUP BY WORKER"}
+{"q": "Топ-3 значений «имя воркера» по числу записей метрик заданий", "sql": "SELECT WORKER, COUNT(*) AS cnt FROM JOB_METRICS_BATCH GROUP BY WORKER ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи записей метрик заданий, где имя воркера = scoring-worker", "sql": "SELECT JOB_METRICS_BATCH_KEY FROM JOB_METRICS_BATCH WHERE WORKER = 'scoring-worker'"}
+{"q": "Сколько записей метрик заданий по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM JOB_METRICS_BATCH c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Посчитай число развёрнутых ресурсов", "sql": "SELECT COUNT(*) FROM DEPLOYED_RESOURCE"}
+{"q": "Количество развёрнутых ресурсов по каждому значению поля «тип ресурса»", "sql": "SELECT RESOURCE_TYPE, COUNT(*) FROM DEPLOYED_RESOURCE GROUP BY RESOURCE_TYPE"}
+{"q": "Топ-10 значений «тип ресурса» по числу развёрнутых ресурсов", "sql": "SELECT RESOURCE_TYPE, COUNT(*) AS cnt FROM DEPLOYED_RESOURCE GROUP BY RESOURCE_TYPE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи развёрнутых ресурсов, где тип ресурса = resource_type-11", "sql": "SELECT RESOURCE_KEY FROM DEPLOYED_RESOURCE WHERE RESOURCE_TYPE = 'resource_type-11'"}
+{"q": "Сколько развёрнутых ресурсов в разрезе: номер версии?", "sql": "SELECT VERSION, COUNT(*) FROM DEPLOYED_RESOURCE GROUP BY VERSION"}
+{"q": "Топ-5 значений «номер версии» по числу развёрнутых ресурсов", "sql": "SELECT VERSION, COUNT(*) AS cnt FROM DEPLOYED_RESOURCE GROUP BY VERSION ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько развёрнутых ресурсов в разрезе: идентификатор тенанта?", "sql": "SELECT TENANT_ID, COUNT(*) FROM DEPLOYED_RESOURCE GROUP BY TENANT_ID"}
+{"q": "Топ-3 значений «идентификатор тенанта» по числу развёрнутых ресурсов", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM DEPLOYED_RESOURCE GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько развёрнутых ресурсов с TENANT_ID = 'tenant-2'?", "sql": "SELECT COUNT(*) FROM DEPLOYED_RESOURCE WHERE TENANT_ID = 'tenant-2'"}
+{"q": "Сколько развёрнутых ресурсов по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM DEPLOYED_RESOURCE c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Общее количество сопоставленных сообщений", "sql": "SELECT COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION"}
+{"q": "Сколько сопоставленных сообщений, сопоставленных за последние 14 дней?", "sql": "SELECT COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION WHERE CORRELATION_TIME >= NOW() - INTERVAL '14 days'"}
+{"q": "Количество сопоставленных сообщений по дням (correlation time)", "sql": "SELECT CAST(CORRELATION_TIME AS DATE), COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION GROUP BY CAST(CORRELATION_TIME AS DATE)"}
+{"q": "Количество сопоставленных сообщений по каждому значению поля «идентификатор элемента BPMN»", "sql": "SELECT FLOW_NODE_ID, COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION GROUP BY FLOW_NODE_ID"}
+{"q": "Топ-10 значений «идентификатор элемента BPMN» по числу сопоставленных сообщений", "sql": "SELECT FLOW_NODE_ID, COUNT(*) AS cnt FROM CORRELATED_MESSAGE_SUBSCRIPTION GROUP BY FLOW_NODE_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько сопоставленных сообщений с FLOW_NODE_ID = 'flow_node_id-11'?", "sql": "SELECT COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION WHERE FLOW_NODE_ID = 'flow_node_id-11'"}
+{"q": "Количество сопоставленных сообщений по каждому значению поля «имя сообщения»", "sql": "SELECT MESSAGE_NAME, COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION GROUP BY MESSAGE_NAME"}
+{"q": "Топ-3 значений «имя сообщения» по числу сопоставленных сообщений", "sql": "SELECT MESSAGE_NAME, COUNT(*) AS cnt FROM CORRELATED_MESSAGE_SUBSCRIPTION GROUP BY MESSAGE_NAME ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько сопоставленных сообщений с MESSAGE_NAME = 'message_name-11'?", "sql": "SELECT COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION WHERE MESSAGE_NAME = 'message_name-11'"}
+{"q": "Количество сопоставленных сообщений по каждому значению поля «идентификатор процесса (BPMN id)»", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-5 значений «идентификатор процесса (BPMN id)» по числу сопоставленных сообщений", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM CORRELATED_MESSAGE_SUBSCRIPTION GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько сопоставленных сообщений с PROCESS_DEFINITION_ID = 'order-process'?", "sql": "SELECT COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION WHERE PROCESS_DEFINITION_ID = 'order-process'"}
+{"q": "Сгруппируй сопоставленных сообщений по TENANT_ID и посчитай количество", "sql": "SELECT TENANT_ID, COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION GROUP BY TENANT_ID"}
+{"q": "Топ-10 значений «идентификатор тенанта» по числу сопоставленных сообщений", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM CORRELATED_MESSAGE_SUBSCRIPTION GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько сопоставленных сообщений с TENANT_ID = 'tenant-1'?", "sql": "SELECT COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION WHERE TENANT_ID = 'tenant-1'"}
+{"q": "Сколько сопоставленных сообщений по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько сопоставленных сообщений по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько сопоставленных сообщений по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько сопоставленных сообщений по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM CORRELATED_MESSAGE_SUBSCRIPTION c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько всего состояний ожидания?", "sql": "SELECT COUNT(*) FROM WAIT_STATE"}
+{"q": "Сколько состояний ожидания в разрезе: идентификатор элемента BPMN?", "sql": "SELECT ELEMENT_ID, COUNT(*) FROM WAIT_STATE GROUP BY ELEMENT_ID"}
+{"q": "Топ-5 значений «идентификатор элемента BPMN» по числу состояний ожидания", "sql": "SELECT ELEMENT_ID, COUNT(*) AS cnt FROM WAIT_STATE GROUP BY ELEMENT_ID ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько состояний ожидания с ELEMENT_ID = 'element_id-7'?", "sql": "SELECT COUNT(*) FROM WAIT_STATE WHERE ELEMENT_ID = 'element_id-7'"}
+{"q": "Сгруппируй состояний ожидания по PROCESS_DEFINITION_ID и посчитай количество", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM WAIT_STATE GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-3 значений «идентификатор процесса (BPMN id)» по числу состояний ожидания", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM WAIT_STATE GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько состояний ожидания с PROCESS_DEFINITION_ID = 'invoice-approval'?", "sql": "SELECT COUNT(*) FROM WAIT_STATE WHERE PROCESS_DEFINITION_ID = 'invoice-approval'"}
+{"q": "Количество состояний ожидания по каждому значению поля «идентификатор тенанта»", "sql": "SELECT TENANT_ID, COUNT(*) FROM WAIT_STATE GROUP BY TENANT_ID"}
+{"q": "Топ-10 значений «идентификатор тенанта» по числу состояний ожидания", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM WAIT_STATE GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько состояний ожидания с TENANT_ID = 'tenant-0'?", "sql": "SELECT COUNT(*) FROM WAIT_STATE WHERE TENANT_ID = 'tenant-0'"}
+{"q": "Сколько состояний ожидания по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM WAIT_STATE c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько состояний ожидания по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM WAIT_STATE c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько состояний ожидания по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM WAIT_STATE c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Посчитай число метрик использования", "sql": "SELECT COUNT(*) FROM USAGE_METRIC"}
+{"q": "Сколько метрик использования в разрезе: идентификатор тенанта?", "sql": "SELECT TENANT_ID, COUNT(*) FROM USAGE_METRIC GROUP BY TENANT_ID"}
+{"q": "Топ-10 значений «идентификатор тенанта» по числу метрик использования", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM USAGE_METRIC GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи метрик использования, где идентификатор тенанта = tenant-1", "sql": "SELECT USAGE_METRIC_KEY FROM USAGE_METRIC WHERE TENANT_ID = 'tenant-1'"}
+{"q": "Сколько метрик использования, завершённых за последние 30 дней?", "sql": "SELECT COUNT(*) FROM USAGE_METRIC WHERE END_TIME >= NOW() - INTERVAL '30 days'"}
+{"q": "Количество метрик использования по дням (время окончания)", "sql": "SELECT CAST(END_TIME AS DATE), COUNT(*) FROM USAGE_METRIC GROUP BY CAST(END_TIME AS DATE)"}
+{"q": "Среднее значение «значение счётчика» по всем метрик использования", "sql": "SELECT AVG(EVENT_VALUE) FROM USAGE_METRIC"}
+{"q": "Среднее «значение счётчика» для метрик использования в разрезе: идентификатор тенанта", "sql": "SELECT TENANT_ID, AVG(EVENT_VALUE) FROM USAGE_METRIC GROUP BY TENANT_ID"}
+{"q": "Сколько метрик использования по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM USAGE_METRIC c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Сколько всего участников тенантов?", "sql": "SELECT COUNT(*) FROM TENANT_MEMBER"}
+{"q": "Количество участников тенантов со значением тип сущности = USER", "sql": "SELECT COUNT(*) FROM TENANT_MEMBER WHERE ENTITY_TYPE = 'USER'"}
+{"q": "Выведи ключи участников тенантов со значением тип сущности = USER", "sql": "SELECT TENANT_ID FROM TENANT_MEMBER WHERE ENTITY_TYPE = 'USER'"}
+{"q": "Сколько участников тенантов со значением тип сущности = GROUP?", "sql": "SELECT COUNT(*) FROM TENANT_MEMBER WHERE ENTITY_TYPE = 'GROUP'"}
+{"q": "Список участников тенантов со значением тип сущности = GROUP (только ключи)", "sql": "SELECT TENANT_ID FROM TENANT_MEMBER WHERE ENTITY_TYPE = 'GROUP'"}
+{"q": "Сколько участников тенантов со значением тип сущности = ROLE?", "sql": "SELECT COUNT(*) FROM TENANT_MEMBER WHERE ENTITY_TYPE = 'ROLE'"}
+{"q": "Выведи ключи участников тенантов со значением тип сущности = ROLE", "sql": "SELECT TENANT_ID FROM TENANT_MEMBER WHERE ENTITY_TYPE = 'ROLE'"}
+{"q": "Сколько участников тенантов со значением тип сущности = CLIENT?", "sql": "SELECT COUNT(*) FROM TENANT_MEMBER WHERE ENTITY_TYPE = 'CLIENT'"}
+{"q": "Выведи ключи участников тенантов со значением тип сущности = CLIENT", "sql": "SELECT TENANT_ID FROM TENANT_MEMBER WHERE ENTITY_TYPE = 'CLIENT'"}
+{"q": "Сколько участников тенантов со значением тип сущности = MAPPING_RULE?", "sql": "SELECT COUNT(*) FROM TENANT_MEMBER WHERE ENTITY_TYPE = 'MAPPING_RULE'"}
+{"q": "Выведи ключи участников тенантов со значением тип сущности = MAPPING_RULE", "sql": "SELECT TENANT_ID FROM TENANT_MEMBER WHERE ENTITY_TYPE = 'MAPPING_RULE'"}
+{"q": "Сколько участников тенантов в разрезе: тип сущности?", "sql": "SELECT ENTITY_TYPE, COUNT(*) FROM TENANT_MEMBER GROUP BY ENTITY_TYPE"}
+{"q": "Топ-10 значений «тип сущности» по числу участников тенантов", "sql": "SELECT ENTITY_TYPE, COUNT(*) AS cnt FROM TENANT_MEMBER GROUP BY ENTITY_TYPE ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько участников тенантов по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM TENANT_MEMBER c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Общее количество назначений ролей", "sql": "SELECT COUNT(*) FROM ROLE_MEMBER"}
+{"q": "Сколько назначений ролей со значением тип сущности = USER?", "sql": "SELECT COUNT(*) FROM ROLE_MEMBER WHERE ENTITY_TYPE = 'USER'"}
+{"q": "Список назначений ролей со значением тип сущности = USER (только ключи)", "sql": "SELECT ROLE_ID FROM ROLE_MEMBER WHERE ENTITY_TYPE = 'USER'"}
+{"q": "Количество назначений ролей со значением тип сущности = GROUP", "sql": "SELECT COUNT(*) FROM ROLE_MEMBER WHERE ENTITY_TYPE = 'GROUP'"}
+{"q": "Выведи ключи назначений ролей со значением тип сущности = GROUP", "sql": "SELECT ROLE_ID FROM ROLE_MEMBER WHERE ENTITY_TYPE = 'GROUP'"}
+{"q": "Сколько назначений ролей со значением тип сущности = CLIENT?", "sql": "SELECT COUNT(*) FROM ROLE_MEMBER WHERE ENTITY_TYPE = 'CLIENT'"}
+{"q": "Выведи ключи назначений ролей со значением тип сущности = CLIENT", "sql": "SELECT ROLE_ID FROM ROLE_MEMBER WHERE ENTITY_TYPE = 'CLIENT'"}
+{"q": "Количество назначений ролей со значением тип сущности = MAPPING_RULE", "sql": "SELECT COUNT(*) FROM ROLE_MEMBER WHERE ENTITY_TYPE = 'MAPPING_RULE'"}
+{"q": "Список назначений ролей со значением тип сущности = MAPPING_RULE (только ключи)", "sql": "SELECT ROLE_ID FROM ROLE_MEMBER WHERE ENTITY_TYPE = 'MAPPING_RULE'"}
+{"q": "Сколько назначений ролей в разрезе: тип сущности?", "sql": "SELECT ENTITY_TYPE, COUNT(*) FROM ROLE_MEMBER GROUP BY ENTITY_TYPE"}
+{"q": "Топ-5 значений «тип сущности» по числу назначений ролей", "sql": "SELECT ENTITY_TYPE, COUNT(*) AS cnt FROM ROLE_MEMBER GROUP BY ENTITY_TYPE ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько всего записей истории ИИ-агентов?", "sql": "SELECT COUNT(*) FROM AGENT_HISTORY"}
+{"q": "Сгруппируй записей истории ИИ-агентов по PROCESS_DEFINITION_ID и посчитай количество", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM AGENT_HISTORY GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-10 значений «идентификатор процесса (BPMN id)» по числу записей истории ИИ-агентов", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM AGENT_HISTORY GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Сколько записей истории ИИ-агентов с PROCESS_DEFINITION_ID = 'invoice-approval'?", "sql": "SELECT COUNT(*) FROM AGENT_HISTORY WHERE PROCESS_DEFINITION_ID = 'invoice-approval'"}
+{"q": "Сгруппируй записей истории ИИ-агентов по TENANT_ID и посчитай количество", "sql": "SELECT TENANT_ID, COUNT(*) FROM AGENT_HISTORY GROUP BY TENANT_ID"}
+{"q": "Топ-3 значений «идентификатор тенанта» по числу записей истории ИИ-агентов", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM AGENT_HISTORY GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Покажи ключи записей истории ИИ-агентов, где идентификатор тенанта = tenant-2", "sql": "SELECT AGENT_HISTORY_KEY FROM AGENT_HISTORY WHERE TENANT_ID = 'tenant-2'"}
+{"q": "Среднее значение «входные токены» по всем записей истории ИИ-агентов", "sql": "SELECT AVG(INPUT_TOKENS) FROM AGENT_HISTORY"}
+{"q": "Среднее «входные токены» для записей истории ИИ-агентов в разрезе: идентификатор процесса (BPMN id)", "sql": "SELECT PROCESS_DEFINITION_ID, AVG(INPUT_TOKENS) FROM AGENT_HISTORY GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Среднее значение «выходные токены» по всем записей истории ИИ-агентов", "sql": "SELECT AVG(OUTPUT_TOKENS) FROM AGENT_HISTORY"}
+{"q": "Среднее «выходные токены» для записей истории ИИ-агентов в разрезе: идентификатор тенанта", "sql": "SELECT TENANT_ID, AVG(OUTPUT_TOKENS) FROM AGENT_HISTORY GROUP BY TENANT_ID"}
+{"q": "Максимальное значение «длительность, мс» по всем записей истории ИИ-агентов", "sql": "SELECT MAX(DURATION_MS) FROM AGENT_HISTORY"}
+{"q": "Максимальное «длительность, мс» для записей истории ИИ-агентов в разрезе: идентификатор тенанта", "sql": "SELECT TENANT_ID, MAX(DURATION_MS) FROM AGENT_HISTORY GROUP BY TENANT_ID"}
+{"q": "Количество записей истории ИИ-агентов по каждому значению поля «модель LLM»", "sql": "SELECT MODEL, COUNT(*) FROM AGENT_HISTORY GROUP BY MODEL"}
+{"q": "Топ-5 значений «модель LLM» по числу записей истории ИИ-агентов", "sql": "SELECT MODEL, COUNT(*) AS cnt FROM AGENT_HISTORY GROUP BY MODEL ORDER BY cnt DESC LIMIT 5"}
+{"q": "Сколько записей истории ИИ-агентов с MODEL = 'model-11'?", "sql": "SELECT COUNT(*) FROM AGENT_HISTORY WHERE MODEL = 'model-11'"}
+{"q": "Сгруппируй записей истории ИИ-агентов по PROVIDER и посчитай количество", "sql": "SELECT PROVIDER, COUNT(*) FROM AGENT_HISTORY GROUP BY PROVIDER"}
+{"q": "Топ-5 значений «provider» по числу записей истории ИИ-агентов", "sql": "SELECT PROVIDER, COUNT(*) AS cnt FROM AGENT_HISTORY GROUP BY PROVIDER ORDER BY cnt DESC LIMIT 5"}
+{"q": "Покажи ключи записей истории ИИ-агентов, где provider = provider-16", "sql": "SELECT AGENT_HISTORY_KEY FROM AGENT_HISTORY WHERE PROVIDER = 'provider-16'"}
+{"q": "Сколько записей истории ИИ-агентов по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM AGENT_HISTORY c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько записей истории ИИ-агентов по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM AGENT_HISTORY c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько записей истории ИИ-агентов по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM AGENT_HISTORY c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько записей истории ИИ-агентов по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM AGENT_HISTORY c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}
+{"q": "Посчитай число пройденных переходов", "sql": "SELECT COUNT(*) FROM SEQUENCE_FLOW"}
+{"q": "Сколько пройденных переходов в разрезе: идентификатор процесса (BPMN id)?", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) FROM SEQUENCE_FLOW GROUP BY PROCESS_DEFINITION_ID"}
+{"q": "Топ-3 значений «идентификатор процесса (BPMN id)» по числу пройденных переходов", "sql": "SELECT PROCESS_DEFINITION_ID, COUNT(*) AS cnt FROM SEQUENCE_FLOW GROUP BY PROCESS_DEFINITION_ID ORDER BY cnt DESC LIMIT 3"}
+{"q": "Сколько пройденных переходов с PROCESS_DEFINITION_ID = 'kyc-check'?", "sql": "SELECT COUNT(*) FROM SEQUENCE_FLOW WHERE PROCESS_DEFINITION_ID = 'kyc-check'"}
+{"q": "Количество пройденных переходов по каждому значению поля «идентификатор тенанта»", "sql": "SELECT TENANT_ID, COUNT(*) FROM SEQUENCE_FLOW GROUP BY TENANT_ID"}
+{"q": "Топ-10 значений «идентификатор тенанта» по числу пройденных переходов", "sql": "SELECT TENANT_ID, COUNT(*) AS cnt FROM SEQUENCE_FLOW GROUP BY TENANT_ID ORDER BY cnt DESC LIMIT 10"}
+{"q": "Покажи ключи пройденных переходов, где идентификатор тенанта = tenant-1", "sql": "SELECT FLOW_NODE_ID FROM SEQUENCE_FLOW WHERE TENANT_ID = 'tenant-1'"}
+{"q": "Сколько пройденных переходов по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM SEQUENCE_FLOW c JOIN PROCESS_INSTANCE p ON c.PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько пройденных переходов по каждому экземпляру процесса? Выведи PROCESS_DEFINITION_ID", "sql": "SELECT p.PROCESS_DEFINITION_ID, COUNT(*) FROM SEQUENCE_FLOW c JOIN PROCESS_INSTANCE p ON c.ROOT_PROCESS_INSTANCE_KEY = p.PROCESS_INSTANCE_KEY GROUP BY p.PROCESS_INSTANCE_KEY, p.PROCESS_DEFINITION_ID"}
+{"q": "Сколько пройденных переходов по каждому определению процесса? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM SEQUENCE_FLOW c JOIN PROCESS_DEFINITION p ON c.PROCESS_DEFINITION_KEY = p.PROCESS_DEFINITION_KEY GROUP BY p.PROCESS_DEFINITION_KEY, p.NAME"}
+{"q": "Сколько пройденных переходов по каждому тенанту? Выведи NAME", "sql": "SELECT p.NAME, COUNT(*) FROM SEQUENCE_FLOW c JOIN TENANT p ON c.TENANT_ID = p.TENANT_ID GROUP BY p.TENANT_ID, p.NAME"}

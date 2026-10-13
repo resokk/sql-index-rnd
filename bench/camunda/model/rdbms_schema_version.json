@@ -1,0 +1,22 @@
+{
+  "table": "RDBMS_SCHEMA_VERSION",
+  "entity": "Версия схемы",
+  "description": "Версия схемы БД",
+  "columns": [
+    {
+      "name": "ID",
+      "type": "SMALLINT"
+    },
+    {
+      "name": "VERSION",
+      "type": "VARCHAR(32)",
+      "description": "номер версии"
+    }
+  ],
+  "relations": [
+    {
+      "table": "GLOBAL_LISTENER",
+      "on": "RDBMS_SCHEMA_VERSION.ID = GLOBAL_LISTENER.ID"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "table": "WAIT_STATE",
+  "entity": "Состояние ожидания",
+  "description": "Где и чего ждёт экземпляр процесса",
+  "columns": [
+    {
+      "name": "WAIT_STATE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ELEMENT_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра элемента"
+    },
+    {
+      "name": "ELEMENT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор элемента BPMN"
+    },
+    {
+      "name": "ELEMENT_TYPE",
+      "type": "VARCHAR(50)"
+    },
+    {
+      "name": "WAIT_STATE_TYPE",
+      "type": "VARCHAR(50)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "DETAILS",
+      "type": "TEXT"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    }
+  ],
+  "relations": [
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "WAIT_STATE.ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "WAIT_STATE.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "FLOW_NODE_INSTANCE",
+      "on": "WAIT_STATE.ELEMENT_INSTANCE_KEY = FLOW_NODE_INSTANCE.FLOW_NODE_INSTANCE_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "WAIT_STATE.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

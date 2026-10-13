@@ -1,0 +1,29 @@
+{
+  "table": "MAPPING_RULES",
+  "entity": "Правило сопоставления",
+  "description": "Сопоставление claim из токена OIDC с сущностями",
+  "columns": [
+    {
+      "name": "MAPPING_RULE_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "MAPPING_RULE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "CLAIM_NAME",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "CLAIM_VALUE",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "NAME",
+      "type": "VARCHAR(256)",
+      "description": "наименование"
+    }
+  ],
+  "relations": []
+}

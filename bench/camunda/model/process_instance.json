@@ -1,0 +1,104 @@
+{
+  "table": "PROCESS_INSTANCE",
+  "entity": "Экземпляр процесса",
+  "description": "Запуск процесса: состояние, даты старта и завершения, число инцидентов",
+  "columns": [
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "STATE",
+      "type": "VARCHAR(20)",
+      "description": "состояние",
+      "values": [
+        "ACTIVE",
+        "COMPLETED",
+        "CANCELED"
+      ]
+    },
+    {
+      "name": "START_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата начала"
+    },
+    {
+      "name": "END_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата окончания"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "PARENT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ родительского экземпляра процесса"
+    },
+    {
+      "name": "PARENT_ELEMENT_INSTANCE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "NUM_INCIDENTS",
+      "type": "SMALLINT",
+      "description": "число инцидентов"
+    },
+    {
+      "name": "VERSION",
+      "type": "SMALLINT",
+      "description": "номер версии"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    },
+    {
+      "name": "TREE_PATH",
+      "type": "VARCHAR(8191)"
+    },
+    {
+      "name": "HISTORY_CLEANUP_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE"
+    },
+    {
+      "name": "BUSINESS_ID",
+      "type": "VARCHAR(256)",
+      "description": "бизнес-идентификатор"
+    },
+    {
+      "name": "SUSPENDED_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата приостановки"
+    }
+  ],
+  "relations": [
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "PROCESS_INSTANCE.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "PROCESS_INSTANCE.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

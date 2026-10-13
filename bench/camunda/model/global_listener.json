@@ -1,0 +1,43 @@
+{
+  "table": "GLOBAL_LISTENER",
+  "entity": "Глобальный слушатель",
+  "description": "Слушатели событий, применяемые ко всем процессам",
+  "columns": [
+    {
+      "name": "ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "LISTENER_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "TYPE",
+      "type": "VARCHAR(256)",
+      "description": "тип"
+    },
+    {
+      "name": "RETRIES",
+      "type": "SMALLINT",
+      "description": "оставшиеся повторы"
+    },
+    {
+      "name": "AFTER_NON_GLOBAL",
+      "type": "BOOLEAN"
+    },
+    {
+      "name": "PRIORITY",
+      "type": "INT",
+      "description": "приоритет"
+    },
+    {
+      "name": "SOURCE",
+      "type": "VARCHAR(50)"
+    },
+    {
+      "name": "LISTENER_TYPE",
+      "type": "VARCHAR(50)"
+    }
+  ],
+  "relations": []
+}

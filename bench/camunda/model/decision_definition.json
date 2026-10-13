@@ -1,0 +1,59 @@
+{
+  "table": "DECISION_DEFINITION",
+  "entity": "Определение решения",
+  "description": "DMN-решение (таблица решений): версия, имя",
+  "columns": [
+    {
+      "name": "DECISION_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения решения"
+    },
+    {
+      "name": "DECISION_DEFINITION_ID",
+      "type": "VARCHAR(255)",
+      "description": "идентификатор решения"
+    },
+    {
+      "name": "NAME",
+      "type": "VARCHAR(256)",
+      "description": "наименование"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "VERSION",
+      "type": "SMALLINT",
+      "description": "номер версии"
+    },
+    {
+      "name": "DECISION_REQUIREMENTS_KEY",
+      "type": "BIGINT",
+      "description": "ключ модели требований"
+    },
+    {
+      "name": "DECISION_REQUIREMENTS_ID",
+      "type": "VARCHAR(255)"
+    },
+    {
+      "name": "DECISION_REQUIREMENTS_NAME",
+      "type": "VARCHAR(255)"
+    },
+    {
+      "name": "DECISION_REQUIREMENTS_VERSION",
+      "type": "SMALLINT"
+    }
+  ],
+  "relations": [
+    {
+      "table": "TENANT",
+      "on": "DECISION_DEFINITION.TENANT_ID = TENANT.TENANT_ID"
+    },
+    {
+      "table": "DECISION_REQUIREMENTS",
+      "on": "DECISION_DEFINITION.DECISION_REQUIREMENTS_KEY = DECISION_REQUIREMENTS.DECISION_REQUIREMENTS_KEY"
+    }
+  ]
+}

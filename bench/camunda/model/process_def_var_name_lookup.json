@@ -1,0 +1,23 @@
+{
+  "table": "PROCESS_DEF_VAR_NAME_LOOKUP",
+  "entity": "Имена переменных процесса",
+  "description": "Справочник имён переменных по определению процесса",
+  "columns": [
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "VAR_NAME",
+      "type": "VARCHAR(256)",
+      "description": "имя переменной"
+    }
+  ],
+  "relations": [
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "PROCESS_DEF_VAR_NAME_LOOKUP.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    }
+  ]
+}

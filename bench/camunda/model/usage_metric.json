@@ -1,0 +1,47 @@
+{
+  "table": "USAGE_METRIC",
+  "entity": "Метрика использования",
+  "description": "Счётчики использования (запуски процессов, вычисления решений)",
+  "columns": [
+    {
+      "name": "USAGE_METRIC_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "START_TIME",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "начало периода"
+    },
+    {
+      "name": "END_TIME",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "время окончания"
+    },
+    {
+      "name": "EVENT_TYPE",
+      "type": "INTEGER",
+      "description": "тип события"
+    },
+    {
+      "name": "EVENT_VALUE",
+      "type": "BIGINT",
+      "description": "значение счётчика"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    }
+  ],
+  "relations": [
+    {
+      "table": "TENANT",
+      "on": "USAGE_METRIC.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

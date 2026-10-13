@@ -1,0 +1,62 @@
+{
+  "table": "CLUSTER_VARIABLE",
+  "entity": "Переменная кластера",
+  "description": "Глобальные переменные кластера или тенанта",
+  "columns": [
+    {
+      "name": "CLUSTER_VARIABLE_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "VAR_NAME",
+      "type": "VARCHAR(256)",
+      "description": "имя переменной"
+    },
+    {
+      "name": "TYPE",
+      "type": "VARCHAR(255)",
+      "description": "тип"
+    },
+    {
+      "name": "DOUBLE_VALUE",
+      "type": "DOUBLE PRECISION"
+    },
+    {
+      "name": "LONG_VALUE",
+      "type": "BIGINT"
+    },
+    {
+      "name": "VAR_VALUE",
+      "type": "VARCHAR(8192)",
+      "description": "значение переменной (превью)"
+    },
+    {
+      "name": "VAR_FULL_VALUE",
+      "type": "TEXT"
+    },
+    {
+      "name": "IS_PREVIEW",
+      "type": "BOOLEAN"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "SCOPE",
+      "type": "VARCHAR(255)"
+    },
+    {
+      "name": "KIND",
+      "type": "VARCHAR(255)",
+      "description": "вид"
+    }
+  ],
+  "relations": [
+    {
+      "table": "TENANT",
+      "on": "CLUSTER_VARIABLE.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

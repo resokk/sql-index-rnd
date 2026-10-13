@@ -1,0 +1,36 @@
+{
+  "table": "HISTORY_DELETION",
+  "entity": "Удаление истории",
+  "description": "Очередь удаления исторических данных",
+  "columns": [
+    {
+      "name": "RESOURCE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "BATCH_OPERATION_KEY",
+      "type": "BIGINT",
+      "description": "ключ пакетной операции"
+    },
+    {
+      "name": "RESOURCE_TYPE",
+      "type": "VARCHAR(50)",
+      "description": "тип ресурса"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    }
+  ],
+  "relations": [
+    {
+      "table": "DEPLOYED_RESOURCE",
+      "on": "HISTORY_DELETION.RESOURCE_KEY = DEPLOYED_RESOURCE.RESOURCE_KEY"
+    },
+    {
+      "table": "BATCH_OPERATION",
+      "on": "HISTORY_DELETION.BATCH_OPERATION_KEY = BATCH_OPERATION.BATCH_OPERATION_KEY"
+    }
+  ]
+}

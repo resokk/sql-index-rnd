@@ -1,0 +1,56 @@
+{
+  "table": "DEPLOYED_RESOURCE",
+  "entity": "Развёрнутый ресурс",
+  "description": "Файл, развёрнутый в кластер (BPMN, DMN, форма)",
+  "columns": [
+    {
+      "name": "RESOURCE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "RESOURCE_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор ресурса"
+    },
+    {
+      "name": "RESOURCE_NAME",
+      "type": "VARCHAR(256)",
+      "description": "имя файла ресурса"
+    },
+    {
+      "name": "RESOURCE_TYPE",
+      "type": "VARCHAR(256)",
+      "description": "тип ресурса"
+    },
+    {
+      "name": "VERSION",
+      "type": "SMALLINT",
+      "description": "номер версии"
+    },
+    {
+      "name": "VERSION_TAG",
+      "type": "VARCHAR(256)",
+      "description": "метка версии"
+    },
+    {
+      "name": "DEPLOYMENT_KEY",
+      "type": "BIGINT",
+      "description": "ключ развёртывания"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "RESOURCE_CONTENT",
+      "type": "BYTEA"
+    }
+  ],
+  "relations": [
+    {
+      "table": "TENANT",
+      "on": "DEPLOYED_RESOURCE.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

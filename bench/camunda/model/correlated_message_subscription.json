@@ -1,0 +1,100 @@
+{
+  "table": "CORRELATED_MESSAGE_SUBSCRIPTION",
+  "entity": "Сопоставленное сообщение",
+  "description": "Сообщения, доставленные в подписки",
+  "columns": [
+    {
+      "name": "CORRELATION_KEY",
+      "type": "VARCHAR(256)",
+      "description": "ключ корреляции"
+    },
+    {
+      "name": "CORRELATION_TIME",
+      "type": "TIMESTAMP(3) WITH TIME ZONE"
+    },
+    {
+      "name": "FLOW_NODE_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор элемента BPMN"
+    },
+    {
+      "name": "FLOW_NODE_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра элемента"
+    },
+    {
+      "name": "MESSAGE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "MESSAGE_NAME",
+      "type": "VARCHAR(256)",
+      "description": "имя сообщения"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "SUBSCRIPTION_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "SUBSCRIPTION_TYPE",
+      "type": "VARCHAR(255)"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "BUSINESS_ID",
+      "type": "VARCHAR(256)",
+      "description": "бизнес-идентификатор"
+    }
+  ],
+  "relations": [
+    {
+      "table": "FLOW_NODE_INSTANCE",
+      "on": "CORRELATED_MESSAGE_SUBSCRIPTION.FLOW_NODE_INSTANCE_KEY = FLOW_NODE_INSTANCE.FLOW_NODE_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "CORRELATED_MESSAGE_SUBSCRIPTION.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "CORRELATED_MESSAGE_SUBSCRIPTION.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "CORRELATED_MESSAGE_SUBSCRIPTION.ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "CORRELATED_MESSAGE_SUBSCRIPTION.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "table": "USER_TASK_TAG",
+  "entity": "Тег пользовательской задачи",
+  "description": "Метки пользовательских задач",
+  "columns": [
+    {
+      "name": "USER_TASK_KEY",
+      "type": "BIGINT",
+      "description": "ключ пользовательской задачи"
+    },
+    {
+      "name": "TAG_VALUE",
+      "type": "VARCHAR(256)",
+      "description": "значение тега"
+    }
+  ],
+  "relations": [
+    {
+      "table": "USER_TASK",
+      "on": "USER_TASK_TAG.USER_TASK_KEY = USER_TASK.USER_TASK_KEY"
+    }
+  ]
+}

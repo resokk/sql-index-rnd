@@ -1,0 +1,27 @@
+{
+  "table": "TENANT",
+  "entity": "Арендатор (тенант)",
+  "description": "Тенант — изолированное пространство данных",
+  "columns": [
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "TENANT_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "NAME",
+      "type": "VARCHAR(256)",
+      "description": "наименование"
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "TEXT",
+      "description": "описание"
+    }
+  ],
+  "relations": []
+}

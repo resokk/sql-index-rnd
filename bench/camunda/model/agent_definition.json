@@ -1,0 +1,59 @@
+{
+  "table": "AGENT_DEFINITION",
+  "entity": "Определение ИИ-агента",
+  "description": "ИИ-агент, описанный в процессе",
+  "columns": [
+    {
+      "name": "AGENT_DEFINITION_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "AGENT_TYPE",
+      "type": "VARCHAR(50)"
+    },
+    {
+      "name": "NAME",
+      "type": "VARCHAR(256)",
+      "description": "наименование"
+    },
+    {
+      "name": "ELEMENT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор элемента BPMN"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_VERSION",
+      "type": "SMALLINT",
+      "description": "версия определения процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_VERSION_TAG",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    }
+  ],
+  "relations": [
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "AGENT_DEFINITION.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "AGENT_DEFINITION.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

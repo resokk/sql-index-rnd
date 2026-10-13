@@ -1,0 +1,126 @@
+{
+  "table": "FLOW_NODE_INSTANCE",
+  "entity": "Экземпляр элемента процесса",
+  "description": "Выполнение шага (узла BPMN) в экземпляре процесса",
+  "columns": [
+    {
+      "name": "FLOW_NODE_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра элемента"
+    },
+    {
+      "name": "FLOW_NODE_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор элемента BPMN"
+    },
+    {
+      "name": "FLOW_NODE_NAME",
+      "type": "VARCHAR(256)",
+      "description": "название элемента BPMN"
+    },
+    {
+      "name": "FLOW_NODE_SCOPE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "TYPE",
+      "type": "VARCHAR(100)",
+      "description": "тип",
+      "values": [
+        "START_EVENT",
+        "END_EVENT",
+        "SERVICE_TASK",
+        "USER_TASK",
+        "EXCLUSIVE_GATEWAY",
+        "CALL_ACTIVITY",
+        "SUB_PROCESS",
+        "INTERMEDIATE_CATCH_EVENT"
+      ]
+    },
+    {
+      "name": "STATE",
+      "type": "VARCHAR(20)",
+      "description": "состояние",
+      "values": [
+        "ACTIVE",
+        "COMPLETED",
+        "TERMINATED"
+      ]
+    },
+    {
+      "name": "START_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата начала"
+    },
+    {
+      "name": "END_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "дата окончания"
+    },
+    {
+      "name": "TREE_PATH",
+      "type": "VARCHAR(8191)"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "INCIDENT_KEY",
+      "type": "BIGINT",
+      "description": "ключ инцидента"
+    },
+    {
+      "name": "NUM_SUBPROCESS_INCIDENTS",
+      "type": "SMALLINT"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    }
+  ],
+  "relations": [
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "FLOW_NODE_INSTANCE.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "FLOW_NODE_INSTANCE.ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "FLOW_NODE_INSTANCE.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "FLOW_NODE_INSTANCE.TENANT_ID = TENANT.TENANT_ID"
+    },
+    {
+      "table": "INCIDENT",
+      "on": "FLOW_NODE_INSTANCE.INCIDENT_KEY = INCIDENT.INCIDENT_KEY"
+    }
+  ]
+}

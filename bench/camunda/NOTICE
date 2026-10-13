@@ -1,0 +1,4 @@
+The schema (schema.sql, model/*.json table and column names) and the SQL statements (statements.json) are derived
+from the Camunda 8 source code, https://github.com/camunda/camunda (db/rdbms-schema, db/rdbms), Copyright Camunda
+Services GmbH, licensed under the Camunda License 1.0. Russian descriptions, relations, questions and gold SQL were
+written for this benchmark.

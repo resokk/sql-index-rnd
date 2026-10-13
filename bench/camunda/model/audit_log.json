@@ -1,0 +1,238 @@
+{
+  "table": "AUDIT_LOG",
+  "entity": "Журнал аудита",
+  "description": "Кто, когда и какую операцию выполнил над сущностью",
+  "columns": [
+    {
+      "name": "AUDIT_LOG_KEY",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "ENTITY_KEY",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "ENTITY_TYPE",
+      "type": "VARCHAR(50)",
+      "description": "тип сущности"
+    },
+    {
+      "name": "OPERATION_TYPE",
+      "type": "VARCHAR(50)",
+      "description": "тип операции"
+    },
+    {
+      "name": "ENTITY_VERSION",
+      "type": "INT"
+    },
+    {
+      "name": "ENTITY_VALUE_TYPE",
+      "type": "SMALLINT"
+    },
+    {
+      "name": "ENTITY_OPERATION_INTENT",
+      "type": "SMALLINT"
+    },
+    {
+      "name": "BATCH_OPERATION_KEY",
+      "type": "BIGINT",
+      "description": "ключ пакетной операции"
+    },
+    {
+      "name": "BATCH_OPERATION_TYPE",
+      "type": "VARCHAR(50)"
+    },
+    {
+      "name": "TIMESTAMP",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "время события"
+    },
+    {
+      "name": "ACTOR_TYPE",
+      "type": "VARCHAR(50)",
+      "description": "тип исполнителя"
+    },
+    {
+      "name": "ACTOR_ID",
+      "type": "VARCHAR(256)",
+      "description": "кто выполнил"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "TENANT_SCOPE",
+      "type": "VARCHAR(50)"
+    },
+    {
+      "name": "RESULT",
+      "type": "VARCHAR(50)",
+      "description": "результат",
+      "values": [
+        "SUCCESS",
+        "FAIL"
+      ]
+    },
+    {
+      "name": "CATEGORY",
+      "type": "VARCHAR(50)"
+    },
+    {
+      "name": "PROCESS_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор процесса (BPMN id)"
+    },
+    {
+      "name": "DECISION_REQUIREMENTS_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "DECISION_DEFINITION_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор решения"
+    },
+    {
+      "name": "PROCESS_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения процесса"
+    },
+    {
+      "name": "PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра процесса"
+    },
+    {
+      "name": "ROOT_PROCESS_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ корневого экземпляра процесса"
+    },
+    {
+      "name": "ELEMENT_INSTANCE_KEY",
+      "type": "BIGINT",
+      "description": "ключ экземпляра элемента"
+    },
+    {
+      "name": "JOB_KEY",
+      "type": "BIGINT",
+      "description": "ключ задания"
+    },
+    {
+      "name": "USER_TASK_KEY",
+      "type": "BIGINT",
+      "description": "ключ пользовательской задачи"
+    },
+    {
+      "name": "DECISION_REQUIREMENTS_KEY",
+      "type": "BIGINT",
+      "description": "ключ модели требований"
+    },
+    {
+      "name": "DECISION_DEFINITION_KEY",
+      "type": "BIGINT",
+      "description": "ключ определения решения"
+    },
+    {
+      "name": "DECISION_EVALUATION_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "DEPLOYMENT_KEY",
+      "type": "BIGINT",
+      "description": "ключ развёртывания"
+    },
+    {
+      "name": "FORM_KEY",
+      "type": "BIGINT",
+      "description": "ключ формы"
+    },
+    {
+      "name": "RESOURCE_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "RELATED_ENTITY_TYPE",
+      "type": "VARCHAR(50)"
+    },
+    {
+      "name": "RELATED_ENTITY_KEY",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "ENTITY_DESCRIPTION",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    },
+    {
+      "name": "HISTORY_CLEANUP_DATE",
+      "type": "TIMESTAMP(3) WITH TIME ZONE"
+    },
+    {
+      "name": "AGENT_ELEMENT_ID",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "INBOUND_CHANNEL_TYPE",
+      "type": "VARCHAR(256)"
+    },
+    {
+      "name": "INBOUND_CHANNEL_TOOL_NAME",
+      "type": "VARCHAR(256)"
+    }
+  ],
+  "relations": [
+    {
+      "table": "BATCH_OPERATION",
+      "on": "AUDIT_LOG.BATCH_OPERATION_KEY = BATCH_OPERATION.BATCH_OPERATION_KEY"
+    },
+    {
+      "table": "TENANT",
+      "on": "AUDIT_LOG.TENANT_ID = TENANT.TENANT_ID"
+    },
+    {
+      "table": "PROCESS_DEFINITION",
+      "on": "AUDIT_LOG.PROCESS_DEFINITION_KEY = PROCESS_DEFINITION.PROCESS_DEFINITION_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "AUDIT_LOG.PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "PROCESS_INSTANCE",
+      "on": "AUDIT_LOG.ROOT_PROCESS_INSTANCE_KEY = PROCESS_INSTANCE.PROCESS_INSTANCE_KEY"
+    },
+    {
+      "table": "FLOW_NODE_INSTANCE",
+      "on": "AUDIT_LOG.ELEMENT_INSTANCE_KEY = FLOW_NODE_INSTANCE.FLOW_NODE_INSTANCE_KEY"
+    },
+    {
+      "table": "JOB",
+      "on": "AUDIT_LOG.JOB_KEY = JOB.JOB_KEY"
+    },
+    {
+      "table": "USER_TASK",
+      "on": "AUDIT_LOG.USER_TASK_KEY = USER_TASK.USER_TASK_KEY"
+    },
+    {
+      "table": "DECISION_REQUIREMENTS",
+      "on": "AUDIT_LOG.DECISION_REQUIREMENTS_KEY = DECISION_REQUIREMENTS.DECISION_REQUIREMENTS_KEY"
+    },
+    {
+      "table": "DECISION_DEFINITION",
+      "on": "AUDIT_LOG.DECISION_DEFINITION_KEY = DECISION_DEFINITION.DECISION_DEFINITION_KEY"
+    },
+    {
+      "table": "FORM",
+      "on": "AUDIT_LOG.FORM_KEY = FORM.FORM_KEY"
+    },
+    {
+      "table": "DEPLOYED_RESOURCE",
+      "on": "AUDIT_LOG.RESOURCE_KEY = DEPLOYED_RESOURCE.RESOURCE_KEY"
+    }
+  ]
+}

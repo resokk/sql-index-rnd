@@ -1,0 +1,31 @@
+{
+  "table": "USER_",
+  "entity": "Пользователь",
+  "description": "Учётная запись пользователя: логин, имя, email",
+  "columns": [
+    {
+      "name": "USERNAME",
+      "type": "VARCHAR(256)",
+      "description": "логин"
+    },
+    {
+      "name": "USER_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "NAME",
+      "type": "VARCHAR(256)",
+      "description": "наименование"
+    },
+    {
+      "name": "EMAIL",
+      "type": "VARCHAR(256)",
+      "description": "электронная почта"
+    },
+    {
+      "name": "PASSWORD",
+      "type": "VARCHAR(256)"
+    }
+  ],
+  "relations": []
+}

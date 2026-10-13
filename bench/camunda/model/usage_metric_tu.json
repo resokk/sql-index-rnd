@@ -1,0 +1,41 @@
+{
+  "table": "USAGE_METRIC_TU",
+  "entity": "Метрика задач по исполнителям",
+  "description": "Уникальные исполнители задач за период",
+  "columns": [
+    {
+      "name": "USAGE_METRIC_KEY",
+      "type": "BIGINT"
+    },
+    {
+      "name": "TENANT_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор тенанта"
+    },
+    {
+      "name": "START_TIME",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "начало периода"
+    },
+    {
+      "name": "END_TIME",
+      "type": "TIMESTAMP(3) WITH TIME ZONE",
+      "description": "время окончания"
+    },
+    {
+      "name": "ASSIGNEE_HASH",
+      "type": "BIGINT"
+    },
+    {
+      "name": "PARTITION_ID",
+      "type": "BIGINT",
+      "description": "номер партиции"
+    }
+  ],
+  "relations": [
+    {
+      "table": "TENANT",
+      "on": "USAGE_METRIC_TU.TENANT_ID = TENANT.TENANT_ID"
+    }
+  ]
+}

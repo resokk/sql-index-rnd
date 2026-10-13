@@ -1,0 +1,4 @@
+.venv/
+__pycache__/
+# search caches, rebuilt on first use
+bench/results/vectors-*.npy

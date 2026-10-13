@@ -1,0 +1,33 @@
+{
+  "table": "GROUP_MEMBER",
+  "entity": "Участник группы",
+  "description": "Членство в группе",
+  "columns": [
+    {
+      "name": "GROUP_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор группы"
+    },
+    {
+      "name": "ENTITY_ID",
+      "type": "VARCHAR(256)",
+      "description": "идентификатор участника"
+    },
+    {
+      "name": "ENTITY_TYPE",
+      "type": "VARCHAR(255)",
+      "description": "тип сущности",
+      "values": [
+        "USER",
+        "CLIENT",
+        "MAPPING_RULE"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "table": "GROUP_",
+      "on": "GROUP_MEMBER.GROUP_ID = GROUP_.GROUP_ID"
+    }
+  ]
+}
